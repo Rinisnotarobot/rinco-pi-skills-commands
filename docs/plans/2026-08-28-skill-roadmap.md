@@ -2,18 +2,19 @@
 
 ## Goal and Scope
 
-Build a small, composable, evidence-gated Skill portfolio around the validated `plan → tdd → code-review` flow. Deliver ten independently promotable Skills in this order:
+Build a small, composable, evidence-gated Skill portfolio around the validated `plan → tdd → code-review` flow. Deliver eleven independently promotable Skills in this order:
 
 1. `verification`
 2. `systematic-debugging`
 3. `spec`
-4. `security-review`
-5. `codebase-onboarding`
-6. `resilience`
-7. `migration`
-8. `testing-adapters`
-9. `frontend-patterns`
-10. `release-readiness`
+4. `fix`
+5. `security-review`
+6. `codebase-onboarding`
+7. `resilience`
+8. `migration`
+9. `testing-adapters`
+10. `frontend-patterns`
+11. `release-readiness`
 
 Each Skill must:
 
@@ -29,7 +30,7 @@ The roadmap covers Skills only. It does not change anything under `processing/co
 
 Acceptance evidence:
 
-- all ten promoted Skill directories pass the repository Skill contract test;
+- all eleven promoted Skill directories pass the repository Skill contract test;
 - each Skill passes its scenario-specific manual gate described below;
 - `README.md` identifies invocation type and purpose without duplicating the full Skill body;
 - superseded processing drafts are removed only after their replacement passes all gates.
@@ -85,8 +86,9 @@ Use one top-level Skill per independent invocation concept. Keep orchestration u
 | Skill | Invocation | Selected responsibility |
 |---|---|---|
 | `verification` | model-invoked | Discover and execute repository quality gates; return READY/NOT READY evidence |
-| `systematic-debugging` | model-invoked | Reproduce, isolate, test one hypothesis, fix root cause, and prove regression coverage |
+| `systematic-debugging` | model-invoked | Reproduce, isolate, and prove the root cause of an observed failure |
 | `spec` | user-invoked | Convert a sufficiently explored idea into a durable acceptance specification |
+| `fix` | user-invoked | Orchestrate diagnosis, regression-first repair, verification, and optional review without duplicating their verdicts |
 | `security-review` | model-invoked | Review changed trust boundaries and report only evidence-backed exploit paths |
 | `codebase-onboarding` | user-invoked | Build an evidence-cited repository map and optional onboarding artifact |
 | `resilience` | model-invoked | Design and review deadlines, retries, idempotency, partial failure, and recovery |
@@ -148,6 +150,7 @@ Per-Skill source and retirement map:
 | `verification` | `processing/skills/verification-loop/`, `skills/tdd/references/coverage-and-verification.md` | `processing/skills/verification-loop/` |
 | `systematic-debugging` | `processing/skills/terminal-ops/`, defect branch in `skills/tdd/` | none; keep terminal operations separate |
 | `spec` | `intent-driven-development`, `product-capability`, `product-lens`, `grilling` | retire `intent-driven-development` and `product-capability` after traceability review; keep `product-lens` and `grilling` distinct |
+| `fix` | `processing/commands/fix.md`, `systematic-debugging`, `tdd`, `verification`, `code-review` | convert `processing/commands/fix.md` to a compatibility pointer only after promotion |
 | `security-review` | `processing/skills/security-review/`, backend security reference | `processing/skills/security-review/` |
 | `codebase-onboarding` | `processing/skills/codebase-onboarding/` | `processing/skills/codebase-onboarding/` |
 | `resilience` | `processing/skills/error-handling/`, backend messaging/resilience reference | `processing/skills/error-handling/` after behavior coverage is mapped |
@@ -202,7 +205,18 @@ Per-Skill source and retirement map:
 - **Blocked by:** slice 1. Parallelizable with slices 2–3 after the contract gate.
 - **Risks:** name collision with ecosystem Skills and overlap with planning. Keep `spec` about desired behavior; prohibit file/symbol implementation maps.
 
-### 5. Promote an evidence-gated `security-review`
+### 5. Add the `fix` orchestration workflow
+
+- **Delivers:** one explicit entry point for repairing a reported bug, failed test/build/type check, CI failure, or evidence-backed review finding without collapsing diagnosis, implementation, verification, and review into one owner.
+- **Changes:** create `processing/skills/fix/SKILL.md` with a concise orchestration ledger and failure-intake reference; promote to `skills/fix/`; update manifest, README, handoff tests, and behavior coverage. After promotion, reduce `processing/commands/fix.md` to a compatibility pointer that asks the user to invoke `/skill:fix` rather than maintaining a second workflow.
+- **Interfaces/data:** user-invoked. Input is a symptom, failing command, verification result, review finding, or known root-cause handoff. Output records pinned scope, delegated Skill, evidence accepted/rejected, modified files, verification state, unresolved risks, and the optional review handoff. `fix` owns orchestration state only; `systematic-debugging` owns unknown-cause diagnosis, `tdd` owns regression-first implementation, `verification` owns `READY`/`NOT READY`/`BLOCKED`, and user-invoked `code-review` owns findings and Review Verdict.
+- **Test seam and RED condition:** add `fix` to the manifest before promotion. An unknown-cause failure must route to `systematic-debugging` before any production fix; a proven-cause handoff may route directly to TDD; a configuration-only correction may use a minimal reproducer without pretending TDD occurred. The workflow must reject stale evidence, stop on unsafe external effects or unapproved dependency changes, and never claim review or release approval from a `READY` verification state.
+- **Implementation outline:** pin repository/worktree state and requested failure; classify cause as unknown, proven, or non-behavioral; delegate exactly one active phase at a time; carry scope and source IDs through every handoff; reuse same-state evidence; summarize final ownership without inventing a second verdict. Preserve unrelated work and leave commit, push, PR, deployment, package installation, and auto-fix outside the Skill.
+- **Verification:** Skill contract and behavior tests; walkthroughs for unknown root cause, known root cause, build/configuration failure, stale TDD evidence, baseline verification failure, blocked environment, and optional explicit code-review handoff.
+- **Blocked by:** slices 1–4. Requires the promoted verification, systematic-debugging, spec handoff, TDD, and evidence ownership contracts.
+- **Risks:** becoming a duplicate mega-workflow. Keep the main file focused on routing and state transitions; reference existing Skills for every specialized method and preserve their independent outputs.
+
+### 6. Promote an evidence-gated `security-review`
 
 - **Delivers:** high-confidence security findings tied to a changed trust boundary, attacker control, exploit path, and concrete impact.
 - **Changes:** rewrite `processing/skills/security-review/` into a concise `SKILL.md` with disclosed trust-boundary, web, data, and supply-chain references; promote to `skills/security-review/`; update manifest, README, and behavior coverage.
@@ -213,7 +227,7 @@ Per-Skill source and retirement map:
 - **Blocked by:** slices 1 and 4 for intended policy evidence. It may be drafted in parallel but cannot complete policy-sensitive scenarios before `spec`.
 - **Risks:** duplication with `code-review`. Keep code-review broad; invoke this Skill only for deep trust-boundary analysis.
 
-### 6. Promote `codebase-onboarding`
+### 7. Promote `codebase-onboarding`
 
 - **Delivers:** an evidence-cited repository map for an unfamiliar codebase, with unknowns and confidence separated from facts.
 - **Changes:** rewrite `processing/skills/codebase-onboarding/` with references for architecture mapping and optional artifact templates; promote to `skills/codebase-onboarding/`; update manifest, README, and behavior coverage.
@@ -221,10 +235,10 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. A fixture repository with two entry points must produce both paths and mark an intentionally opaque external boundary as unknown; it must not infer package-manager commands absent repository evidence.
 - **Implementation outline:** retain reconnaissance, architecture map, and convention discovery; remove npm/Next assumptions; add fact/evidence/implication records and completion criteria; separate analysis from instruction-file mutation.
 - **Verification:** Skill contract and behavior tests; fixture walkthrough; verify every named path exists and every unknown remains labeled.
-- **Blocked by:** slice 1. Parallelizable with slices 2–5.
+- **Blocked by:** slice 1. Parallelizable with slices 2–6.
 - **Risks:** overlap with plan exploration. Onboarding creates a reusable repository map; planning remains change-specific.
 
-### 7. Add `resilience`
+### 8. Add `resilience`
 
 - **Delivers:** design and review gates for deadlines, cancellation, retries, idempotency, partial failure, backpressure, and recovery.
 - **Changes:** create `processing/skills/resilience/SKILL.md` with references for synchronous boundaries, messaging, and recovery verification; promote to `skills/resilience/`; update manifest, README, and behavior coverage; retire `processing/skills/error-handling/` after coverage mapping.
@@ -232,10 +246,10 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. Scenario matrix must reject retrying non-idempotent unknown-outcome writes without protection, detect retry amplification, and require cancellation/timeout propagation at a remote boundary.
 - **Implementation outline:** use `skills/backend-patterns/references/messaging-and-resilience.md` as the concise baseline; extract only valid typed failure-contract material from `error-handling`; correct `fetch` and HTTP status assumptions; add telemetry and recovery evidence.
 - **Verification:** Skill contract and behavior tests; scenarios for synchronous timeout, queue redelivery, duplicate command, downstream outage, and fallback correctness.
-- **Blocked by:** slices 2 and 5 for verification and diagnostic-data safety. Uses the promoted TDD seam.
+- **Blocked by:** slices 2 and 6 for verification and diagnostic-data safety. Uses the promoted TDD seam.
 - **Risks:** overlap with backend-patterns. Keep backend-patterns as architecture reference; resilience owns execution/review discipline.
 
-### 8. Add the migration execution discipline
+### 9. Add the migration execution discipline
 
 - **Delivers:** preflight, rollout, reconciliation, stop, rollback, and cleanup gates for data, API/protocol, dependency, and runtime migrations.
 - **Changes:** create `processing/skills/migration/SKILL.md` with data/API/dependency references; promote to `skills/migration/`; update manifest, README, and behavior coverage. Keep `skills/plan/references/migrations-and-rollout.md` as planning guidance.
@@ -243,10 +257,10 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. A destructive migration scenario must stop without backup/recovery evidence; a resumable batch scenario must prove repeated execution is safe and reconciliation catches divergence.
 - **Implementation outline:** convert plan concepts into execution gates; separate reversible rollback from forward recovery; require explicit point-of-no-return and stop conditions; keep vendor-specific commands out of the core.
 - **Verification:** Skill contract and behavior tests; scenario matrix for data backfill, API version transition, dependency/runtime upgrade, and irreversible contract step.
-- **Blocked by:** slices 2, 4, and 7.
+- **Blocked by:** slices 2, 4, and 8.
 - **Risks:** duplication with plan. Maintain the boundary: plan selects transition states; migration governs executing and validating them.
 
-### 9. Add `testing-adapters`
+### 10. Add `testing-adapters`
 
 - **Delivers:** stack-specific test seams and runner behavior for Python and React without duplicating the promoted TDD workflow.
 - **Changes:** create `processing/skills/testing-adapters/SKILL.md` with `references/python.md` and `references/react.md`; promote to `skills/testing-adapters/`; update manifest, README, and behavior coverage; retire `python-testing`, `react-testing`, and legacy `tdd-workflow` after traceability review.
@@ -254,10 +268,10 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. Python fixture must select configured `uv run pytest`; React fixture must select repository scripts and accessible queries. Repositories without matching evidence must return “no adapter” instead of inventing dependencies.
 - **Implementation outline:** reuse `skills/tdd/references/runner-detection.md`; prune generic pytest/RTL tutorials, fixed coverage thresholds, bare commands, and duplicated RED/GREEN steps; require Context7 before version-sensitive API guidance.
 - **Verification:** Skill contract and behavior tests; Python, React, mixed-stack, and unsupported-stack routing scenarios.
-- **Blocked by:** slice 1 and the already promoted `tdd`. It can run in parallel with slices 2–8.
+- **Blocked by:** slice 1 and the already promoted `tdd`. It can run in parallel with slices 2–9.
 - **Risks:** a router that loads every reference. Keep stack branches explicit and load exactly one adapter unless the change spans stacks.
 
-### 10. Promote consolidated `frontend-patterns`
+### 11. Promote consolidated `frontend-patterns`
 
 - **Delivers:** framework-neutral frontend boundaries with disclosed React-specific composition, state, accessibility, performance, and client/server guidance.
 - **Changes:** rewrite `processing/skills/frontend-patterns/` with concise core and references such as `react.md`, `accessibility.md`, and `performance.md`; incorporate only validated material from `react-patterns`; promote to `skills/frontend-patterns/`; update manifest, README, and behavior coverage; retire the superseded React pattern draft.
@@ -265,10 +279,10 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. Scenarios must choose local state over global state for a local interaction, reject unconditional memoization, preserve accessible semantics, and avoid exposing server-only data in a client boundary.
 - **Implementation outline:** remove hand-rolled stale data-fetching examples and framework conflation; use decision tables and invariants; place current React/Next APIs behind references verified with Context7 at implementation time.
 - **Verification:** Skill contract and behavior tests; scenario matrix for state placement, forms, asynchronous UI, accessibility, rendering performance, and server/client privacy.
-- **Blocked by:** slices 4, 7, and 9.
+- **Blocked by:** slices 4, 8, and 10.
 - **Risks:** fast-moving framework APIs. Keep the core stable and document the version/date of every external API source used in references.
 
-### 11. Add `release-readiness`
+### 12. Add `release-readiness`
 
 - **Delivers:** an evidence-based readiness verdict without performing push, release, deployment, or other externally consequential actions.
 - **Changes:** create `processing/skills/release-readiness/SKILL.md` with references for rollout/rollback evidence and readiness reporting; promote to `skills/release-readiness/`; update manifest, README, and behavior coverage.
@@ -276,7 +290,7 @@ Per-Skill source and retirement map:
 - **Test seam and RED condition:** manifest row fails before promotion. Scenario matrix must block on a failed required gate, an incomplete irreversible migration, or absent rollback ownership; it must not block a docs-only release on irrelevant deployment checks.
 - **Implementation outline:** compose evidence rather than restating verification, security, migration, Git, or hosting mechanics; require explicit authorization before any external mutation and leave execution to separate tools/Skills.
 - **Verification:** Skill contract and behavior tests; readiness scenarios for ordinary code change, migration, security-sensitive release, docs-only change, and unavailable CI evidence.
-- **Blocked by:** slices 2, 5, and 8.
+- **Blocked by:** slices 2, 6, and 9.
 - **Risks:** becoming another deployment checklist. Every readiness requirement must trace to the current change's risk or repository policy.
 
 ## Migration and Rollback
@@ -327,7 +341,7 @@ Manual completion matrix:
 Roadmap completion gate:
 
 ```text
-10/10 target Skills promoted
+11/11 target Skills promoted
 0 superseded duplicate candidates remaining for migrated responsibilities
 Skill contract PASS
 Skill handoff PASS
@@ -338,7 +352,7 @@ All required scenario gates recorded
 
 ## Assumptions and Open Questions
 
-- Assumption: the ten-item roadmap refers to the previously ranked Skill-only list; Commands remain out of scope.
+- Decision: the original ten-item Skill-only roadmap now contains eleven targets after adding the user-invoked `fix` orchestrator; Commands remain out of scope except compatibility pointers updated after replacement Skills are promoted.
 - Assumption: English remains the implementation language for new Skill bodies and references; `README.md` keeps its current Chinese catalog style.
 - Assumption: `spec` is intentionally user-invoked despite possible ecosystem name collisions.
 - Assumption: `migration` is a top-level model-invoked execution discipline, while planning guidance remains in `plan`.
@@ -349,8 +363,8 @@ All required scenario gates recorded
 
 ## Non-Goals
 
-- No changes to `processing/commands/`.
-- No implementation of the ten Skills in this planning task.
+- No redesign of `processing/commands/`; only compatibility pointers may change after their replacement Skills are promoted.
+- No implementation of the eleven Skills in this planning task.
 - No installation or distribution mechanism before the complete Skill portfolio passes integration review.
 - No automatic Git commit, push, PR, release, or deployment behavior.
 - No new language adapters beyond Python and React in the initial roadmap.
