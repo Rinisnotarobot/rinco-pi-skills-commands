@@ -12,11 +12,13 @@ Every required behavior or acceptance criterion maps to:
 
 Every slice maps back to an in-scope requirement, migration necessity, or explicitly justified preparation. Remove orphan work and expose uncovered requirements.
 
-A compact matrix is useful for complex plans:
+When a source specification exists, include its exact path and preserve every applicable `REQ`, `INV`, and `AC` identifier in a mandatory matrix:
 
 ```text
-Requirement → Slice(s) → Test/evidence → Completion gate
+Source ID → Slice(s) → Test/evidence → Completion gate
 ```
+
+A repository discovery may refine implementation but cannot silently change the source identifier's meaning. Return behavior-changing conflicts for specification revision.
 
 ## Repository grounding
 

@@ -1,18 +1,16 @@
 # Coverage and Verification
 
-Use verification to prove the requested behavior and detect regressions at proportionate scope. Passing the new test alone is necessary but not sufficient.
+Use TDD-owned evidence to prove the requested behavior and affected regressions at proportionate scope. Passing the new test alone is necessary but not sufficient; broad repository readiness remains owned by `verification`.
 
-## Verification ladder
+## TDD evidence ladder
 
-Run the narrowest useful checks first and expand after they pass:
+Run only the checks assigned to TDD by the plan or needed to establish affected behavior:
 
 1. the new or changed test;
 2. tests for the affected module/package;
-3. relevant integration, contract, component, or end-to-end tests;
-4. configured lint, formatting, type, build, and coverage gates;
-5. the full repository suite when required or when change impact is broad.
+3. relevant integration, contract, component, or end-to-end tests when the behavior cannot be established more narrowly.
 
-Record exact commands and exit results. Distinguish tests not run from tests that passed.
+Discover configured lint, formatting, type, build, coverage, and full-suite gates, but hand them to `verification` unless the plan explicitly assigns one to the TDD stage. Record exact commands and exit results for checks run. Distinguish tests not run from tests that passed.
 
 ## Coverage
 
@@ -78,8 +76,8 @@ These supplement rather than replace a clear behavior example and a witnessed RE
 Focused RED: command, expected failure
 Focused GREEN: command, pass result
 Affected tests: command, result
-Repository gates: command, result
-Coverage: configured result or risk-based assessment
+Repository gates: handed to verification, or command/result when explicitly TDD-owned
+Coverage: handed to verification, configured result when explicitly TDD-owned, or risk-based assessment
 Integrity review: skips/retries/snapshots/exclusions changed or unchanged
 Not run: checks and reason
 Remaining risks: assumptions and follow-up

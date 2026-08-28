@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Behavior-first test-driven development with vertical red-green-refactor slices. Use when implementing a feature or bug fix test-first, reproducing a defect before changing production code, choosing an observable test seam, or reviewing whether tests specify behavior rather than implementation.
+description: Behavior-first test-driven development with vertical red-green-refactor slices. Use when implementing a feature, implementing a bug fix after its cause is known, choosing an observable test seam, or reviewing whether tests specify behavior rather than implementation; use systematic-debugging first when an observed failure has an unproven cause.
 ---
 
 # Test-Driven Development
@@ -13,12 +13,13 @@ Drive one observable behavior at a time through a verified **red → green → r
 
 Inspect the requirement, affected code, nearby tests, test configuration, and relevant architecture decisions. State:
 
+- originating `REQ`, `INV`, and `AC` identifiers when a specification or plan supplies them;
 - the behavior a caller or user should observe;
 - the public seam through which it can be exercised;
 - the independent source of truth for the expected result;
 - the smallest relevant test command.
 
-For a defect, describe the failing scenario before proposing the fix. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
+For a defect with an unproven cause, invoke `systematic-debugging` before proposing the fix. When its handoff exists, validate and reuse the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
 
 Ask the user about the seam only when repository evidence cannot resolve a consequential choice, such as changing a public interface or adding an expensive system test.
 
@@ -73,19 +74,33 @@ Run the narrow tests after each meaningful refactor step. If they fail, restore 
 
 Completion criterion: behavior is unchanged, tests remain green, and the slice is maintainable enough for the next cycle.
 
-### 7. Repeat and verify
+### 7. Repeat and hand off verification evidence
 
-Repeat RED → GREEN → REFACTOR for the next behavior. When the requested capability is complete, read [references/coverage-and-verification.md](references/coverage-and-verification.md) and run the repository's required broader gates.
+Repeat RED → GREEN → REFACTOR for the next behavior. When the requested capability is complete, read [references/coverage-and-verification.md](references/coverage-and-verification.md). Run the affected tests needed to establish the completed behavior, then prepare a verification evidence handoff instead of independently rerunning every broad repository gate.
+
+Record evidence produced after the final relevant code or test mutation:
+
+- every source `REQ`, `INV`, and `AC` identifier assigned to the TDD stage, mapped to RED/GREEN evidence, `N/A`, or another named owner;
+- behavior, seam, and acceptance claim;
+- exact RED and GREEN commands, exit results, and key output;
+- affected tests run after the final mutation;
+- relevant `git status --short` before and after those commands;
+- broader gates not run, required prerequisites, and residual risks.
+
+Let the model-invoked `verification` skill decide whether this same-state evidence is reusable and run every missing required gate. A stale, partial, differently scoped, or unverifiable result must be rerun; a reusable result must not be rerun merely to duplicate ownership.
 
 Report:
 
 ```text
+Source ID → RED/GREEN evidence | N/A | other owner
 Behaviors added or reproduced
 Seams exercised
 RED evidence
 GREEN evidence
 Refactoring performed
-Verification commands and results
+Affected verification commands and results
+Final worktree state
+Unrun broader gates
 Uncovered risks or assumptions
 ```
 

@@ -1,11 +1,11 @@
 ---
 name: plan
-description: Evidence-based implementation planning for code changes. Use when the user asks for an implementation plan, a multi-file feature needs sequencing before coding, a migration or compatibility change needs rollout steps, or another engineer or agent needs a codebase-grounded handoff.
+description: Evidence-based implementation planning that writes a final Markdown artifact to disk. Use when the user asks for an implementation plan, a multi-file feature needs sequencing before coding, a migration or compatibility change needs rollout steps, or another engineer or agent needs a codebase-grounded handoff.
 ---
 
 # Implementation Planning
 
-Turn a sufficiently clear coding goal into an executable, verifiable change plan. Inspect the repository before naming changes. Planning produces decisions and ordered work; it does not modify production code.
+Turn a sufficiently clear coding goal into an executable, verifiable change plan. Inspect the repository before naming changes. Planning produces decisions and ordered work; the final plan artifact is its only expected repository change.
 
 ## Workflow
 
@@ -13,15 +13,19 @@ Turn a sufficiently clear coding goal into an executable, verifiable change plan
 
 Extract:
 
+- source specification path and status when one exists;
 - intended observable outcome;
 - in-scope and out-of-scope behavior;
+- originating `REQ`, `INV`, and `AC` identifiers;
 - acceptance evidence;
 - technical and business constraints supplied by authoritative sources;
 - assumptions and unresolved decisions.
 
-Repository code is evidence of current behavior, not proof of desired product policy. Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. Approval is not the default gate: record unresolved decisions as open questions and proceed unless one of them blocks the plan.
+Validate a supplied specification before planning: it must be ready, internally traceable, and authoritative for desired behavior. Preserve its identifiers and meaning. Repository code is evidence of current behavior, not proof of desired product policy.
 
-Completion criterion: the goal is testable, scope is bounded, and every implementation-blocking decision is resolved or explicitly listed.
+Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. When unresolved product or policy truth affects any of those outcomes or acceptance meaning, stop and ask the user to invoke `/skill:spec`; `spec` is user-invoked and planning must not synthesize it silently. Only technical assumptions that do not alter desired behavior or safety may remain open in a persisted plan.
+
+Completion criterion: the goal is testable, scope is bounded, every material product decision is resolved in the source specification or authoritative input, and remaining technical assumptions are explicit.
 
 ### 2. Trace the current code path
 
@@ -76,22 +80,40 @@ Use horizontal steps only when the work is inherently cross-cutting or cannot re
 
 Completion criterion: dependency order is explicit, no slice relies on hidden work, and each slice ends in an independently verifiable repository state.
 
-### 6. Define verification and completion
+### 6. Define the verification contract
 
-Derive exact commands from repository evidence. Separate:
+Derive completion evidence from the requirement, repository policy, selected design, and affected risks. For every evidence item record:
 
-1. focused RED/GREEN command;
-2. affected package/module checks;
-3. repository-required test, type, lint, build, and coverage gates;
-4. manual, operational, migration, security, or compatibility evidence that automation cannot prove.
+- claim and affected scope;
+- `required` or `optional` status;
+- owner and earliest stage when the evidence is due: debugging, TDD, verification, review, release, or operator;
+- proving method: command, manual observation, operational signal, migration/reconciliation record, security review, or compatibility evidence;
+- authority: requirement, repository instruction, CI job, configuration, or explicit risk decision;
+- exact command or observable result, including prerequisites.
 
-Do not invent a coverage threshold or require every test level. Match verification to the risk and existing project policy.
+Separate focused RED/GREEN evidence, affected package checks, repository-required gates, and evidence automation cannot prove. Do not invent a coverage threshold or require every test level. Match the contract to the risk and existing project policy.
 
-### 7. Self-review the plan
+Planning defines this contract but does not execute it. TDD supplies behavior-cycle evidence; the `verification` skill accepts or rejects reusable evidence, runs missing gates, and owns the final gate state.
 
-Read [references/plan-quality.md](references/plan-quality.md) and repair gaps before returning. Confirm requirement coverage, path/symbol existence, interface consistency, dependency ordering, migration safety, and verification traceability.
+Completion criterion: every acceptance condition and material risk maps to a required or optional proving method without assigning the same gate to multiple executors.
 
-Return the plan in the conversation unless the user requested a file or the repository defines an authoritative plan location. Stop for a reply only when an open question is blocking or the user explicitly requested a review gate.
+### 7. Self-review and persist the plan
+
+Read [references/plan-quality.md](references/plan-quality.md) and repair gaps before writing. Confirm requirement coverage, path/symbol existence, interface consistency, dependency ordering, migration safety, and verification traceability.
+
+Choose the artifact path in this order:
+
+1. an exact path supplied by the user;
+2. an authoritative plan directory defined by the repository;
+3. `docs/plans/YYYY-MM-DD-<slug>.md`.
+
+Build `<slug>` from the plan title as lowercase ASCII kebab-case; use `implementation-plan` when no safe slug remains. Use the current local date. Preserve existing artifacts: if the path exists, append `-2`, `-3`, and so on before `.md` rather than overwriting it.
+
+After the plan passes self-review, create the parent directory, write the complete Output Contract as one Markdown file, read it back, and confirm that no section was truncated. Return the artifact path and a concise summary in the conversation instead of duplicating the full plan.
+
+Stop for a reply only when an open question is blocking or the user explicitly requested a review gate.
+
+Completion criterion: the final, self-reviewed plan exists at the reported path and its contents match the plan summary.
 
 ## Choose the Depth
 
@@ -107,6 +129,8 @@ Use the smallest depth that leaves no implementation decision hidden.
 # Implementation Plan: <change>
 
 ## Goal and Scope
+## Source Specification
+## Requirement Traceability
 ## Repository Evidence
 ## Selected Strategy
 ## Change Map
@@ -126,6 +150,8 @@ Include this section only when the change involves persistent data, a public con
 ## Assumptions and Open Questions
 ## Non-Goals
 ```
+
+The `Requirement Traceability` section maps every originating `REQ`, `INV`, and `AC` identifier to implementation slices and final evidence. The `Final Verification` section is the durable verification contract. Preserve each item's claim, scope, requirement level, owner/stage, method, authority, and expected evidence so downstream Skills do not have to rediscover or reinterpret it.
 
 [references/example-plan.md](references/example-plan.md) shows a worked Compact-depth plan end to end.
 

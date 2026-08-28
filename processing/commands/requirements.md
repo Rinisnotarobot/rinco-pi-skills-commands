@@ -5,12 +5,12 @@ argument-hint: "<需求、问题或产品想法>"
 
 # Requirements Workflow
 
-定义 `${ARGUMENTS:-用户尚未说明的需求}`。
+此兼容入口已由 user-invoked 的 `spec` Skill 取代。不要从该 Command 自动调用另一个 user-invoked Skill，也不要生成第二套需求格式。
 
-按顺序加载并遵循：
-1. `product-lens` — 验证问题、用户、证据、价值和为何现在做。
-2. `intent-driven-development` — 明确范围、非目标、约束、风险和可测试验收标准。
-3. `product-capability` — 涉及跨模块、跨服务或 PRD 时形成实现就绪的能力契约。
-4. `security-review` — 涉及鉴权、输入、密钥、支付或敏感数据时条件加载。
+请用户显式运行：
 
-关键事实缺失时集中提问，不编造需求。输出问题陈述、范围、非目标、验收标准、开放问题和风险；未解决会改变方案的歧义前，不进入编码。
+```text
+/skill:spec ${ARGUMENTS}
+```
+
+`spec` 负责确认需求权威来源、解决阻塞决策、定义 `REQ` / `INV` / `AC` 追踪关系，并将最终规格写入 `docs/specs/`。

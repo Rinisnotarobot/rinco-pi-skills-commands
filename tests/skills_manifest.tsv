@@ -1,0 +1,8 @@
+# promoted-skill	invocation
+backend-patterns	model
+code-review	user
+plan	model
+spec	user
+systematic-debugging	model
+tdd	model
+verification	model
