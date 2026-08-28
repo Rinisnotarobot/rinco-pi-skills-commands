@@ -109,7 +109,7 @@ npx skills add <owner/repo@skill> -g -y
 
 ### Step 7: Auto-Apply Adaptation (必做,无需询问用户)
 
-下载完成后**立即自动**按以下流程适配,不要停在“提醒用户”这一步。详细映射表见 skill-adapter 技能(`~/.pi/agent/skills/skill-adapter/`),必要时 read 它的 `references/tool-mapping.md` 与 `references/worked-example.md`。
+下载完成后**立即自动**按以下流程适配,不要停在“提醒用户”这一步。工具改写对照表见下文「工具映射表」,按表中规则直接改写,无需再查询其他技能。
 
 1. **定位**:找到安装后的技能目录,`read` 其 SKILL.md,`ls` 看完整目录结构。
 2. **红旗扫描**:查 `Task` 子代理、`Glob`/`Grep`、`WebFetch`/`WebSearch`、`TodoWrite`、`AskUserQuestion`、硬编码 `~/.claude`/`~/.codex` 路径、`agents/`、`eval-viewer/`、`.claude-plugin/` 目录。无红旗 → 跳过改写,直接进入第 7 步。
@@ -130,6 +130,42 @@ npx skills add <owner/repo@skill> -g -y
    - 汇报给用户:适配前状态 → 做了哪些修改 → 最终结论(可直接用/已适配/不建议并说明原因)
    - 提醒**新会话生效**,或当前会话 `/skill:<name>` 测试
    - 若用户之前未同意安装,先给 verdict 再安装(见 Step 5);已同意安装则直接执行完上述全部步骤
+
+## 工具映射表(Claude Code / Codex → Pi)
+
+改写 SKILL.md 时,把对其他 harness 工具的引用替换为 Pi 等价物。
+
+### 直接对应(改名字即可)
+
+| 其他 harness | Pi | 备注 |
+|--------------|-----|------|
+| `Read` | `read` | 语义相同 |
+| `Write` / `Edit` | `write` / `edit` | Pi 的 edit 用精确文本替换(edits[] 不重叠) |
+| `Bash` / `Shell` | `bash` | 语义相同 |
+| `TodoWrite` | `todo` | 4 态:pending → in_progress → completed / deleted;支持 blockedBy |
+| `AskUserQuestion` | `ask_user_question` | 每条问题 2-4 选项,可 multiSelect |
+| `Skill` 加载 | `/skill:<name>` | 参数以 `User: <args>` 追加 |
+
+### 需要改写逻辑
+
+- **Task(子代理)**:删除 `agents/` 目录,子代理职责拆成 SKILL.md 里的分步步骤,由主代理直接执行;逻辑复杂可拆成多个 Pi 技能分别 `/skill:` 加载。
+- **Glob**:→ `bash` + `rg --files -g 'pattern'`。
+- **Grep**:→ `bash` + `rg -n`。
+- **WebFetch / WebSearch**:按优先级降级——已配 MCP(context7-docs 查库文档、gh 查 GitHub)→ `curl` → 提示用户粘贴内容。
+- **NotebookEdit**:无等价物,改用 `bash` 跑 `python`/`jupyter nbconvert` 或生成脚本给用户运行。
+
+### 直接删除的 harness 专属文件
+
+| 文件/目录 | 处理 |
+|-----------|------|
+| `agents/` | 逻辑并入 SKILL.md 后删除 |
+| `eval-viewer/`、`.claude-plugin/`、`plugin.json` | 删除 |
+| 技能内 `CLAUDE.md` / `.claude/` | 删除,要点并入 SKILL.md |
+
+### 路径改写
+
+- `~/.claude/skills/x` / `~/.codex/skills/x` → `~/.pi/agent/skills/x`(全局)或项目 `.pi/skills/x`
+- 技能内绝对路径 → 技能目录内相对路径(`scripts/x.sh`),Pi 按技能目录解析
 
 ## Common Skill Categories
 

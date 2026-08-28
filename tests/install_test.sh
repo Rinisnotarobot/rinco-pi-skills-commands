@@ -22,10 +22,27 @@ assert_file_matches() {
 PI_AGENT_DIR="$TEST_ROOT/pi-agent" bash "$INSTALLER"
 
 assert_file_matches \
-  "$REPO_ROOT/skills/coding-standards/SKILL.md" \
-  "$TEST_ROOT/pi-agent/skills/coding-standards/SKILL.md"
+  "$REPO_ROOT/skills/backend-patterns/SKILL.md" \
+  "$TEST_ROOT/pi-agent/skills/backend-patterns/SKILL.md"
 assert_file_matches \
-  "$REPO_ROOT/commands/review.md" \
+  "$REPO_ROOT/skills/backend-patterns/references/boundaries.md" \
+  "$TEST_ROOT/pi-agent/skills/backend-patterns/references/boundaries.md"
+assert_file_matches \
+  "$REPO_ROOT/skills/tdd/SKILL.md" \
+  "$TEST_ROOT/pi-agent/skills/tdd/SKILL.md"
+assert_file_matches \
+  "$REPO_ROOT/skills/tdd/references/test-quality.md" \
+  "$TEST_ROOT/pi-agent/skills/tdd/references/test-quality.md"
+assert_file_matches \
+  "$REPO_ROOT/skills/plan/SKILL.md" \
+  "$TEST_ROOT/pi-agent/skills/plan/SKILL.md"
+assert_file_matches \
+  "$REPO_ROOT/skills/plan/references/plan-quality.md" \
+  "$TEST_ROOT/pi-agent/skills/plan/references/plan-quality.md"
+[[ ! -e "$TEST_ROOT/pi-agent/skills/coding-standards" ]] || \
+  fail 'installer copied an unprocessed skill'
+assert_file_matches \
+  "$REPO_ROOT/processing/commands/review.md" \
   "$TEST_ROOT/pi-agent/prompts/review.md"
 
 printf 'keep me\n' > "$TEST_ROOT/pi-agent/skills/local-skill.md"
@@ -37,7 +54,7 @@ printf 'outdated\n' > "$TEST_ROOT/pi-agent/prompts/review.md"
 )
 
 assert_file_matches \
-  "$REPO_ROOT/commands/review.md" \
+  "$REPO_ROOT/processing/commands/review.md" \
   "$TEST_ROOT/pi-agent/prompts/review.md"
 [[ $(<"$TEST_ROOT/pi-agent/skills/local-skill.md") == 'keep me' ]] || \
   fail 'installer removed an unrelated existing skill'
@@ -47,10 +64,10 @@ assert_file_matches \
   HOME="$TEST_ROOT/home" bash "$INSTALLER"
 )
 assert_file_matches \
-  "$REPO_ROOT/skills/coding-standards/SKILL.md" \
-  "$TEST_ROOT/home/.pi/agent/skills/coding-standards/SKILL.md"
+  "$REPO_ROOT/skills/backend-patterns/SKILL.md" \
+  "$TEST_ROOT/home/.pi/agent/skills/backend-patterns/SKILL.md"
 assert_file_matches \
-  "$REPO_ROOT/commands/review.md" \
+  "$REPO_ROOT/processing/commands/review.md" \
   "$TEST_ROOT/home/.pi/agent/prompts/review.md"
 
 printf 'PASS: installer copies skills and commands without removing unrelated files\n'

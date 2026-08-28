@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 SKILLS_SOURCE="$SCRIPT_DIR/skills"
-COMMANDS_SOURCE="$SCRIPT_DIR/commands"
+COMMANDS_SOURCE="$SCRIPT_DIR/processing/commands"
 
 if [[ -n ${PI_AGENT_DIR:-} ]]; then
   AGENT_DIR=$PI_AGENT_DIR
