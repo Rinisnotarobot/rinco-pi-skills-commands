@@ -35,7 +35,5 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 ## 校验
 
-- 改动 `skills/` 后，运行仓库中的 Skill 契约、交接和行为测试；安装与发布测试推迟到完整
-  Skill 组合完成后统一设计。
 - 新增 Command 时同步更新 `README.md` 的命令表；新增 Skill 时同步更新 Skills 列表。
 - 若 Crawl4AI 或 `npx skills` 不可用，明确说明未能核对，不要把记忆当作已验证的调研结果。

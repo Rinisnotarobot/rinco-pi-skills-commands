@@ -23,11 +23,16 @@ Commands 是待完善的 Pi prompt templates；Skills 是当前优先建设和�
 ```text
 /skill:backend-patterns
 /skill:code-review
+/skill:context7-docs
+/skill:find-skills
+/skill:gh
 /skill:plan
 /skill:spec
 /skill:systematic-debugging
 /skill:tdd
+/skill:terminal-ops
 /skill:verification
+/skill:writing-for-agents
 ```
 
 `spec` 与 `code-review` 是 user-invoked Skills，仅在显式调用时执行；`systematic-debugging` 与 `verification` 是 model-invoked Skills，前者在故障原因未证实时建立根因证据链，后者在完成重要改动、声称完成或准备评审与发布时执行最终门禁。
@@ -53,11 +58,16 @@ Commands 是待完善的 Pi prompt templates；Skills 是当前优先建设和�
 
 - [`backend-patterns`](skills/backend-patterns/)：语言与框架无关的后端架构模式，通过问题、约束、不变量和权衡选择实现方案。
 - [`code-review`](skills/code-review/)：显式审查 Git diff，以证据门控发现，并将最终报告写入 `docs/reviews/`。
+- [`context7-docs`](skills/context7-docs/)：通过 ctx7 CLI 获取当前且版本明确的第三方文档和示例。
+- [`find-skills`](skills/find-skills/)：搜索生态中已有的可安装 agent Skills。
+- [`gh`](skills/gh/)：以结构化输出和受限环境回退策略执行 GitHub CLI 操作。
 - [`plan`](skills/plan/)：基于代码库证据生成文件、symbol、依赖和验证明确的实现计划，并写入 `docs/plans/`。
 - [`spec`](skills/spec/)：显式调用的规格工作流，将已探索的需求写成带 `REQ`、`INV`、`AC` 追踪关系的 `docs/specs/` 持久化契约。
 - [`systematic-debugging`](skills/systematic-debugging/)：model-invoked 的根因优先诊断流程，通过最小复现、因果追踪和单假设实验，将已证实根因交给 TDD。
 - [`tdd`](skills/tdd/)：行为优先、垂直切片的 RED → GREEN → REFACTOR 工作流。
+- [`terminal-ops`](skills/terminal-ops/)：以仓库证据为基础执行命令、修复与验证。
 - [`verification`](skills/verification/)：model-invoked 的证据门控验证流程，从仓库配置发现权威命令，区分变更、基线与环境失败，并输出 `READY`、`NOT READY` 或 `BLOCKED`。
+- [`writing-for-agents`](skills/writing-for-agents/)：编写和维护面向 agent 的 Skills 与项目指令。
 
 ### 待处理
 
@@ -65,41 +75,18 @@ Commands 是待完善的 Pi prompt templates；Skills 是当前优先建设和�
 
 每个 Skill 都位于独立目录中，并以 `SKILL.md` 作为入口。
 
-## 验证仓库内容
-
-项目包含 Skill 契约、Skill 交接和专项行为测试。它们会验证 frontmatter、调用模式、引用链接、上下游证据所有权、verdict 分离和 README 清单：
-
-```bash
-./tests/skills_test.sh
-./tests/skill_handoffs_test.sh
-./tests/spec_test.sh
-./tests/systematic_debugging_test.sh
-```
-
-也可以先执行语法检查：
-
-```bash
-bash -n tests/skills_test.sh tests/skill_handoffs_test.sh tests/spec_test.sh tests/systematic_debugging_test.sh
-```
-
 ## 目录结构
 
 ```text
 .
 ├── skills/                # 已处理并通过仓库验证的 Pi Skills
-├── processing/
-│   ├── commands/          # 待完善的 Pi prompt templates
-│   └── skills/            # 尚待处理的 Skill 草稿
-├── tests/
-│   ├── skills_manifest.tsv  # 已提升 Skill 及调用模式清单
-│   ├── skills_test.sh       # Skill 契约与引用校验
-│   ├── skill_handoffs_test.sh # Skill 交接契约校验
-│   ├── spec_test.sh         # 规格行为与产物契约校验
-│   └── systematic_debugging_test.sh # 系统化调试行为校验
+└── processing/
+    ├── commands/          # 待完善的 Pi prompt templates
+    └── skills/            # 尚待处理的 Skill 草稿
 ```
 
 ## 添加内容
 
 新增或待重构的 Skill 先放在 `processing/skills/<skill-name>/`。完成处理和验证后，将整个目录移入 `skills/`。新增 Command 时，在 `processing/commands/<command-name>.md` 中创建提示词模板；文件名将作为未来接入 Pi 时的斜杠命令名。
 
-完成修改后运行 `./tests/skills_test.sh`、`./tests/skill_handoffs_test.sh` 与对应专项行为测试（当前包括 `./tests/spec_test.sh` 和 `./tests/systematic_debugging_test.sh`）。不要把仓库内容复制到用户的 Pi 全局配置；分发机制将在完整 Skill 组合完成后单独设计。
+不要把仓库内容复制到用户的 Pi 全局配置；分发机制将在完整 Skill 组合完成后单独设计。
