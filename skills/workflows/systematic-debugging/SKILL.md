@@ -66,7 +66,7 @@ Do not stack speculative patches or reinterpret a changed failure signature as p
 
 Completion criterion: either the root cause and violated invariant are proven, or the investigation is explicitly blocked with the missing evidence or decision named.
 
-### 6. Hand the proven cause to TDD
+### 6. Hand the proven cause downstream
 
 Once the cause is proven, hand off:
 
@@ -76,35 +76,35 @@ Once the cause is proven, hand off:
 - expected RED signature before the fix;
 - confirmed and refuted hypotheses;
 - temporary instrumentation and required cleanup;
-- scope, prerequisites, worktree state, and residual uncertainty.
+- scope, prerequisites, worktree state, and residual uncertainty;
+- downstream implementation and verification owners, or `UNASSIGNED`.
 
 Remove temporary instrumentation before handoff, reversing only agent-owned changes. Pass a durable-observability proposal onward only when the repository needs the signal and its risks are explicit.
 
-When a runnable RED is possible, invoke the model-invoked `tdd` skill to create the regression RED, implement the smallest root-cause fix, and reach GREEN. Debugging owns diagnosis and temporary cleanup; TDD owns the regression test and production fix.
+When a runnable RED is possible, name `tdd` as the recommended implementation owner unless the caller already supplied another owner. When only an alternative evidence gate is possible, name the smallest enabling step or the approval required for an implementation path that preserves the observational gate for post-fix comparison.
 
-When only an alternative evidence gate is possible, do not claim TDD. Report the smallest enabling step or obtain explicit approval for an implementation path that preserves the observational gate for post-fix comparison.
+Return the complete handoff and stop before TDD, production edits, or verification. `systematic-debugging` owns diagnosis and temporary cleanup only; the named downstream actors own implementation and readiness.
 
 Completion criterion: the next implementation actor can reproduce the defect at a stable seam or use an explicitly approved alternative gate without rediscovering the causal path.
 
-### 7. Preserve downstream evidence
+### 7. Report the diagnosis
 
-After the fix completes, let `verification` decide whether debugging and implementation evidence is fresh for the pinned scope and final worktree. Verification runs missing required gates and owns `READY`, `NOT READY`, or `BLOCKED`. Code review separately decides whether the fix addresses the root cause without creating new risks; because `code-review` is user-invoked, report the review scope and verification artifact, then ask the user to invoke `/skill:code-review` when review is required.
-
-Report the investigation:
+Return:
 
 ```text
 Symptom and scope
 Red feedback loop
-Minimal reproduction
+Minimal reproduction or alternative gate
 Root cause and violated invariant
 Causal chain
 Hypotheses and experiments
-TDD handoff and cleanup
-Verification handoff
-Residual uncertainty
+Cleanup state
+Implementation owner or UNASSIGNED
+Verification owner or UNASSIGNED
+Residual uncertainty and blockers
 ```
 
-Completion criterion: every root-cause and completion claim points to reproducible evidence, while unproven conclusions and downstream gates remain explicit.
+Completion criterion: every root-cause claim points to reproducible evidence, the handoff names its next owner, and implementation plus readiness remain explicitly downstream.
 
 ## Guardrails
 

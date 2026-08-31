@@ -1,17 +1,14 @@
 ---
-description: 证据化复现并修复缺陷、构建、类型或运行时错误。
+description: 将旧 `/fix` 入口转交给已验证的 `fix` Skill。
 argument-hint: "<错误信息、失败命令或受影响路径>"
 ---
 
-# Fix Workflow
+# Fix Compatibility Pointer
 
-修复 `${ARGUMENTS:-当前可复现的失败}`。
+此旧模板不再维护修复流程，也不执行诊断或修改。请让用户改为显式调用：
 
-按顺序加载并遵循：
-1. `terminal-ops` — 检测项目工具并运行最窄复现命令，记录基线证据。
-2. `error-handling` — 分析错误传播、边界和恢复策略。
-3. 条件加载匹配技术栈的 Patterns Skills。
-4. `systematic-debugging` — 在修改前复现问题并证实根因。
-5. `verification` — 先运行聚焦检查，再运行适用的完整检查。
+```text
+/skill:fix ${ARGUMENTS:-<错误信息、失败命令或受影响路径>}
+```
 
-一次处理一个根因，做最小安全修改。相同错误连续三次未解决、修复引入更多错误、需要架构变更或新增依赖时停止并说明。输出根因、修复、前后证据、剩余问题和验证结果。
+`fix` Skill 是诊断、最小修复、验证与可选评审交接的唯一工作流来源。在用户显式调用前停止。

@@ -1,11 +1,14 @@
 ---
 name: tdd
 description: Behavior-first test-driven development with vertical red-green-refactor slices. Use when implementing a feature, implementing a bug fix after its cause is known, choosing an observable test seam, or reviewing whether tests specify behavior rather than implementation; use systematic-debugging first when an observed failure has an unproven cause.
+compatibility: Requires verification unless an upstream orchestrator owns the final verdict; also requires systematic-debugging when a defect's cause is unproven.
 ---
 
 # Test-Driven Development
 
 Drive one observable behavior at a time through a verified **red → green → refactor** cycle. Let repository evidence define the test runner, conventions, and required gates.
+
+Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. Stop with `BLOCKED` and name the missing Skill when neither route can consume the final evidence handoff.
 
 ## Workflow
 
@@ -19,7 +22,7 @@ Inspect the requirement, affected code, nearby tests, test configuration, and re
 - the independent source of truth for the expected result;
 - the smallest relevant test command.
 
-For a defect with an unproven cause, invoke `systematic-debugging` before proposing the fix. When its handoff exists, validate and reuse the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
+For a defect with an unproven cause, confirm that `systematic-debugging` is available, then invoke it with `tdd` named as the downstream implementation owner and retain any upstream final verification owner unchanged. Stop with `BLOCKED` and provide a relaunch command when the diagnosis dependency is missing. Resume TDD only after validating and reusing the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. When debugging returns a blocker, return it to the caller without production edits. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
 
 Ask the user about the seam only when repository evidence cannot resolve a consequential choice, such as changing a public interface or adding an expensive system test.
 
@@ -87,7 +90,9 @@ Record evidence produced after the final relevant code or test mutation:
 - relevant `git status --short` before and after those commands;
 - broader gates not run, required prerequisites, and residual risks.
 
-Let the model-invoked `verification` skill decide whether this same-state evidence is reusable and run every missing required gate. A stale, partial, differently scoped, or unverifiable result must be rerun; a reusable result must not be rerun merely to duplicate ownership.
+When an upstream orchestrator explicitly names itself as the final verification owner, return this complete evidence handoff and stop before invoking `verification`. The orchestrator must pass that ownership instruction when invoking TDD; do not infer it from surrounding context.
+
+Otherwise, let the model-invoked `verification` skill decide whether this same-state evidence is reusable and run every missing required gate. A stale, partial, differently scoped, or unverifiable result must be rerun; a reusable result must not be rerun merely to duplicate ownership.
 
 Report:
 

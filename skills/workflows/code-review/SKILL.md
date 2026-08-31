@@ -1,12 +1,15 @@
 ---
 name: code-review
 description: Evidence-first review of Git diffs that writes a final Markdown report to disk.
+compatibility: Requires the verification skill to be discoverable in the same Pi session.
 disable-model-invocation: true
 ---
 
 # Code Review
 
 Review the Git scope supplied after `/skill:code-review`. With no scope, review every worktree change relative to `HEAD`. Persist the final report; do not modify the reviewed code.
+
+Before starting, confirm that `verification` appears in the current session's available Skills. Stop with `BLOCKED`, name the missing Skill, and provide a relaunch command when it is unavailable.
 
 ## Workflow
 

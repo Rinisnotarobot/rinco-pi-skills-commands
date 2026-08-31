@@ -23,7 +23,7 @@ Extract:
 
 Validate a supplied specification before planning: it must be ready, internally traceable, and authoritative for desired behavior. Preserve its identifiers and meaning. Repository code is evidence of current behavior, not proof of desired product policy.
 
-Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. When unresolved product or policy truth affects any of those outcomes or acceptance meaning, stop and ask the user to invoke `/skill:spec`; `spec` is user-invoked and planning must not synthesize it silently. Only technical assumptions that do not alter desired behavior or safety may remain open in a persisted plan.
+Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. When unresolved product or policy truth affects any of those outcomes or acceptance meaning, confirm that `spec` is available, then stop and ask the user to invoke `/skill:spec`; `spec` is user-invoked and planning must not synthesize it silently. When it is unavailable, return `BLOCKED` with a relaunch command that adds it. Only technical assumptions that do not alter desired behavior or safety may remain open in a persisted plan.
 
 Completion criterion: the goal is testable, scope is bounded, every material product decision is resolved in the source specification or authoritative input, and remaining technical assumptions are explicit.
 
