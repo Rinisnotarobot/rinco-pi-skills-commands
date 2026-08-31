@@ -355,7 +355,7 @@ CI=true vitest run --coverage
 
 ## Related
 
-- Related installed skills: [react-patterns](../react-patterns/SKILL.md) and [tdd-workflow](../tdd-workflow/SKILL.md)
+- Related skills: [react-patterns](../react-patterns/SKILL.md) and [tdd](../../../skills/workflows/tdd/SKILL.md)
 - Agents: `react-reviewer` (reviews test quality during code review), `tdd-guide` (enforces TDD process)
 - Commands: `/react-test`, `/react-review`
 

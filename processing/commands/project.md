@@ -8,7 +8,7 @@ argument-hint: "[项目目标或待调查问题]"
 调查 `${ARGUMENTS:-当前项目的结构、约定和可用能力}`。
 
 按顺序加载并遵循：
-1. `codebase-onboarding` — 识别技术栈、入口、数据流、测试和项目规则。
+1. `codebase-onboarding` — 识别技术栈、入口、数据流和项目规则。
 2. `terminal-ops` — 用可复现命令收集证据，不凭印象推断。
 3. `find-skills` — 仅当现有 Skills 无法覆盖明确需求时搜索替代能力。
 

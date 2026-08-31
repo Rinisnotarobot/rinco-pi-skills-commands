@@ -1,7 +1,8 @@
 # Rinco Pi Skills & Commands — 项目规则
 
 本仓库维护面向 Pi coding agent 的 Skills 与斜杠命令。`processing/` 存放待处理内容，
-根目录 `skills/` 只保留已重构并验证的 Skills。完整 Skill 组合尚在建设中；在全部目标
+根目录 `skills/` 按功能域分类存放已重构并验证的 Skills（`workflows/`、`patterns/`、
+`tools/`、`meta/`，不得平铺在 `skills/` 根下）。完整 Skill 组合尚在建设中；在全部目标
 Skills 完成前，不维护安装、复制或发布机制。
 
 ## 构建新 Skill 必须先查参考源
@@ -10,8 +11,8 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 | 参考源 | 用途 |
 |---|---|
-| https://github.com/mattpocock/skills | 首选风格基准：小而可组合、user-invoked / model-invoked 分层、门控式流程（grill → spec → tdd → code-review）。同时参考其 `writing-for-agents` 与 ADR 写法。 |
-| https://github.com/affaan-m/ECC | 大规模 Skill 体系参考：plan → test → implement → review → verify → remember 的工程闭环、agents/skills/commands/rules 的职责切分、安装与分发约定。 |
+| https://github.com/mattpocock/skills | 首选风格基准：小而可组合、user-invoked / model-invoked 分层、门控式流程（grill → spec → plan → code-review）。同时参考其 `writing-for-agents` 与 ADR 写法。 |
+| https://github.com/affaan-m/ECC | 大规模 Skill 体系参考：plan → implement → review → verify → remember 的工程闭环、agents/skills/commands/rules 的职责切分、安装与分发约定。 |
 | `find-skills` 技能（`npx skills find`、https://skills.sh/） | 检索生态中是否已有成熟实现，并按安装量/来源信誉/仓库星数筛选。 |
 
 调研要求：
@@ -24,12 +25,13 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 ## 新 Skill 的产出规则
 
-1. **先在 `processing/skills/<name>/` 起草**，验证通过后才移入根目录 `skills/`。
+1. **先在 `processing/skills/<name>/` 起草**，验证通过后才移入根目录 `skills/` 下匹配
+   功能的分类子目录（`workflows/`、`patterns/`、`tools/`、`meta/`）。
 2. 结构：`SKILL.md` + 必要的引用文件；frontmatter 必须有 `name` 与写清触发条件的
    `description`（"use when …"），保持渐进式披露，细节放引用文件。
 3. 明确该 Skill 是 user-invoked（编排、需显式调用）还是 model-invoked（可被自动选中的
    可复用纪律），并在描述中体现；user-invoked 不应调用另一个 user-invoked。
-4. 流程型 Skill 要有可验证的门控（失败测试、命令输出、评审结论），而不是只有建议性文字。
+4. 流程型 Skill 要有可验证的门控（命令输出、评审结论、可复现证据），而不是只有建议性文字。
 5. 写作遵循全局 `writing-for-agents` 技能：祈使句、无套话、路径与命令写全。
 6. 在提交说明或 PR 描述中列出实际参考的来源 URL；说明借用了哪些模式、做了哪些改动。
 

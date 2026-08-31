@@ -1,92 +1,109 @@
 # Rinco Pi Skills & Commands
 
-Rinco Pi Skills & Commands 是一套面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程实践技能与斜杠命令集合。仓库使用 `processing/` 保存待处理内容，根目录 `skills/` 只保留已完成重构和验证的 Skills。
+一组面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程 Skills 与斜杠命令草稿。仓库以“小而可组合、按需加载、证据门控”为设计原则：稳定内容进入 `skills/`，仍在重构的内容留在 `processing/`。
 
-## 当前状态
+> [!IMPORTANT]
+> 项目仍在建设中。目前没有统一的安装、升级或发布机制，也不会自动修改用户的 Pi 全局配置。`skills/` 表示已通过仓库内审查，不等同于已发布的软件包。
 
-完整 Skill 组合仍在建设中。仓库暂不提供安装、复制或发布脚本，也不会修改用户的 Pi 全局配置。等路线图中的目标 Skills 全部完成并通过组合验证后，再统一设计可审查、可回滚的分发机制。
+## 快速试用
 
-## 如何使用
+从仓库根目录直接让 Pi 加载一个已验证的 Skill，无需复制文件：
 
-Commands 是待完善的 Pi prompt templates；Skills 是当前优先建设和验证的工作流。以下名称描述预期调用界面，不代表仓库当前提供自动安装：
-
-```text
-/project
-/requirements
-/develop
-/review
-/ship
+```bash
+pi --no-skills --skill skills/workflows/readme
 ```
 
-在手动接入 Pi 或未来分发机制完成后，model-invoked Skills 可由 Pi 按任务描述加载，也可以显式调用：
+进入 Pi 后显式调用：
 
 ```text
-/skill:backend-patterns
-/skill:code-review
-/skill:context7-docs
-/skill:find-skills
-/skill:gh
-/skill:plan
-/skill:spec
-/skill:systematic-debugging
-/skill:tdd
-/skill:terminal-ops
-/skill:verification
-/skill:writing-for-agents
+/skill:readme
 ```
 
-`spec` 与 `code-review` 是 user-invoked Skills，仅在显式调用时执行；`systematic-debugging` 与 `verification` 是 model-invoked Skills，前者在故障原因未证实时建立根因证据链，后者在完成重要改动、声称完成或准备评审与发布时执行最终门禁。
+`--skill` 是 Pi 提供的临时加载参数，`--no-skills` 可避免本机或项目中已有的同名 Skill 产生冲突。其他 Skill 也可替换为下表中的目录；是否自动触发由各自的 frontmatter 决定。
 
-## 包含哪些 Commands
+## 已验证的 Skills
 
-| Command | 用途 |
+### 工程工作流
+
+| Skill | 调用方式 | 用途 |
+|---|---|---|
+| [`plan`](skills/workflows/plan/) | 自动或显式 | 基于代码库证据生成包含文件、symbol、依赖和验证步骤的实现计划。 |
+| [`readme`](skills/workflows/readme/) | 自动或显式 | 创建、重写、审查或更新 README，并验证关键声明、命令和本地链接。 |
+| [`spec`](skills/workflows/spec/) | 仅显式 | 将已探索的产品或工程变更写成可追踪、可验收的持久规格。 |
+| [`tdd`](skills/workflows/tdd/) | 自动或显式 | 以行为优先的垂直切片执行 RED → GREEN → REFACTOR。 |
+| [`systematic-debugging`](skills/workflows/systematic-debugging/) | 自动或显式 | 在修复前通过最小复现、因果追踪和单假设实验确认根因。 |
+| [`verification`](skills/workflows/verification/) | 自动或显式 | 从仓库配置发现并执行质量门禁，输出基于新鲜证据的验证结论。 |
+| [`code-review`](skills/workflows/code-review/) | 仅显式 | 审查 Git diff，并将证据化报告写入 `docs/reviews/`。 |
+
+### 架构模式
+
+| Skill | 调用方式 | 用途 |
+|---|---|---|
+| [`backend-patterns`](skills/patterns/backend-patterns/) | 自动或显式 | 根据约束和权衡选择服务边界、数据一致性、消息、缓存、韧性、安全与可观测性模式。 |
+
+### 工具与集成
+
+| Skill | 调用方式 | 用途 |
+|---|---|---|
+| [`context7-docs`](skills/tools/context7-docs/) | 自动或显式 | 通过 ctx7 CLI 获取当前且版本明确的第三方文档和示例。 |
+| [`find-skills`](skills/tools/find-skills/) | 自动或显式 | 搜索并评估生态中已有的可安装 Skills。 |
+| [`gh`](skills/tools/gh/) | 自动或显式 | 以结构化输出和受限环境回退策略执行 GitHub CLI 操作。 |
+| [`terminal-ops`](skills/tools/terminal-ops/) | 自动或显式 | 以真实命令输出为依据检查、修改和验证仓库。 |
+
+### 元技能
+
+| Skill | 调用方式 | 用途 |
+|---|---|---|
+| [`writing-for-agents`](skills/meta/writing-for-agents/) | 自动或显式 | 编写和维护 Skills、`AGENTS.md`、`CLAUDE.md` 等 agent 消费的文档。 |
+
+“仅显式”表示 frontmatter 设置了 `disable-model-invocation: true`；其余 Skill 既可由 Pi 按描述自动加载，也可通过 `/skill:<name>` 调用。
+
+## Commands 与待处理内容
+
+`processing/commands/` 中的文件是待完善的 Pi prompt templates，目前不是已发布命令：
+
+| Command | 目标 |
 |---|---|
-| `/project` | 认识当前项目，建立架构地图并选择所需 Skills |
-| `/requirements` | 兼容入口；提示改用显式调用的 `/skill:spec` |
-| `/plan` | 基于需求和代码库证据生成可执行计划，并落盘到 `docs/plans/` |
-| `/develop` | 按 TDD、技术栈模式和安全要求实现功能 |
-| `/fix` | 证据化复现并修复构建、测试或运行时问题 |
-| `/review` | 审查正确性、安全性、架构和测试覆盖，并落盘到 `docs/reviews/` |
-| `/ship` | 完成验证、提交、PR、CI 和部署交付准备 |
-| `/maintain` | 维护文档、仓库卫生、依赖和部署配置 |
+| `/project` | 建立代码库地图并选择任务所需 Skills。 |
+| `/requirements` | 将需求入口转交给规格工作流。 |
+| `/plan` | 基于需求与代码库证据生成实现计划。 |
+| `/develop` | 按计划、技术栈纪律和验证循环实现变更。 |
+| `/fix` | 证据化复现、诊断并修复失败。 |
+| `/review` | 审查本地变更或指定 diff 范围。 |
+| `/ship` | 准备提交、PR、CI 与部署交付。 |
+| `/maintain` | 维护文档、仓库卫生、依赖和部署配置。 |
 
-每个命令的完整定义位于 [`processing/commands/`](processing/commands/) 目录。
+尚未完成重构的 Skills 位于 [`processing/skills/`](processing/skills/)。它们可能包含重复、过时或尚未验证的规则，不应与 `skills/` 中的已验证实现等同使用。
 
-## 包含哪些 Skills
-
-### 已处理并验证
-
-- [`backend-patterns`](skills/backend-patterns/)：语言与框架无关的后端架构模式，通过问题、约束、不变量和权衡选择实现方案。
-- [`code-review`](skills/code-review/)：显式审查 Git diff，以证据门控发现，并将最终报告写入 `docs/reviews/`。
-- [`context7-docs`](skills/context7-docs/)：通过 ctx7 CLI 获取当前且版本明确的第三方文档和示例。
-- [`find-skills`](skills/find-skills/)：搜索生态中已有的可安装 agent Skills。
-- [`gh`](skills/gh/)：以结构化输出和受限环境回退策略执行 GitHub CLI 操作。
-- [`plan`](skills/plan/)：基于代码库证据生成文件、symbol、依赖和验证明确的实现计划，并写入 `docs/plans/`。
-- [`spec`](skills/spec/)：显式调用的规格工作流，将已探索的需求写成带 `REQ`、`INV`、`AC` 追踪关系的 `docs/specs/` 持久化契约。
-- [`systematic-debugging`](skills/systematic-debugging/)：model-invoked 的根因优先诊断流程，通过最小复现、因果追踪和单假设实验，将已证实根因交给 TDD。
-- [`tdd`](skills/tdd/)：行为优先、垂直切片的 RED → GREEN → REFACTOR 工作流。
-- [`terminal-ops`](skills/terminal-ops/)：以仓库证据为基础执行命令、修复与验证。
-- [`verification`](skills/verification/)：model-invoked 的证据门控验证流程，从仓库配置发现权威命令，区分变更、基线与环境失败，并输出 `READY`、`NOT READY` 或 `BLOCKED`。
-- [`writing-for-agents`](skills/writing-for-agents/)：编写和维护面向 agent 的 Skills 与项目指令。
-
-### 待处理
-
-其余 Skills 保存在 [`processing/skills/`](processing/skills/) 中。完成重构和验证后，将对应目录移入 `skills/`；在完整组合完成前，提升仅表示仓库内验证通过，不表示已安装或发布。
-
-每个 Skill 都位于独立目录中，并以 `SKILL.md` 作为入口。
-
-## 目录结构
+## 仓库结构
 
 ```text
 .
-├── skills/                # 已处理并通过仓库验证的 Pi Skills
+├── AGENTS.md               # 本仓库的 agent 编写与校验规则
+├── README.md
+├── docs/
+│   └── plans/              # 路线图与实现计划
+├── skills/                 # 已重构并通过仓库验证的 Skills
+│   ├── workflows/          # plan、readme、spec、tdd、debug、verification、review
+│   ├── patterns/           # 可复用架构模式
+│   ├── tools/              # CLI 与外部文档工具纪律
+│   └── meta/               # 编写 agent 文档的元技能
 └── processing/
-    ├── commands/          # 待完善的 Pi prompt templates
-    └── skills/            # 尚待处理的 Skill 草稿
+    ├── commands/           # 尚未发布的命令模板
+    └── skills/             # 待调研、重构或验证的 Skill 草稿
 ```
 
-## 添加内容
+每个 Skill 以 `SKILL.md` 为入口，并可通过 `references/`、`scripts/` 或 `assets/` 渐进披露细节。
 
-新增或待重构的 Skill 先放在 `processing/skills/<skill-name>/`。完成处理和验证后，将整个目录移入 `skills/`。新增 Command 时，在 `processing/commands/<command-name>.md` 中创建提示词模板；文件名将作为未来接入 Pi 时的斜杠命令名。
+## 如何贡献或提升 Skill
 
-不要把仓库内容复制到用户的 Pi 全局配置；分发机制将在完整 Skill 组合完成后单独设计。
+先阅读 [`AGENTS.md`](AGENTS.md)；它是本仓库的权威维护规则。基本流程是：
+
+1. 调研指定的一手参考源，并用 `npx skills find <query>` 检查生态中是否已有成熟实现。
+2. 在 `processing/skills/<name>/` 创建或重构草稿。
+3. 明确 user-invoked 或 model-invoked 契约，并为流程步骤设置可验证门控。
+4. 检查 frontmatter、目录名、本地引用和手工场景。
+5. 验证通过后移入 `skills/workflows/`、`skills/patterns/`、`skills/tools/` 或 `skills/meta/`。
+6. 同步更新本 README；在提交或 PR 描述中列出实际使用的来源 URL 与本地改动。
+
+当前目标组合与剩余工作记录在 [`docs/plans/2026-08-28-skill-roadmap.md`](docs/plans/2026-08-28-skill-roadmap.md)。在路线图完成并通过组合验证前，仓库不维护安装、复制或发布工具。
