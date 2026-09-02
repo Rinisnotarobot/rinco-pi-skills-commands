@@ -53,6 +53,7 @@ pi --no-skills \
 | Skill | 调用方式 | 用途 |
 |---|---|---|
 | [`backend-patterns`](skills/patterns/backend-patterns/) | 自动或显式 | 根据约束和权衡选择服务边界、数据一致性、消息、缓存、韧性、安全与可观测性模式。 |
+| [`coding-standards`](skills/patterns/coding-standards/) | 自动或显式 | 按仓库证据应用语言无关的命名、可读性、控制流、重复、变更与错误处理基线。 |
 
 ### 工具与集成
 
