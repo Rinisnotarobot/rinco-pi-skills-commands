@@ -17,11 +17,11 @@ Dropped targets (not carried forward):
 
 ## Current State
 
-| Skill | Invocation | Existing sources |
+| Skill | Invocation | Current state |
 |---|---|---|
-| `security-review` | model-invoked | `processing/skills/security-review/` — large cookbook; must be rewritten around decisions and gates |
-| `resilience` | model-invoked | `processing/skills/error-handling/` plus the backend resilience reference |
-| `frontend-patterns` | model-invoked | `processing/skills/frontend-patterns/` and `processing/skills/react-patterns/` |
+| `security-review` | model-invoked | Promoted at `skills/patterns/security-review/`; evidence-backed trust-boundary review is authoritative. |
+| `resilience` | model-invoked | Promoted at `skills/patterns/resilience/`; absorbed the former `error-handling` retry material and backend resilience policy. |
+| `frontend-patterns` | model-invoked | Pending in `processing/skills/frontend-patterns/` and `processing/skills/react-patterns/`. |
 
 ## Responsibility
 
@@ -42,6 +42,8 @@ Dropped targets (not carried forward):
 - **Blocked by:** none.
 
 ### 2. Add `resilience`
+
+**Status:** completed; promoted to `skills/patterns/resilience/`, routed from `backend-patterns`, wired into verification evidence handoffs and launch profiles, and retired the superseded `error-handling` draft.
 
 - **Delivers:** design and review gates for deadlines, cancellation, retries, idempotency, partial failure, backpressure, and recovery.
 - **Changes:** create `processing/skills/resilience/`, drawing from `error-handling` and the backend resilience reference; promote it, update README, then retire `error-handling` after mapping unique behavior.

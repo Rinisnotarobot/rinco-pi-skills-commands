@@ -1,6 +1,6 @@
 ---
 name: backend-patterns
-description: Language- and framework-neutral backend architecture patterns. Use when designing or reviewing service boundaries, data consistency, distributed workflows, messaging, caching, resilience, authorization, or observability; choose patterns from explicit constraints and trade-offs, then map them to the project's existing stack.
+description: Language- and framework-neutral backend architecture patterns. Use when designing or reviewing service boundaries, data consistency, distributed workflows, messaging, caching, authorization, or observability; choose patterns from explicit constraints and trade-offs, route focused failure policy to resilience, then map decisions to the project's existing stack.
 ---
 
 # Backend Patterns
@@ -41,8 +41,9 @@ Read only the references needed for the active branch:
 |---|---|
 | Module boundaries, layering, dependency direction | [references/boundaries.md](references/boundaries.md) |
 | Transactions, concurrency, distributed consistency, data access | [references/consistency-and-data.md](references/consistency-and-data.md) |
-| Timeouts, retries, isolation, queues, delivery semantics | [references/messaging-and-resilience.md](references/messaging-and-resilience.md) |
-| Caching, batching, pagination, load control | [references/caching-and-performance.md](references/caching-and-performance.md) |
+| Remote, asynchronous, partial-failure, or capacity policy | Invoke [resilience](../resilience/SKILL.md); consume its policy and evidence requirements |
+| Queues, delivery semantics, publish/subscribe | [references/messaging.md](references/messaging.md) |
+| Caching, batching, pagination, throughput modeling | [references/caching-and-performance.md](references/caching-and-performance.md) |
 | Authentication, authorization, auditability, telemetry | [references/security-and-observability.md](references/security-and-observability.md) |
 | Node.js/TypeScript implementation choices | [references/node-typescript.md](references/node-typescript.md) |
 
@@ -76,8 +77,8 @@ Match verification to the risk:
 
 - concurrency properties: race tests plus database constraints;
 - delivery semantics: duplicate, delayed, reordered, and poison messages;
-- resilience: timeout and dependency-failure tests;
-- consistency: partial-failure and recovery tests;
+- resilience: consume the focused failure scenarios and observable requirements from `resilience`; do not derive a second failure policy;
+- consistency: concurrency and storage-invariant tests plus the partial-failure and recovery requirements consumed from `resilience`;
 - security: deny-by-default authorization tests and audit evidence;
 - performance: representative load, latency percentiles, and saturation signals.
 
@@ -87,7 +88,7 @@ Report what was proved, what remains assumed, and the operational signals needed
 
 - Treat transaction script, service layer, vertical slice, ports and adapters, and event-driven designs as alternatives shaped by context—not maturity levels.
 - Add a repository boundary when it protects domain code from meaningful persistence complexity or supports multiple callers/adapters. Direct data access is valid for a simple local operation.
-- Retry only transient failures when the operation is idempotent or protected by an idempotency mechanism. Bound retries by the caller's deadline and a retry budget.
+- Route deadlines, retries, idempotency, overload, partial failure, and recovery to `resilience`; this Skill only maps the resulting policy into the broader backend architecture.
 - A cache is a replicated view with a freshness policy. Define invalidation, ownership, fallback behavior, and stampede control before adding it.
 - At-least-once delivery requires duplicate-safe consumers. Ordering is scoped to the guarantees of the chosen broker and partition key.
 - Cross-service consistency requires explicit compensation, reconciliation, or durable state transfer; local database transactions do not cross remote calls.

@@ -68,14 +68,10 @@ Precompute expensive read shapes when rebuild/update lag is acceptable. Define r
 
 Trade CPU for network/storage reduction. Measure payload distribution and avoid compressing already-compressed or very small data.
 
-## Load control
+## Capacity boundary
 
-- Bound concurrency at each scarce dependency.
-- Bound queues by count, bytes, and/or age.
-- Apply backpressure or admission control before saturation.
-- Reserve capacity for health, recovery, or high-priority work when needed.
-- Prefer graceful degradation with explicit semantics over silent partial correctness.
+Use the performance model to identify the constrained resource and capacity target, then invoke [`resilience`](../../resilience/SKILL.md) to own concurrency, bounded queueing, backpressure, admission, isolation, degradation, and recovery policy. Consume that policy here only to map it into caching or data-access architecture.
 
 ## Verification
 
-Compare the same representative workload before and after. Measure percentiles, throughput, resource saturation, cache hit ratio, load amplification, freshness age, eviction, and failure behavior. A faster happy path that worsens overload recovery is not a complete improvement.
+Compare the same representative workload before and after. Measure percentiles, throughput, resource saturation, cache hit ratio, load amplification, freshness age, and eviction. Consume overload and recovery evidence requirements from `resilience`; a faster happy path without that evidence is not a complete improvement.

@@ -20,36 +20,17 @@ Represent expected failures as typed outcomes or classified errors according to 
 
 For HTTP, distinguish malformed input, failed authentication, denied authorization, missing resources, conflicts, rate limits, and unexpected faults. Do not assume one status code model applies to queues or scheduled jobs.
 
-## Retry shape
+## Resilience mapping
 
-A reusable retry helper needs:
+Invoke [`resilience`](../../resilience/SKILL.md) before implementing retries, idempotency, deadlines, cancellation, or concurrency controls. Map its selected policy to the project's existing Node.js primitives without changing budgets or adding another retry owner:
 
-```typescript
-interface RetryPolicy {
-  maxAttempts: number
-  baseDelayMs: number
-  maxDelayMs: number
-  shouldRetry(error: unknown): boolean
-  remainingTimeMs(): number
-}
-```
+- carry remaining deadlines and cancellation through `AbortSignal` where the called API supports it;
+- expose aggregate attempt count, elapsed time, and final outcome through the existing telemetry stack;
+- prefer an established project dependency when it can enforce the selected policy;
+- use database uniqueness or version constraints when the selected invariant is database-owned;
+- use process-local promises or mutexes only for explicitly process-local coordination.
 
-The loop should:
-
-1. count total attempts unambiguously;
-2. classify the error before retrying;
-3. stop when the remaining deadline cannot accommodate another attempt;
-4. use capped exponential backoff with jitter;
-5. propagate cancellation through `AbortSignal` where the called API supports it;
-6. expose attempt count and final outcome to telemetry.
-
-Prefer a proven project dependency when one already exists. Avoid nested retries in framework, client, and application layers.
-
-## Idempotency and concurrency
-
-Use database uniqueness/version constraints as the final guard when the invariant lives in the database. A process-local `Map`, promise registry, or mutex coordinates only one process.
-
-For an idempotency record, model states such as `in_progress`, `succeeded`, and recoverable failure only when the workflow requires them. Atomically bind the key to a request fingerprint and result/effect. Define concurrent-request behavior and retention.
+The resilience policy, not this language map, decides retry classification, attempt limits, idempotency states, concurrent duplicate behavior, retention, and recovery.
 
 ## Transactions and outbox
 
@@ -87,8 +68,7 @@ Use the project's runner and integration infrastructure. Add focused tests for:
 
 - rejected runtime input despite compile-time types;
 - concurrent writes and uniqueness/version conflicts;
-- cancellation and deadline exhaustion;
-- retry classification and maximum total attempts;
+- the cancellation, deadline, retry, and idempotency scenarios required by the consumed `resilience` assessment;
 - duplicate message delivery and worker termination;
 - trusted-proxy assumptions;
 - sensitive-data redaction.

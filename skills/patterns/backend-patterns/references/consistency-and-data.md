@@ -1,6 +1,6 @@
 # Consistency and Data Patterns
 
-Use this reference for atomicity, concurrent updates, duplicate effects, cross-system workflows, query shape, and read/write model decisions.
+Use this reference for structural data mechanisms: atomicity, concurrent updates, duplicate-effect storage, cross-system workflows, query shape, and read/write models. Invoke [`resilience`](../../resilience/SKILL.md) to decide failure classification, budgets, retry or replay safety, and recovery policy; map that policy to the mechanisms here.
 
 ## Local consistency
 
@@ -38,7 +38,7 @@ Use a storage-enforced uniqueness constraint for invariants such as one reservat
 
 ### Idempotency Key
 
-**Context:** requests, webhooks, or messages can be delivered more than once.
+**Context:** the consumed resilience policy requires one effect across repeated requests, webhooks, or messages.
 
 **Shape:** bind a stable operation key to its state/result and reject or replay duplicates.
 
@@ -76,15 +76,15 @@ Publication is normally at least once, so consumers still need deduplication. Mo
 
 ### Saga
 
-**Context:** a workflow spans independently transactional services and cannot use one atomic transaction.
+**Context:** the consumed resilience policy requires durable compensation or forward recovery across independently transactional services.
 
-**Shape:** each step commits locally; failures trigger explicit compensating or forward-recovery actions. Coordination may be orchestrated or event-driven.
+**Shape:** each step commits locally; the resilience policy defines the compensating or forward-recovery actions. Coordination may be orchestrated or event-driven.
 
 **Costs/failure modes:** temporary inconsistency, compensation failure, semantic undo that differs from rollback, and difficult observability. Persist workflow state and make every step repeatable.
 
 ### Reconciliation
 
-Use periodic comparison and repair when perfect synchronous coordination is too expensive or impossible. Define the authority, detection delay, repair policy, and audit trail.
+Use periodic comparison and repair when selected by the resilience policy because synchronous coordination is too expensive or impossible. Implement its declared authority, detection bound, repair behavior, and audit trail.
 
 ## Read and query patterns
 
@@ -112,6 +112,5 @@ Use a stable, unique ordering key when datasets change during traversal or deep 
 
 - Exercise concurrent writers rather than only sequential unit tests.
 - Back invariants with storage constraints where available.
-- Inject failure between each durable step.
-- Test duplicate, delayed, and reordered delivery.
+- Run the duplicate, delayed, reordered, partial-failure, and recovery scenarios required by the consumed resilience assessment.
 - Measure reconciliation lag and outbox/inbox growth.

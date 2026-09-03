@@ -10,6 +10,7 @@ launch_pi \
   skills/workflows/verification \
   skills/workflows/code-review \
   skills/patterns/coding-standards \
+  skills/patterns/resilience \
   skills/tools/terminal-ops \
   skills/workflows/session-handoff \
   "$@"

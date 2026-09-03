@@ -82,6 +82,7 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 | [`coding-standards`](skills/patterns/coding-standards/) | 基于仓库证据应用语言无关的代码质量基线。 |
 | [`domain-modeling`](skills/patterns/domain-modeling/) | 维护领域词汇，并只为难逆转且存在真实权衡的决策创建 ADR。 |
 | [`living-docs-governance`](skills/patterns/living-docs-governance/) | 为长期文档分派 Constitution、Map、Status、History 角色与新鲜度规则。 |
+| [`resilience`](skills/patterns/resilience/) | 设计并审查 deadline、重试、幂等、过载、局部失败和恢复策略及其证据要求。 |
 | [`security-review`](skills/patterns/security-review/) | 深查变更触及的信任边界，只报告有完整利用路径的安全发现。 |
 
 ### Tools & Meta

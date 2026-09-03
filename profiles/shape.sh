@@ -7,6 +7,7 @@ launch_pi \
   skills/workflows/grilling \
   skills/patterns/domain-modeling \
   skills/patterns/codebase-design \
+  skills/patterns/resilience \
   skills/workflows/spec \
   skills/workflows/plan \
   skills/tools/terminal-ops \

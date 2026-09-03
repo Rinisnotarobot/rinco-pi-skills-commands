@@ -8,7 +8,8 @@ Consume upstream evidence without trusting stale claims or rerunning valid work.
 |---|---|---|
 | `spec` | desired behavior, authority, `REQ`/`INV`/`AC` identifiers, invariants, and evidence intent | repository implementation strategy or execution results |
 | `plan` | acceptance claims, source-ID mapping, required/optional methods, authority, scope, and prerequisites | execution results |
-| `backend-patterns` | invariant, failure modes, and risk-specific proving methods | repository gate verdict |
+| `backend-patterns` | backend architecture context, integration constraints, and invariant | focused resilience policy or repository gate verdict |
+| `resilience` | failure classification, budgets, resilience policy, enforcement owners, and failure-evidence requirements | executable plan contract, execution results, or repository gate verdict |
 | `systematic-debugging` | symptom, reproduction, causal chain, violated invariant, experiments, and diagnosis blockers | regression fix or readiness verdict |
 | `tdd` | witnessed RED/GREEN cycle and affected tests after the final mutation | broad final gate selection or readiness verdict |
 | `code-review` | diff findings and review verdict | verification gate verdict |
@@ -33,7 +34,7 @@ Evidence from another session or agent is a lead, not proof, unless an authorita
 ## Handoff record
 
 ```text
-Producer: spec | plan | backend-patterns | systematic-debugging | tdd | code-review | CI | user
+Producer: spec | plan | backend-patterns | resilience | systematic-debugging | tdd | code-review | CI | user
 Source IDs: <REQ/INV/AC identifiers or none>
 Claim: <observable statement>
 Scope: <comparison point, package/service, configuration>
