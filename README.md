@@ -77,6 +77,7 @@ pi --no-skills \
 | [`coding-standards`](skills/patterns/coding-standards/) | 自动或显式 | 按仓库证据应用语言无关的命名、可读性、控制流、重复、变更与错误处理基线。 |
 | [`domain-modeling`](skills/patterns/domain-modeling/) | 自动或显式 | 建立并锐化项目领域词汇（纯词汇表 CONTEXT.md），只为难逆转、缺上下文会意外且真实权衡的决策创建 ADR；变更范围受限并随 handoff 报告。 |
 | [`living-docs-governance`](skills/patterns/living-docs-governance/) | 自动或显式 | 为既有文档分派 Constitution/Map/Status/History 四角色，定义产物寿命与新鲜度规则，治理项目入口的瘦读取序列与删除区。 |
+| [`security-review`](skills/patterns/security-review/) | 自动或显式 | 深度审查变更触及的信任边界，只报有证据支撑的利用路径（源→汇→路径 + 置信度门），独立于 code-review 的一般性结论。 |
 
 ### 工具与集成
 
