@@ -1,6 +1,10 @@
 ---
 name: terminal-ops
 description: Evidence-first repository execution workflow. Use when running commands, inspecting repository state, debugging failures, making narrow fixes, or verifying changes.
+metadata:
+  origin: adapted
+  upstream: https://github.com/affaan-m/ecc
+  note: Localized subset of the ECC terminal-ops skill; ECC-native Skill Stack references removed.
 ---
 
 # Terminal Ops

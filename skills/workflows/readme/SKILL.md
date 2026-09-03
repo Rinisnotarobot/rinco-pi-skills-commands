@@ -3,6 +3,9 @@ name: readme
 description: Create, rewrite, audit, or update repository and GitHub profile README files. Use when a README must be grounded in the current project, when setup or usage documentation is stale, or when the repository landing page needs a clearer audience path.
 metadata:
   version: 4.0.0
+  origin: in-house
+  upstream: none
+  note: Original synthesis; patterns drawn from mattpocock/skills, affaan-m/ECC, awesome-copilot create-readme, and softaworks crafting-effective-readmes (sources listed in commit 6947d5d).
 ---
 
 # README

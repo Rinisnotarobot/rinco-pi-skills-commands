@@ -3,6 +3,10 @@ name: context7-docs
 description: Fetch current, version-aware documentation and examples with the ctx7 CLI. Use when a library/framework/SDK/CLI API, configuration, migration, or library-specific behavior may depend on current official docs; skip for general programming and repository-local logic.
 license: MIT
 compatibility: Requires the ctx7 CLI and network access.
+metadata:
+  origin: in-house
+  upstream: none
+  note: Written for the ctx7 CLI; distinct from the curl-based intellectronica/agent-skills@context7.
 ---
 
 # Context7 CLI documentation lookup
