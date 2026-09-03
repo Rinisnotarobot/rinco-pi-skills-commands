@@ -126,6 +126,7 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 │   └── meta/        # agent 文档元技能
 ├── processing/      # 待调研、重构或验证的草稿
 ├── profiles/        # shape / build / fix / review 启动器
+├── scripts/         # 仓库结构校验（validate.sh）
 ├── docs/
 │   ├── adr/         # 架构决策
 │   ├── plans/       # 实施与组合计划
@@ -147,4 +148,4 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 2. 在 `processing/skills/<name>/` 起草，明确调用契约和可验证门控。
 3. 检查 frontmatter、目录名、本地引用，以及正向、非触发、阻塞和干净场景。
 4. 验证后移入 `skills/workflows/`、`skills/patterns/`、`skills/tools/` 或 `skills/meta/`。
-5. 同步更新本 README，并在提交或 PR 中列出实际参考的来源 URL。
+5. 同步更新本 README，运行 `scripts/validate.sh` 确认全绿，并在提交或 PR 中列出实际参考的来源 URL。

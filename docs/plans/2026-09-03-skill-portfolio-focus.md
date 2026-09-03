@@ -67,7 +67,7 @@ For every remaining Skill:
 4. exercise one positive trigger, one non-trigger, one blocked scenario, and one clean scenario;
 5. promote the directory to the matching category under `skills/` (`workflows/`, `patterns/`, `tools/`, or `meta/`);
 6. update README and remove superseded drafts only after unique material is accounted for;
-7. run `git diff --check` and inspect `git status --short`.
+7. run `scripts/validate.sh` until every gate is green, then `git diff --check` and inspect `git status --short`.
 
 ## Rollback
 
