@@ -15,6 +15,8 @@ A security-review verdict is its own report. It consumes verification state as e
 
 From the diff, identify where trust levels change: new endpoints or routes, authentication or authorization flows, input parsing, file uploads, secret or credential handling, inter-service calls, dependency or build changes, configuration exposure.
 
+Read [Supply Chain and Build Surfaces](references/supply-chain.md) when the diff changes dependencies, install-time execution, CI workflows, or artifact delivery — those boundaries change what runs, not just how, and carry their own evidence rules.
+
 A change that touches no trust boundary is out of scope: say so and stop — do not pad the report with checklist findings.
 
 Completion criterion: every trust boundary the diff crosses is named, or the review is explicitly out of scope.
