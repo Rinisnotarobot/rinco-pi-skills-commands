@@ -63,6 +63,7 @@ pi --no-skills \
 | [`codebase-design`](skills/patterns/codebase-design/) | 自动或显式 | 提供 module、interface、depth、seam、adapter、leverage、locality 的共享模块设计词汇与深模块评估原则；纯参考层，不自主重构。 |
 | [`coding-standards`](skills/patterns/coding-standards/) | 自动或显式 | 按仓库证据应用语言无关的命名、可读性、控制流、重复、变更与错误处理基线。 |
 | [`domain-modeling`](skills/patterns/domain-modeling/) | 自动或显式 | 建立并锐化项目领域词汇（纯词汇表 CONTEXT.md），只为难逆转、缺上下文会意外且真实权衡的决策创建 ADR；变更范围受限并随 handoff 报告。 |
+| [`living-docs-governance`](skills/patterns/living-docs-governance/) | 自动或显式 | 为既有文档分派 Constitution/Map/Status/History 四角色，定义产物寿命与新鲜度规则，治理项目入口的瘦读取序列与删除区。 |
 
 ### 工具与集成
 
@@ -165,7 +166,7 @@ Prerequisites and limits: <环境要求与不能证明的内容>
 │   └── plans/              # 路线图与实现计划
 ├── skills/                 # 已重构并通过仓库验证的 Skills
 │   ├── workflows/          # 端到端工程工作流
-│   ├── patterns/           # 可复用架构模式与设计语言参考
+│   ├── patterns/           # 可复用参考纪律：架构模式、设计语言、文档治理
 │   ├── tools/              # CLI 与外部文档工具纪律
 │   └── meta/               # 编写 agent 文档的元技能
 └── processing/
