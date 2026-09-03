@@ -151,7 +151,7 @@ Include this section only when the change involves persistent data, a public con
 ## Non-Goals
 ```
 
-The `Requirement Traceability` section maps every originating `REQ`, `INV`, and `AC` identifier to implementation slices and final evidence. The `Final Verification` section is the durable verification contract. Preserve each item's claim, scope, requirement level, owner/stage, method, authority, and expected evidence so downstream Skills do not have to rediscover or reinterpret it.
+The `Requirement Traceability` section maps every originating `REQ`, `INV`, and `AC` identifier to implementation slices and final evidence. The `Final Verification` section is the durable verification contract. Preserve each item's claim, scope, requirement level, owner/stage, method, authority, and expected evidence so downstream Skills do not have to rediscover or reinterpret it. Record the base revision - the current commit at planning time - at the top of `Repository Evidence`, so downstream stages can detect staleness.
 
 [references/example-plan.md](references/example-plan.md) shows a worked Compact-depth plan end to end.
 

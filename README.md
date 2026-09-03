@@ -48,6 +48,7 @@ pi --no-skills \
 | [`grilling`](skills/workflows/grilling/) | 自动或显式 | 在规格之前分轮压力测试决策树，达成共同理解后输出决策 handoff 并停止。 |
 | [`spec`](skills/workflows/spec/) | 仅显式 | 将已探索的产品或工程变更写成可追踪、可验收的持久规格。 |
 | [`fix`](skills/workflows/fix/) | 仅显式 | 编排缺陷诊断、最小安全修复与最终验证，并保留单一证据结论。 |
+| [`publish-tickets`](skills/workflows/publish-tickets/) | 仅显式 | 把已批准实现计划的切片序列化为调度票（一票一切片、依赖边、需求追溯、基准 revision），不重新分解。 |
 | [`tdd`](skills/workflows/tdd/) | 自动或显式 | 以行为优先的垂直切片执行 RED → GREEN → REFACTOR。 |
 | [`systematic-debugging`](skills/workflows/systematic-debugging/) | 自动或显式 | 在修复前通过最小复现、因果追踪和单假设实验确认根因。 |
 | [`verification`](skills/workflows/verification/) | 自动或显式 | 从仓库配置发现并执行质量门禁，输出基于新鲜证据的验证结论。 |
