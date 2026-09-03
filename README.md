@@ -1,9 +1,13 @@
 # Rinco Pi Skills & Commands
 
-一组面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程 Skills 与斜杠命令草稿。仓库以“小而可组合、按需加载、证据门控”为设计原则：稳定内容进入 `skills/`，仍在重构的内容留在 `processing/`。
+一组面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程 Skills。仓库以“小而可组合、按需加载、证据门控”为设计原则：稳定内容进入 `skills/`，仍在重构的内容留在 `processing/`。
 
 > [!IMPORTANT]
 > 项目仍在建设中。目前没有统一的安装、升级或发布机制，也不会自动修改用户的 Pi 全局配置。`skills/` 表示已通过仓库内审查，不等同于已发布的软件包。
+
+## 架构方向
+
+Rinco 保留单一所有者、无环交接和证据门禁作为唯一交付内核，并选择性吸收 Matt 技能体系的需求发现、领域语言、模块设计、任务切片与上下文管理能力。完整决策见 [ADR 0001](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md)，实施顺序见 [Rinco 与 Matt Skill 融合计划](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
 
 ## 快速试用
 
@@ -141,20 +145,7 @@ Prerequisites and limits: <环境要求与不能证明的内容>
 
 把所有分支都需要的步骤保留在 `SKILL.md`，只把特定分支的规则和长篇参考放入 `references/`。保持顶层流程短、顺序明确，并让每个引用旁边写清加载条件。
 
-## Commands 与待处理内容
-
-`processing/commands/` 中的文件是待完善的 Pi prompt templates，目前不是已发布命令：
-
-| Command | 目标 |
-|---|---|
-| `/project` | 建立代码库地图并选择任务所需 Skills。 |
-| `/requirements` | 将需求入口转交给规格工作流。 |
-| `/plan` | 基于需求与代码库证据生成实现计划。 |
-| `/develop` | 按计划、技术栈纪律和验证循环实现变更。 |
-| `/fix` | 证据化复现、诊断并修复失败。 |
-| `/review` | 审查本地变更或指定 diff 范围。 |
-| `/ship` | 准备提交、PR、CI 与部署交付。 |
-| `/maintain` | 维护文档、仓库卫生、依赖和部署配置。 |
+## 待处理内容
 
 尚未完成重构的 Skills 位于 [`processing/skills/`](processing/skills/)。它们可能包含重复、过时或尚未验证的规则，不应与 `skills/` 中的已验证实现等同使用。
 
@@ -165,14 +156,14 @@ Prerequisites and limits: <环境要求与不能证明的内容>
 ├── AGENTS.md               # 本仓库的 agent 编写与校验规则
 ├── README.md
 ├── docs/
+│   ├── adr/                # 架构决策记录
 │   └── plans/              # 路线图与实现计划
 ├── skills/                 # 已重构并通过仓库验证的 Skills
-│   ├── workflows/          # plan、readme、spec、tdd、debug、verification、review
+│   ├── workflows/          # 端到端工程工作流
 │   ├── patterns/           # 可复用架构模式
 │   ├── tools/              # CLI 与外部文档工具纪律
 │   └── meta/               # 编写 agent 文档的元技能
 └── processing/
-    ├── commands/           # 尚未发布的命令模板
     └── skills/             # 待调研、重构或验证的 Skill 草稿
 ```
 
@@ -189,4 +180,4 @@ Prerequisites and limits: <环境要求与不能证明的内容>
 5. 验证通过后移入 `skills/workflows/`、`skills/patterns/`、`skills/tools/` 或 `skills/meta/`。
 6. 同步更新本 README；在提交或 PR 描述中列出实际使用的来源 URL 与本地改动。
 
-当前目标组合与剩余工作记录在 [`docs/plans/2026-08-28-skill-roadmap.md`](docs/plans/2026-08-28-skill-roadmap.md)。在路线图完成并通过组合验证前，仓库不维护安装、复制或发布工具。
+当前架构决策与实施顺序见 [ADR 0001](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与 [Rinco 与 Matt Skill 融合计划](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。剩余 Skill 组合（security-review、resilience、frontend-patterns）见 [Skill 组合重点计划](docs/plans/2026-09-03-skill-portfolio-focus.md)。在组合完成并通过验证前，仓库不维护安装、复制或发布工具。

@@ -1,9 +1,16 @@
 # Rinco Pi Skills & Commands — 项目规则
 
-本仓库维护面向 Pi coding agent 的 Skills 与斜杠命令。`processing/` 存放待处理内容，
+本仓库维护面向 Pi coding agent 的 Skills。`processing/` 存放待处理内容，
 根目录 `skills/` 按功能域分类存放已重构并验证的 Skills（`workflows/`、`patterns/`、
 `tools/`、`meta/`，不得平铺在 `skills/` 根下）。完整 Skill 组合尚在建设中；在全部目标
 Skills 完成前，不维护安装、复制或发布机制。
+
+## 工作流架构决策
+
+引入外部 Skill、修改阶段所有权、设计组合调用链或 Pi 启动 profile 前，先读
+[`docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md`](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md)。
+该 ADR 规定 Rinco 是唯一证据与交付内核，Matt 的能力只作为选择性适配的发现、词汇和上下文层；
+实施顺序见 [`docs/plans/2026-09-03-rinco-matt-skill-integration.md`](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
 
 ## 构建新 Skill 必须先查参考源
 
@@ -37,5 +44,5 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 ## 校验
 
-- 新增 Command 时同步更新 `README.md` 的命令表；新增 Skill 时同步更新 Skills 列表。
+- 新增 Skill 时同步更新 `README.md` 的 Skills 列表。
 - 若 Crawl4AI 或 `npx skills` 不可用，明确说明未能核对，不要把记忆当作已验证的调研结果。

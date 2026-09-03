@@ -11,7 +11,7 @@ Long-lived projects often rot at the documentation layer first: the README descr
 
 **Living Docs Governance** assigns four non-overlapping roles to the project's existing documentation, links those roles from the active agent harness, and defines small update rules that keep the sources useful. The roles matter; the filenames do not.
 
-This is a **maintain-phase** practice. For one-time exploration of an unfamiliar repository, use `codebase-onboarding` first.
+This is a **maintain-phase** practice, distinct from one-time repository exploration.
 
 ## When to Activate
 
