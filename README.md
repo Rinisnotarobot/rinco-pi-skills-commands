@@ -37,6 +37,19 @@ pi --no-skills \
 
 进入 Pi 后调用 `/skill:fix <错误信息、失败命令或受影响路径>`。需要转交规格、计划或代码评审时，还应在启动时加载相应的 `spec`、`plan` 或 `code-review` Skill。使用 `--no-skills` 单独试用 `tdd` 或 `code-review` 时，也应按其 `compatibility` 字段同时加载所列依赖。
 
+## 启动 Profile
+
+确定性任务通道用仓库自带启动器启动，避免发现顺序与同名冲突；启动器会在启动前校验：路径存在、frontmatter 有 `name`、列表内无重名，不满足则拒绝启动：
+
+| Profile | 任务形态 | 加载的 Skills |
+|---|---|---|
+| [`profiles/shape.sh`](profiles/shape.sh) | 模糊变更：需求发现与规格 | grilling、domain-modeling、codebase-design、spec、plan、terminal-ops、context7-docs |
+| [`profiles/build.sh`](profiles/build.sh) | 已规划实现 | plan、tdd、systematic-debugging、verification、code-review、coding-standards、terminal-ops |
+| [`profiles/fix.sh`](profiles/fix.sh) | 未知根因缺陷 | fix、systematic-debugging、tdd、verification、code-review、coding-standards、terminal-ops |
+| [`profiles/review.sh`](profiles/review.sh) | 独立评审当前变更 | code-review、verification、coding-standards、terminal-ops |
+
+用法：`./profiles/shape.sh [附加 pi 参数]`。Skill 的 `BLOCKED`/`PENDING` 报告会给出所需依赖的精确重启命令；prompt template 只做薄入口，不承担加载职责。
+
 ## 已验证的 Skills
 
 ### 工程工作流
@@ -169,8 +182,9 @@ Prerequisites and limits: <环境要求与不能证明的内容>
 │   ├── patterns/           # 可复用参考纪律：架构模式、设计语言、文档治理
 │   ├── tools/              # CLI 与外部文档工具纪律
 │   └── meta/               # 编写 agent 文档的元技能
-└── processing/
-    └── skills/             # 待调研、重构或验证的 Skill 草稿
+├── processing/
+│   └── skills/             # 待调研、重构或验证的 Skill 草稿
+└── profiles/               # 确定性任务通道启动器（shape/build/fix/review）
 ```
 
 每个 Skill 以 `SKILL.md` 为入口，并可通过 `references/`、`scripts/` 或 `assets/` 渐进披露细节。
