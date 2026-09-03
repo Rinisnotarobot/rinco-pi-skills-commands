@@ -43,10 +43,10 @@ pi --no-skills \
 
 | Profile | 任务形态 | 加载的 Skills |
 |---|---|---|
-| [`profiles/shape.sh`](profiles/shape.sh) | 模糊变更：需求发现与规格 | grilling、domain-modeling、codebase-design、spec、plan、terminal-ops、context7-docs |
-| [`profiles/build.sh`](profiles/build.sh) | 已规划实现 | plan、tdd、systematic-debugging、verification、code-review、coding-standards、terminal-ops |
-| [`profiles/fix.sh`](profiles/fix.sh) | 未知根因缺陷 | fix、systematic-debugging、tdd、verification、code-review、coding-standards、terminal-ops |
-| [`profiles/review.sh`](profiles/review.sh) | 独立评审当前变更 | code-review、verification、coding-standards、terminal-ops |
+| [`profiles/shape.sh`](profiles/shape.sh) | 模糊变更：需求发现与规格 | grilling、domain-modeling、codebase-design、spec、plan、terminal-ops、context7-docs、session-handoff |
+| [`profiles/build.sh`](profiles/build.sh) | 已规划实现 | plan、tdd、systematic-debugging、verification、code-review、coding-standards、terminal-ops、session-handoff |
+| [`profiles/fix.sh`](profiles/fix.sh) | 未知根因缺陷 | fix、systematic-debugging、tdd、verification、code-review、coding-standards、terminal-ops、session-handoff |
+| [`profiles/review.sh`](profiles/review.sh) | 独立评审当前变更 | code-review、verification、coding-standards、terminal-ops、session-handoff |
 
 用法：`./profiles/shape.sh [附加 pi 参数]`。Skill 的 `BLOCKED`/`PENDING` 报告会给出所需依赖的精确重启命令；prompt template 只做薄入口，不承担加载职责。
 
@@ -63,6 +63,7 @@ pi --no-skills \
 | [`spec`](skills/workflows/spec/) | 仅显式 | 将已探索的产品或工程变更写成可追踪、可验收的持久规格。 |
 | [`fix`](skills/workflows/fix/) | 仅显式 | 编排缺陷诊断、最小安全修复与最终验证，并保留单一证据结论。 |
 | [`publish-tickets`](skills/workflows/publish-tickets/) | 仅显式 | 把已批准实现计划的切片序列化为调度票（一票一切片、依赖边、需求追溯、基准 revision），不重新分解。 |
+| [`session-handoff`](skills/workflows/session-handoff/) | 仅显式 | 把当前会话序列化为 fresh session 可接手的交接文档（格式归 living-docs-governance 所有，写到临时目录、含精确重启命令），仅限用户显式请求。 |
 | [`tdd`](skills/workflows/tdd/) | 自动或显式 | 以行为优先的垂直切片执行 RED → GREEN → REFACTOR。 |
 | [`systematic-debugging`](skills/workflows/systematic-debugging/) | 自动或显式 | 在修复前通过最小复现、因果追踪和单假设实验确认根因。 |
 | [`verification`](skills/workflows/verification/) | 自动或显式 | 从仓库配置发现并执行质量门禁，输出基于新鲜证据的验证结论。 |

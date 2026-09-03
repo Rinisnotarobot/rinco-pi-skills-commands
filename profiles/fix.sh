@@ -11,4 +11,5 @@ launch_pi \
   skills/workflows/code-review \
   skills/patterns/coding-standards \
   skills/tools/terminal-ops \
+  skills/workflows/session-handoff \
   "$@"

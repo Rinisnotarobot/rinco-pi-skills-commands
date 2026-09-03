@@ -10,5 +10,6 @@ launch_pi \
   skills/workflows/spec \
   skills/workflows/plan \
   skills/tools/terminal-ops \
+  skills/workflows/session-handoff \
   skills/tools/context7-docs \
   "$@"

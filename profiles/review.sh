@@ -8,4 +8,5 @@ launch_pi \
   skills/workflows/verification \
   skills/patterns/coding-standards \
   skills/tools/terminal-ops \
+  skills/workflows/session-handoff \
   "$@"
