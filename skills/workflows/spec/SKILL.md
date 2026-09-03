@@ -69,6 +69,8 @@ Assign stable IDs:
 
 Each requirement states one outcome or constraint, its authority, priority, and applicable actor or boundary. Each invariant names the states or operations across which it holds. Use requirement language that can be contradicted by evidence; replace vague terms such as “secure,” “fast,” “intuitive,” or “robust” with an observable threshold, explicit review judgment, or unresolved decision.
 
+When a requirement depends on a domain term, use the canonical term from the project's `CONTEXT.md` glossary (maintained by `domain-modeling`) when one exists; a term that is still fuzzy is an unresolved decision, not something to redefine inside the spec.
+
 Read [Acceptance Quality](references/acceptance-quality.md) before writing acceptance criteria. For consequential changes, read [Risk and Transition Coverage](references/risk-and-transition-coverage.md).
 
 Completion criterion: every required behavior and material risk is represented by an identifiable requirement or invariant without embedding an implementation plan.

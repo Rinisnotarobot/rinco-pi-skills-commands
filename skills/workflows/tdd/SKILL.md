@@ -43,7 +43,7 @@ Order behaviors by learning value and dependency:
 3. expected failure;
 4. regression and interaction cases justified by risk.
 
-Select only the next behavior. Do not pre-write the whole imagined test suite. Read [references/test-quality.md](references/test-quality.md) when choosing the seam, oracle, assertions, or test level.
+Select only the next behavior. Do not pre-write the whole imagined test suite. Read [references/test-quality.md](references/test-quality.md) when choosing the seam, oracle, assertions, or test level; the `codebase-design` seam vocabulary applies here — tests cross the module's interface (the external seam), because the interface is the test surface.
 
 Completion criterion: one slice can move from RED to GREEN without requiring unrelated behavior.
 

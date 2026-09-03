@@ -42,7 +42,7 @@ Read [Review Lenses](references/review-lenses.md). Examine every change cluster 
 3. performance;
 4. maintainability.
 
-Adjust depth to risk, but record a conclusion for every lens. Prioritize problems introduced or exposed by the diff. Label related pre-existing problems explicitly as `pre-existing`.
+Adjust depth to risk, but record a conclusion for every lens. Prioritize problems introduced or exposed by the diff. Label related pre-existing problems explicitly as `pre-existing`. Under the maintainability lens, report structural findings in the `codebase-design` vocabulary — shallow interfaces, leaked implementation details, misplaced seams — so each recommendation targets the seam that should own the change.
 
 Completion criterion: every change cluster has passed through all four lenses, and each candidate finding points to a changed line and an affected execution path.
 

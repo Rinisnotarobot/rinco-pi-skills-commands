@@ -66,7 +66,7 @@ Completion criterion: every planned artifact has a reason to change and every af
 
 ### 5. Slice and order the work
 
-Read [references/slicing-and-dependencies.md](references/slicing-and-dependencies.md). Prefer vertical slices that deliver one observable behavior through the required layers and remain buildable after each slice. Give each slice:
+Read [references/slicing-and-dependencies.md](references/slicing-and-dependencies.md). Prefer vertical slices that deliver one observable behavior through the required layers and remain buildable after each slice. Name each slice's boundary in the `codebase-design` vocabulary (module, interface, seam, adapter, depth) so the test surface and what the slice hides can be evaluated per slice. Give each slice:
 
 - behavior delivered;
 - files and symbols changed;
