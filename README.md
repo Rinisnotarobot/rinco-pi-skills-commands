@@ -45,6 +45,7 @@ pi --no-skills \
 |---|---|---|
 | [`plan`](skills/workflows/plan/) | 自动或显式 | 基于代码库证据生成包含文件、symbol、依赖和验证步骤的实现计划。 |
 | [`readme`](skills/workflows/readme/) | 自动或显式 | 创建、重写、审查或更新 README，并验证关键声明、命令和本地链接。 |
+| [`grilling`](skills/workflows/grilling/) | 自动或显式 | 在规格之前分轮压力测试决策树，达成共同理解后输出决策 handoff 并停止。 |
 | [`spec`](skills/workflows/spec/) | 仅显式 | 将已探索的产品或工程变更写成可追踪、可验收的持久规格。 |
 | [`fix`](skills/workflows/fix/) | 仅显式 | 编排缺陷诊断、最小安全修复与最终验证，并保留单一证据结论。 |
 | [`tdd`](skills/workflows/tdd/) | 自动或显式 | 以行为优先的垂直切片执行 RED → GREEN → REFACTOR。 |
