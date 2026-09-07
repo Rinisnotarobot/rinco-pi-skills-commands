@@ -1,5 +1,9 @@
 # Implementation Plan: Validate the Hybrid Rinco Composition Pilots
 
+Lifetime: **delivery plan**. Keep planning-time evidence as a snapshot; record execution changes explicitly and recheck affected evidence after source or protocol revisions.
+
+> Execution update — 2026-09-07: the ADR 0002 transition and premature README claim were resolved in `a87b8d22b543110574f6af3435dd63e9f3fcceec`; execution began from that clean worktree. Slice 1 now prepares the [protocol](../pilots/PROTOCOL.md) and its disclosed [record template](../pilots/RECORD-TEMPLATE.md). Commit the revised protocol before counting an attempt against it; `a87b8d2` alone does not contain this new method. No real task or pilot result has been recorded. This update also clarifies Pilot 4 as at least two session starts and one actual handoff, matching the Final Verification contract rather than the original “two session boundaries” wording. Execution consistency checks also distinguish intake discovery from first-use command pinning and preserve the narrow evidence-artifact exclusions.
+
 ## Goal and Scope
 
 Execute the four real-task pilots defined by [`docs/pilots/PROTOCOL.md`](../pilots/PROTOCOL.md), preserve reproducible evidence for every phase handoff, and decide whether each recommended Rinco lane can be trusted as designed.
@@ -24,7 +28,7 @@ There is no separate product specification and no originating `REQ`/`INV`/`AC` s
 - [`README.md`](../../README.md), “推荐套装” and “设计原则” — current shape/build/fix/review membership and public workflow description.
 - The promoted workflow contracts under [`skills/workflows/`](../../skills/workflows/) — phase-specific inputs, outputs, stopping rules, and verdict ownership.
 
-The current README calls the bundles “经过组合验证,” while the protocol explicitly says the real-task pilots are pending. Treat the protocol and integration completion gate as authoritative for validation status. Slice 1 must remove the premature public claim before a pilot is counted; after campaign acceptance, README may state the narrower fact that the four protocol lanes were validated against the recorded tasks.
+At planning time README called the bundles “经过组合验证,” while the protocol explicitly said the real-task pilots were pending. The public claim was corrected in `a87b8d2`. Keep the protocol and integration completion gate authoritative for validation status; after campaign acceptance, README may state the narrower fact that the four protocol lanes were validated against the recorded tasks.
 
 When any other source conflict appears during execution, stop the campaign and resolve it before counting another pilot. Do not silently choose the more convenient rule.
 
@@ -52,7 +56,7 @@ The source documents do not assign requirement IDs. The table therefore cites st
 
 **Planning-time state:** `main` was four commits ahead of `origin/main`. Before this plan was written, the worktree already contained 25 changed paths for the ADR 0002 transition and related Skill updates. Those changes include deletion of `profiles/`, edits to `README.md`, `AGENTS.md`, the protocol and integration plan, and a new untracked ADR 0002. They are pre-existing work and must not be overwritten or mistaken for pilot evidence.
 
-Verified facts:
+Verified facts at planning time (see the dated execution update for resolved items):
 
 ```text
 Fact: The protocol exists, but there are no per-pilot records yet.
@@ -94,7 +98,7 @@ Authoritative repository commands:
 | `git rev-parse HEAD` | workflow contracts | evidence baseline/freshness | Run in each pilot target repository |
 | `git status --short` | workflow contracts | worktree integrity | Capture before/after every evidence-producing gate |
 
-The exact RED/GREEN and target-repository gates cannot be named until each real task and repository is selected. A candidate is not eligible to start until those commands have been discovered from that repository’s instructions, manifests, CI, and nearby tests and written into its pilot record.
+At intake, discover the target repository's test infrastructure, command authorities, and prerequisites from its instructions, manifests, CI, and nearby tests. Record each exact focused RED/GREEN command before its first use and required gates before execution. Pilot 2 may enter shaping before its test seam and focused command are determined; record the due stage instead of inventing a command or blocking legitimate discovery. Missing infrastructure or authorization remains an explicit prerequisite blocker.
 
 ## Selected Strategy
 
@@ -111,7 +115,7 @@ Run a **gated campaign with one durable record per required pilot and one aggreg
 Alternatives rejected:
 
 - **Scripted mock pilots:** fast, but cannot expose real ambiguity, context loss, user decisions, environment blockers, or repository-specific gate discovery.
-- **One monolithic session for all phases:** hides startup discovery and handoff failures and conflicts with explicit-only stage stopping rules.
+- **One autonomous uninterrupted chain for all phases:** hides explicit user-invoked stage stops. Several phases may share a session with real handoffs and user invocations; only Pilot 4 requires a fresh-session transition.
 - **Treating `scripts/validate.sh` as composition proof:** verifies files, not behavior, ownership, evidence freshness, or task-shape fit.
 - **Restoring `profiles/*.sh` for convenience:** contradicts ADR 0002 and would test a superseded mechanism.
 - **Running all four pilots only inside this Skill repository:** allowed only when four genuine matching tasks arise; forcing repository-maintenance work into behavioral TDD lanes would bias the result.
@@ -123,6 +127,11 @@ docs/pilots/PROTOCOL.md :: status, execution prerequisites, per-pilot record, co
 Current responsibility: Defines task shapes, metrics, a compact record, and completion invariants.
 Planned responsibility: Also define evidence freshness fields, task eligibility, attempt disposition, correction normalization, and aggregate-results linkage.
 Interface/data impact: Additive Markdown contract; do not change the existing four task shapes or seven metrics.
+
+docs/pilots/RECORD-TEMPLATE.md :: disclosed per-task record fields (new in slice 1)
+Current responsibility: Previously the compact template lived inline in PROTOCOL.md.
+Planned responsibility: Own the expanded fillable fields without burying execution rules inside a long template.
+Interface/data impact: PROTOCOL.md links here; fields are extended, not copied into a second competing schema.
 
 docs/pilots/1-<task-slug>.md :: Pilot 1 evidence record (proposed)
 Current responsibility: Does not exist.
@@ -173,8 +182,8 @@ Interface/data impact: Unknown until a finding is proven; never edit several own
 
 **Changes:**
 
-- Resolve the 25 pre-existing worktree changes: either finish and commit the ADR 0002 transition or move pilot execution to an isolated, clean source revision. Do not use an ambiguous mixed state.
-- Update `docs/pilots/PROTOCOL.md` without changing the four required lanes or metric meanings. Extend each record with:
+- **Resolved in `a87b8d2`:** the 25 pre-existing changes were committed and the execution worktree was clean. Preserve that historical baseline; pin a new clean source commit containing the revised protocol before the first pilot.
+- Update `docs/pilots/PROTOCOL.md` without changing the four required lanes or metric meanings. Disclose the expanded fields in `docs/pilots/RECORD-TEMPLATE.md`; extend each record with:
   - task source and why it is real;
   - task-shape eligibility and rejection reasons;
   - target repository, branch, baseline HEAD, and initial status;
@@ -184,7 +193,7 @@ Interface/data impact: Unknown until a finding is proven; never edit several own
   - invariant table, correction category, attempt disposition, and rerun linkage;
   - values of `none` or `unavailable: <reason>` instead of blank metric fields.
 - Reserve each per-pilot record path before target verification. When a pilot self-hosts in this repository, exclude only that record path and the code-review artifact path explicitly reserved by `code-review` from the pinned implementation scope; record every update to those evidence artifacts. Run the final repository structural gate after the records stop changing.
-- Correct README’s premature “经过组合验证” wording to pending real-task validation and link the protocol as the status owner.
+- **Resolved in `a87b8d2`:** README no longer claims completed composition validation. Keep its current-state navigation pointed at the protocol and this plan, distinct from the independent portfolio work.
 - Define attempt states: `eligible → running → recorded → accepted | adjustment-required | invalid`. A `BLOCKED` workflow outcome stays `recorded` but does not become an accepted required pilot until resumed successfully or replaced by another eligible real task.
 - Record one immutable Rinco source commit for each attempt. If Skills change, start a new attempt section and record the new source commit; do not rewrite prior evidence.
 
@@ -205,7 +214,7 @@ git rev-parse HEAD
 
 Expected evidence: `scripts/validate.sh` exits 0; `git diff --check` is empty; the campaign source revision and intended worktree are explicit; profile launchers are not used as the pilot entry mechanism; README no longer claims that pending real-task pilots have already passed.
 
-**Blocked by:** User disposition of the 25 pre-existing changed paths before pilot execution. Writing this plan and preparing the protocol may proceed; counting a pilot may not.
+**Blocked by:** No remaining blocker to preparing the documentation. Pilot execution still requires a clean source commit containing the revised protocol; the prior 25-path blocker is resolved.
 
 **Risks:** Accidentally treating uncommitted ADR 0002 text as a durable source; refreshing global mirrors without recording which source revision was installed; turning the protocol into a duplicate verification gate.
 
@@ -272,7 +281,7 @@ The production worktree must not receive prototype code. Domain modeling may tou
 7. Invoke code review with the exact scope and reusable verification state; persist its separate verdict.
 8. Record owner crossings, rejected/stale handoffs, context observations, and unnecessary artifacts.
 
-**Verification:** The pilot record must prove one confirmed grilling handoff, at most one authoritative glossary entry/ADR per decision, exactly one final spec, exactly one plan, bidirectional source-ID traceability, useful RED/GREEN evidence, one verification owner, and one review verdict. Any post-verification mutation makes that verification and review evidence stale and requires rerun.
+**Verification:** The pilot record must prove one confirmed grilling handoff, at most one authoritative glossary entry/ADR per decision, exactly one final spec, exactly one plan, bidirectional source-ID traceability, useful RED/GREEN evidence, one verification owner, and one review verdict. A later mutation affecting the pinned implementation scope or its prerequisites makes the affected verification and review evidence stale and requires rerun. Apply only the record/review artifact exclusions reserved in slice 1 and [protocol step 4](../pilots/PROTOCOL.md#4-keep-record-writes-outside-implementation-evidence); inspect the actual diff to prove that an excluded artifact write was the only change. Run the final repository structural gate after all campaign-document edits stop.
 
 **Blocked by:** Slice 1 and a qualifying real feature. Material unanswered product decisions block progression to spec/plan rather than becoming plan assumptions.
 
@@ -311,7 +320,7 @@ The production worktree must not receive prototype code. Domain modeling may tou
 
 ### 5. Validate the multi-session ticket-handoff lane
 
-**Delivers:** Evidence that an approved plan survives ticket serialization and at least two session boundaries without re-slicing, stale authority, duplicate conclusions, or context reconstruction.
+**Delivers:** Evidence that an approved plan survives ticket serialization across at least two session starts and one actual fresh-session handoff without re-slicing, stale authority, duplicate conclusions, or context reconstruction.
 
 **Changes:** Create `docs/pilots/4-<task-slug>.md`. Publish one ticket per plan slice to the repository’s configured tracker or to `.tickets/<plan-slug>/` when no external tracker is authoritative. Use at least two approved plan slices; a one-slice task cannot validate ticket dependencies or multi-session continuation.
 
@@ -368,7 +377,7 @@ Tickets carry IDs and pointers, not copied paths, commands, or requirement prose
 
 **Verification:** Run the Final Verification contract below against the final unchanged campaign-document and Skill state.
 
-**Blocked by:** Slices 2–5. All four may run opportunistically and independently after slice 1; synthesis waits for all accepted records.
+**Blocked by:** Slices 2–5 for aggregate close only. All four may run opportunistically and independently after slice 1; synthesis waits for all accepted records. Route proven blockers to their owner and rerun affected attempts as soon as they arise rather than waiting for the other pilots.
 
 **Risks:** Averaging away a severe invariant violation; silently dropping failed attempts; changing several Skills before isolating the responsible interface; declaring success because four files exist rather than because their evidence is complete and fresh.
 
@@ -421,7 +430,7 @@ Final campaign acceptance is allowed only when:
 - **Assumption — one model/version is not required across all pilots:** record Pi/model/session details when available so differences remain visible; do not attribute a lane effect to Skill text when model or repository differences are a plausible cause.
 - **Assumption — target repository authority wins for commands:** use its package manager, scripts, CI, services, and safety constraints. Do not install dependencies or substitute preferred tools without approval.
 - **Assumption — evidence artifact exclusion is narrow:** for a self-hosted pilot, reserve and exclude only the canonical pilot record and the review artifact explicitly reserved by `code-review`; all production, test, configuration, Skill, and other documentation changes remain in verification scope.
-- **Blocker — current source worktree:** pilot evidence must not begin until the pre-existing 25-path ADR 0002 transition is committed or an explicit clean source revision is selected.
+- **Resolved — previous source worktree:** the 25-path ADR 0002 transition was committed in `a87b8d2`; execution started clean. **Still required before a pilot:** commit the revised protocol/template and pin that clean source revision. On 2026-09-07 the user explicitly authorized committing the four preparation documents after their checks pass (without pushing) and requested candidate selection from this repository; no specific pilot task has yet been approved.
 
 ## Non-Goals
 

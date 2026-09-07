@@ -146,7 +146,7 @@ pi --no-skills --skill skills/workflows/readme
 
 ## 当前状态
 
-已稳定的 Skills 位于 [`skills/`](skills/)；待处理候选位于 [`processing/skills/`](processing/skills/)。剩余组合工作见 [Skill portfolio focus](docs/plans/2026-09-03-skill-portfolio-focus.md)。在全部目标 Skills 完成并验证前，本仓库不维护安装、复制或发布工具。
+已稳定的 Skills 位于 [`skills/`](skills/)；待处理候选位于 [`processing/skills/`](processing/skills/)。剩余 Skill 开发见 [Skill portfolio focus](docs/plans/2026-09-03-skill-portfolio-focus.md)；真实任务组合验证的状态和方法见 [Pilot 协议](docs/pilots/PROTOCOL.md)，执行顺序见 [验证计划](docs/plans/2026-09-07-composition-pilot-validation.md)。在全部目标 Skills 完成并验证前，本仓库不维护安装、复制或发布工具。
 
 ## 参与维护
 
