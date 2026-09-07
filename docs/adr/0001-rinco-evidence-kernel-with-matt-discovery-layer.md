@@ -5,6 +5,8 @@ date: 2026-09-03
 
 # 以 Rinco 作为证据内核，选择性吸收 Matt 的发现层
 
+> 2026-09-03 修订：「Pi 运行时约束」中的启动 profile 与「后果」中的对应成本项由 [ADR 0002：自选安装 Skill，以推荐套装适配工作流](0002-self-install-skills-with-recommended-bundles.md) 取代；其余内容继续有效。
+
 2026 年 2 月至 3 月，ECC 风格的 `spec → plan → tdd → verification → code-review` 流程已经在一个从零到一的 TypeScript 全栈博客项目中得到实际验证。迁移到 Pi 后，项目继续以 Rinco 的单一所有者、无环交接和证据门禁作为唯一交付内核，只选择性吸收 Matt 技能体系中改善需求发现、领域语言、模块设计、任务切片和上下文管理的能力，不全盘替换 Rinco，也不长期并行运行两套完整流程。
 
 ## 决策

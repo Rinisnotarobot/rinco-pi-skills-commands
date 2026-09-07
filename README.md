@@ -2,14 +2,14 @@
 
 面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程 Skills 集合：用**单一所有者、无环交接和新鲜证据**连接需求、计划、实现、验证与评审。
 
-[快速开始](#快速开始) · [选择工作流](#选择工作流) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [参与维护](#参与维护)
+[快速开始](#快速开始) · [推荐套装](#推荐套装) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [参与维护](#参与维护)
 
 > [!IMPORTANT]
 > 项目仍在建设中，尚未提供统一的安装、升级或发布机制，也不会自动修改用户的 Pi 全局配置。`skills/` 中的内容已通过仓库内审查，但不等同于已发布的软件包；`processing/` 中的草稿不应作为稳定 Skill 使用。
 
 ## 为什么使用 Rinco
 
-- **按任务加载**：只启动当前工作需要的 Skills，减少上下文与同名冲突。
+- **按任务装配**：只安装当前工作需要的 Skills，减少上下文与同名冲突。
 - **职责唯一**：规格、计划、诊断、实现、验证和评审各有一个明确 owner。
 - **证据门控**：结论必须绑定命令、观察结果和具体 worktree 状态。
 - **可恢复交接**：阶段间传递可检查的 handoff；后续变更会使旧证据失效。
@@ -17,9 +17,18 @@
 
 ## 快速开始
 
+### 按需安装
+
+每个 Skill 是自包含目录（`SKILL.md` + `references/`）。安装就是复制目录：从 [`skills/`](skills/) 挑选需要的 Skill，复制进 Pi 的发现路径之一：
+
+- 项目级：`<你的项目>/.pi/skills/<name>/`（仅该项目可用）
+- 全局级：`~/.pi/agent/skills/<name>/`（所有项目可用）
+
+重启 Pi 后生效；移除 Skill 就是删除对应目录。本仓库不提供安装、升级或卸载工具，[`skills/`](skills/) 下的目录即安装源。
+
 ### 试用单个 Skill
 
-前置条件：已安装 `pi`，并在本仓库根目录执行命令。
+不想安装时，可在本仓库根目录临时试用任一 Skill：
 
 ```bash
 pi --no-skills --skill skills/workflows/readme
@@ -31,26 +40,26 @@ pi --no-skills --skill skills/workflows/readme
 /skill:readme
 ```
 
-`--no-skills` 可避免本机或项目中的同名 Skill 产生冲突；将目录替换为下方任一稳定 Skill 即可临时试用。
+`--no-skills` 可避免本机或项目中的同名 Skill 产生冲突。
 
-### 启动完整任务通道
+## 推荐套装
 
-```bash
-./profiles/shape.sh
-```
+套装是建议安装组合，不是机制；真实任务组合验证仍按 [`docs/pilots/PROTOCOL.md`](docs/pilots/PROTOCOL.md) 进行。可以整套装用、只装其中一个，或自由混搭。未安装的依赖不会静默失败——工作流通过 frontmatter `compatibility` 声明伙伴，运行时检查可用性，缺失时以 `BLOCKED` 指名缺失的 Skill 并给出安装后重启的指令。
 
-启动器会先检查 Skill 路径、frontmatter `name` 和重复名称，再以确定的依赖集合启动 Pi。附加的 Pi 参数可直接放在脚本后面。
-
-## 选择工作流
-
-| 你的任务 | 启动命令 | 主要链路 |
+| 套装 | 适配任务 | 链路 |
 |---|---|---|
-| 需求模糊，需要先澄清 | `./profiles/shape.sh` | grilling → domain-modeling → spec → plan |
-| 已有计划，开始实现 | `./profiles/build.sh` | plan → tdd → verification → code-review |
-| 故障根因未知 | `./profiles/fix.sh` | fix → systematic-debugging → tdd → verification |
-| 独立审查当前变更 | `./profiles/review.sh` | verification → code-review |
+| shape | 需求模糊，需要先澄清再规格化 | grilling → domain-modeling → spec → plan |
+| build | 已有计划，开始实现 | plan → tdd → verification → code-review |
+| fix | 故障根因未知 | fix → systematic-debugging → tdd → verification |
+| review | 独立审查当前变更 | verification → code-review |
 
-Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下游依赖未加载，Skill 应返回可执行的 `BLOCKED` 或 `PENDING` 重启指令，而不是假设运行时可以动态发现依赖。
+**shape**：workflows `grilling`、`spec`、`plan`、`session-handoff`；patterns `domain-modeling`、`codebase-design`、`resilience`；tools `terminal-ops`、`context7-docs`。
+
+**build**：workflows `plan`、`tdd`、`systematic-debugging`、`verification`、`code-review`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
+
+**fix**：workflows `fix`、`systematic-debugging`、`tdd`、`verification`、`code-review`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
+
+**review**：workflows `code-review`、`verification`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
 
 ## Skills 目录
 
@@ -102,7 +111,7 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 未知故障：fix → systematic-debugging → tdd → verification → code-review
 ```
 
-箭头表示证据与所有权交接，不代表 Pi 能在当前会话中动态加载缺失 Skill。
+箭头表示证据与所有权交接。Pi 在启动时发现已安装的 Skill，不会在会话中动态加载缺失 Skill；未安装的依赖由 `BLOCKED` 重启指令指名，安装后重启会话即可继续。
 
 核心约束：
 
@@ -113,7 +122,7 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 5. 后续相关修改会使状态绑定的验证与评审证据失效。
 6. user-invoked 阶段完成交接后停止，不继续执行另一个 user-invoked 阶段。
 
-架构依据见 [ADR 0001：Rinco evidence kernel with Matt discovery layer](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md)，实施记录见 [融合计划](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
+架构依据见 [ADR 0001：Rinco evidence kernel with Matt discovery layer](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与 [ADR 0002：自选安装 Skill，以推荐套装适配工作流](docs/adr/0002-self-install-skills-with-recommended-bundles.md)，实施记录见 [融合计划](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
 
 ## 仓库结构
 
@@ -125,7 +134,6 @@ Profile 会同时加载所需的模式、工具与 `session-handoff`。如果下
 │   ├── tools/       # CLI 和外部文档工具纪律
 │   └── meta/        # agent 文档元技能
 ├── processing/      # 待调研、重构或验证的草稿
-├── profiles/        # shape / build / fix / review 启动器
 ├── scripts/         # 仓库结构校验（validate.sh）
 ├── docs/
 │   ├── adr/         # 架构决策

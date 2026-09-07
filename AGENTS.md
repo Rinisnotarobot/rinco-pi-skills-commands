@@ -7,8 +7,9 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 ## 工作流架构决策
 
-引入外部 Skill、修改阶段所有权、设计组合调用链或 Pi 启动 profile 前，先读
-[`docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md`](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md)。
+引入外部 Skill、修改阶段所有权或设计组合调用链前，先读
+[`docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md`](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与
+[`docs/adr/0002-self-install-skills-with-recommended-bundles.md`](docs/adr/0002-self-install-skills-with-recommended-bundles.md)。
 该 ADR 规定 Rinco 是唯一证据与交付内核，Matt 的能力只作为选择性适配的发现、词汇和上下文层；
 实施顺序见 [`docs/plans/2026-09-03-rinco-matt-skill-integration.md`](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
 
@@ -45,6 +46,6 @@ Skills 完成前，不维护安装、复制或发布机制。
 ## 校验
 
 - 新增 Skill 时同步更新 `README.md` 的 Skills 列表。
-- 提升或修改 Skill 后运行 `scripts/validate.sh`，全绿才算通过结构门禁（frontmatter、本地链接、孤儿引用、README 清点、调用模式、`.pi/skills` 副本、profiles）。
+- 提升或修改 Skill 后运行 `scripts/validate.sh`，全绿才算通过结构门禁（frontmatter、本地链接、孤儿引用、README 清点、调用模式、`.pi/skills` 副本）。
 - `skills/` 是所有 Skill 的权威副本：`.pi/skills/` 与 `~/.pi/agent/skills/` 中的镜像漂移时以仓库为准刷新；`metadata.origin` 等 provenance frontmatter 是镜像间唯一预期的差异。
 - 若 Crawl4AI 或 `npx skills` 不可用，明确说明未能核对，不要把记忆当作已验证的调研结果。

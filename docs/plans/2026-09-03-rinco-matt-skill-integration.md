@@ -1,5 +1,7 @@
 # Implementation Plan: Integrate Matt's discovery layer into the Rinco evidence kernel
 
+> **Superseded in part (2026-09-03):** [ADR 0002](../adr/0002-self-install-skills-with-recommended-bundles.md) removed launcher profiles — slice 7 and every profile mechanism below (startup profiles, profile gates, profile-based rollback) are historical record only. Skill installation is now self-service (copy into the Pi discovery path), and README documents recommended bundles instead. The rest of this plan remains the implementation record for [ADR 0001](../adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md).
+
 ## Goal and Scope
 
 Implement [ADR 0001](../adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) without replacing the proven Rinco delivery chain. Add only the Matt-derived capabilities that improve decision quality, domain language, module design, task scheduling, and context recovery.

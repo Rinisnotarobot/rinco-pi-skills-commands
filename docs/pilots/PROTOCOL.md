@@ -8,14 +8,14 @@ Prove that the hybrid (Rinco kernel + Matt-derived discovery layer) reduces rewo
 
 ## Required pilots
 
-| # | Task shape | Lane | Skills exercised (via profile) |
+| # | Task shape | Lane | Recommended bundle |
 |---|---|---|---|
 | 1 | One small, already-clear behavior | `tdd → verification` (+ optional risk-based `code-review`) | build |
 | 2 | One ambiguous multi-module feature | `shape (grilling + domain-modeling [+ prototype]) → spec → plan → tdd → verification → code-review` | shape, then build |
 | 3 | One unknown-cause defect | `fix → systematic-debugging → tdd → verification (+ optional code-review)` | fix |
 | 4 | One multi-session change requiring ticket handoff | `spec → plan → publish-tickets → per-ticket tdd → final verification → code-review` | shape/build + publish-tickets |
 
-Each pilot runs in a real repository against a real requested change, launched with the matching profile launcher. Pilots on this repository itself (self-hosting) are valid when the task is real work, not staged demonstrations.
+Each pilot runs in a real repository against a real requested change, with the recommended bundle's skills installed (per ADR 0002); missing dependencies surface as `BLOCKED` restart instructions rather than being silently skipped. Pilots on this repository itself (self-hosting) are valid when the task is real work, not staged demonstrations.
 
 ## Metrics to record per pilot
 
@@ -31,7 +31,7 @@ Each pilot runs in a real repository against a real requested change, launched w
 
 ```text
 Pilot: <n> — <task one-liner>
-Repository and profile: <repo, launcher command>
+Repository and installed skills: <repo, bundle and skill list>
 Started / ended: <dates>
 Metrics:
   first useful RED: <turns, elapsed>
@@ -49,7 +49,7 @@ Verdict: lane kept as designed | lane adjusted (how) | lane failed (why)
 1. one behavior contract when needed (no second spec source);
 2. one plan when needed (no second decomposition);
 3. one final verification state per unchanged target state;
-4. no Matt workflow duplicate in the session's profile.
+4. no Matt workflow duplicate among the session's installed skills.
 
 A pilot that requires manual correction is still valid evidence — record the correction; two corrections of the same kind mean the skill text needs revision before the lane is trusted.
 

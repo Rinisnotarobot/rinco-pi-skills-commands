@@ -95,7 +95,7 @@ Source artifact paths and revisions
 Completed evidence and its freshness scope
 Open blocker or unresolved decision
 Next explicit invocation
-Required Pi startup profile
+Required skills for the next session
 Evidence invalidated by later changes
 ```
 

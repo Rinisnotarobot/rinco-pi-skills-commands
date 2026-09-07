@@ -17,8 +17,7 @@
 #      patterns/tools/meta stay model-invoked (no README column for them)
 #   6. .pi/skills copies are byte-identical to their canonical skills/ source
 #   7. global-install mirrors (informational; repository copies are canonical)
-#   8. every profile passes profiles/lib.sh validate_profile
-#   9. git diff --check is clean
+#   8. git diff --check is clean
 #
 # Usage: scripts/validate.sh   (run from anywhere; exit 0 = all gates green)
 
@@ -185,22 +184,7 @@ else
   note "global skills directory not present; mirror check skipped"
 fi
 
-# ---------------------------------------------------------------- 8. profiles
-export REPO_ROOT
-# shellcheck source=profiles/lib.sh
-source profiles/lib.sh
-for pf in profiles/*.sh; do
-  [[ "$(basename "$pf")" == lib.sh ]] && continue
-  mapfile -t plist < <(grep -oE 'skills/[a-z]+/[a-z0-9-]+' "$pf" | sort -u)
-  out=$(validate_profile "${plist[@]}" 2>&1)
-  if [[ $? -eq 0 ]]; then
-    ok "profile $(basename "$pf"): ${#plist[@]} skills, paths and names valid"
-  else
-    fail "profile $(basename "$pf") rejected: $out"
-  fi
-done
-
-# ---------------------------------------------------------------- 9. git hygiene
+# ---------------------------------------------------------------- 8. git hygiene
 if git diff --check >/dev/null 2>&1; then
   ok "git diff --check is clean"
 else

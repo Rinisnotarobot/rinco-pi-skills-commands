@@ -32,7 +32,7 @@ For each field the owner's format names, gather from these sources:
 - **Repository state** — branch, HEAD, and worktree status from `git` commands, never from conversation claims.
 - **Artifacts this session produced or consumed** — specs, plans, tickets, reviews, verification reports; each referenced by path and the revision it was established against. Artifacts inherited from prior sessions count when this session consumed them.
 - **Session facts** — the current owner and phase, open blockers and unresolved decisions verbatim, conclusions the session superseded, and the next explicit invocation.
-- **The next session's startup** — the exact restart command: a profile launcher (state it as a path from this repository's root) or an explicit `pi --no-skills --skill ...` command, derived from the next phase's owning skill.
+- **The next session's startup** — how to make the next phase's owning skill available: install or enable it in the Pi skill discovery path (project `.pi/skills/` or the global skills directory) and restart the session, or state an explicit `pi --no-skills --skill ...` command for temporary trial, derived from the next phase's owning skill.
 
 If the user passed an argument describing the next session's focus, use it to sharpen the next-invocation and startup entries; do not drop other fields.
 
