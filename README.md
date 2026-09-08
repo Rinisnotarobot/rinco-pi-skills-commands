@@ -31,7 +31,7 @@
 不想安装时，可在本仓库根目录临时试用任一 Skill：
 
 ```bash
-pi --no-skills --skill skills/workflows/readme
+pi --no-skills --skill skills/tools/readme
 ```
 
 进入 Pi 后调用：
@@ -81,7 +81,6 @@ pi --no-skills --skill skills/workflows/readme
 | [`tdd`](skills/workflows/tdd/) | 自动 / 显式 | 按垂直切片执行 RED → GREEN → REFACTOR。 |
 | [`verification`](skills/workflows/verification/) | 自动 / 显式 | 发现并执行仓库门禁，独占 readiness 结论。 |
 | [`code-review`](skills/workflows/code-review/) | 显式 | 独立审查 diff，输出证据化评审报告。 |
-| [`readme`](skills/workflows/readme/) | 自动 / 显式 | 创建、重写、审计 README，并验证关键声明与链接。 |
 | [`session-handoff`](skills/workflows/session-handoff/) | 显式 | 将当前会话压缩为临时、可恢复的导航式交接文档。 |
 
 ### Patterns
@@ -104,6 +103,7 @@ pi --no-skills --skill skills/workflows/readme
 | [`find-skills`](skills/tools/find-skills/) | 搜索和评估生态中的可安装 Skills。 |
 | [`gh`](skills/tools/gh/) | 以结构化输出和明确回退策略操作 GitHub CLI。 |
 | [`terminal-ops`](skills/tools/terminal-ops/) | 用真实命令输出驱动仓库检查、修改和验证。 |
+| [`readme`](skills/tools/readme/) | 创建、重写、审计 README，并验证关键声明与链接。 |
 | [`writing-for-agents`](skills/meta/writing-for-agents/) | 编写和维护 Skills、`AGENTS.md`、`CLAUDE.md` 等 agent 文档。 |
 
 ## 设计原则
