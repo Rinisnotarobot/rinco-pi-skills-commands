@@ -1,6 +1,7 @@
 ---
 name: prototype
-description: Build a throwaway prototype that answers one named design question, then return an evidence handoff - the answer, the artifact location, observed results, and limitations - without touching production behavior. Use when a design question cannot be settled by discussion and the user asks to prototype, sanity-check a state model or logic, or explore UI variants.---
+description: Build a throwaway prototype that answers one named design question, then return an evidence handoff - the answer, the artifact location, observed results, and limitations - without touching production behavior. Use when a design question cannot be settled by discussion and the user asks to prototype, sanity-check a state model or logic, or explore UI variants.
+---
 
 # Prototype
 

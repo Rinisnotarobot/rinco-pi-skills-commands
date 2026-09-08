@@ -2,7 +2,7 @@
 
 Lifetime: **delivery protocol** for the [composition validation plan](../plans/2026-09-07-composition-pilot-validation.md). Revise the method explicitly; a relevant protocol or Skill change requires reassessing affected evidence.
 
-Status: **pilots pending real tasks**. Re-established on 2026-09-07 against `a87b8d22b543110574f6af3435dd63e9f3fcceec`: no per-pilot records exist. Recheck this status when admitting a task or closing an attempt; add record links only after real records exist. Protocol preparation is not a completed pilot.
+Status: **Pilot 1 runtime recovery and RED/GREEN observed; consult its record for verification and acceptance disposition. Pilots 2–4 pending real tasks; campaign incomplete.** Established on 2026-09-07 against `82a107c0830c02d89766d91d39d70e5b6d388866`; see [Pilot 1 — frontmatter closing delimiter](1-frontmatter-closing-delimiter.md) for request authority, source state, session recovery, and execution evidence. This supersedes the no-record, missing-installation, and restart-pending statuses; it changes campaign status, not the execution method. Recheck on admission, recovery, or attempt close. Protocol preparation and installation alone are not completed pilots.
 
 [Required pilots](#required-pilots) · [Execution](#execution) · [Metrics](#metrics-to-record-per-pilot) · [Acceptance](#completion-invariants-and-acceptance) · [Record template](RECORD-TEMPLATE.md)
 

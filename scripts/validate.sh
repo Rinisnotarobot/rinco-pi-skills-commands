@@ -7,7 +7,7 @@
 #
 # FAIL blocks promotion; WARN is informational only.
 #   1. frontmatter: starts on line 1, name present and kebab-case, name equals
-#      directory name, description non-empty
+#      directory name, description non-empty, standalone closing delimiter
 #   2. every local Markdown link under skills/ resolves to an existing file
 #   3. every references/ file is reachable from its SKILL.md or a sibling
 #      reference (no orphan progressive-disclosure targets)
@@ -36,8 +36,9 @@ note() { printf 'note: %s\n' "$1"; }
 
 frontmatter_block() { # <file>
   awk 'NR == 1 && $0 ~ /^---[[:space:]]*$/ { infm = 1; next }
-       infm && $0 ~ /^---[[:space:]]*$/ { exit }
-       infm { print }' "$1"
+       infm && $0 ~ /^---[[:space:]]*$/ { closed = 1; exit }
+       infm { print }
+       END { exit !closed }' "$1"
 }
 
 fm_value() { # <file> <key>
@@ -56,6 +57,10 @@ for sk in skills/*/*/SKILL.md; do
 
   if [[ $(sed -n '1p' "$sk") != '---' ]]; then
     fail "$sk: frontmatter must start on line 1"
+    continue
+  fi
+  if ! frontmatter_block "$sk" >/dev/null; then
+    fail "$sk: frontmatter missing closing delimiter"
     continue
   fi
   fm_name=$(fm_value "$sk" name)
