@@ -1,6 +1,7 @@
 ---
 name: publish-tickets
-description: Serialize an approved implementation plan's slices into tracker tickets - one ticket per approved slice, with blocking edges, requirement traceability, and a base revision - without re-slicing, merging, or reinterpreting the plan. Use when the user asks to publish, create, or file tickets from an approved plan.
+description: Turn an approved plan artifact into tracker tickets - one ticket per approved slice, preserving blocking edges, requirement traceability, and the base revision - without re-slicing, merging, or reinterpreting the plan. Invoke when an approved plan needs publishing to .tickets/ or a real tracker.
+disable-model-invocation: true
 ---
 
 # Publish Tickets

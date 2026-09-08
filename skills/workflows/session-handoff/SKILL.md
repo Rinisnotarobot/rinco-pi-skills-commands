@@ -1,6 +1,7 @@
 ---
 name: session-handoff
-description: Serialize the current session into a handoff document a fresh session can continue from, in the session-continuation format owned by living-docs-governance. Use when the user asks to hand off, compact, or package the session for continuation (交接 / 打包会话 / 会话交接 / handoff / session handoff), or when a session boundary needs an explicit continuation record. Not for phase-to-phase handoffs inside a lane - those belong to each workflow skill's own output contract.
+description: Explicit-only session compaction: serialize the current session into a handoff document a fresh session can continue from, in the session-continuation format owned by living-docs-governance. Invoke when you want to hand off, compact, or package the session for continuation; not for phase-to-phase handoffs inside a lane.
+disable-model-invocation: true
 compatibility: Requires the living-docs-governance session-continuation format to be readable at one of the resolved locations below (it need not be pre-loaded).
 ---
 
@@ -8,7 +9,7 @@ compatibility: Requires the living-docs-governance session-continuation format t
 
 Serialize the current session's state into a handoff document a fresh session can continue from. This skill is a thin serializer: the format, the field list, and the navigate-don't-duplicate rule are owned by `living-docs-governance` — this skill never restates, extends, or overrides them.
 
-Serialize when the user asks, or when a real session boundary needs a continuation record; never produce one speculatively mid-task.
+Explicit-only: serialize only when the user asks; never produce one speculatively at a session boundary.
 
 ## Workflow
 
