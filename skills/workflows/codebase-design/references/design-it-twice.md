@@ -1,6 +1,6 @@
 # Design It Twice
 
-A pattern for exploring alternative interfaces for a chosen deepening candidate, based on "Design It Twice" (Ousterhout): your first idea is unlikely to be the best. Produces a comparison and a recommendation — never an autonomous refactor; implementation stays downstream of a plan and `tdd`.
+A pattern for exploring alternative interfaces for a chosen deepening candidate, based on "Design It Twice" (Ousterhout): your first idea is unlikely to be the best. Produces a comparison and a recommendation to act on. Acting on it is implementation work — a later stage in its own right (`plan`/`tdd` when loaded), not part of this design exercise.
 
 Uses the vocabulary in [SKILL.md](../SKILL.md): **module**, **interface**, **seam**, **adapter**, **leverage**.
 ## Process

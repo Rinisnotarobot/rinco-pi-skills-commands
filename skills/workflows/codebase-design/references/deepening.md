@@ -1,6 +1,6 @@
 # Deepening
 
-How to assess deepening a cluster of shallow modules, given its dependencies. This is evaluation guidance for the design conversation and for a plan — it never licenses an in-session refactor: merging modules, deleting tests, and rewriting code belong to a plan's slices and are implemented through `tdd`.
+How to assess deepening a cluster of shallow modules, given its dependencies. This is evaluation guidance for a design conversation. It does not license an in-session refactor: merging modules, deleting tests, and rewriting code is implementation work — run it as its own stage (`plan`/`tdd` when loaded), not inside the evaluation.
 
 Uses the vocabulary in [SKILL.md](../SKILL.md): **module**, **interface**, **seam**, **adapter**.
 

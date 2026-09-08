@@ -57,7 +57,7 @@ Completion criterion: every touched unit has been assessed through each relevant
 
 In implementation mode, correct only evidence-backed issues needed for the requested work. Preserve local formatting, avoid repository-wide rewrites, and require explicit approval before adding dependencies, changing public APIs, or expanding the task into architecture migration.
 
-In maintainability-assessment mode, surface an observation only when it includes the rule source, code location, concrete maintainability impact, and smallest viable correction. Mark baseline heuristics and established conventions as judgment calls; reserve hard-violation language for documented or tool-enforced rules. Pass observations to `code-review` when that workflow owns the review.
+In maintainability-assessment mode, surface an observation only when it includes the rule source, code location, concrete maintainability impact, and smallest viable correction. Mark baseline heuristics and established conventions as judgment calls; reserve hard-violation language for documented or tool-enforced rules. Pass observations along when a code review is the active stage (the `code-review` workflow when loaded).
 
 Completion criterion: every edit or finding is traceable to one applicable rule, and preference-only changes are absent.
 

@@ -7,7 +7,7 @@ description: Reference vocabulary for designing deep modules - module, interface
 
 Design **deep modules**: a lot of behavior behind a small interface, placed at a clean seam, testable through that interface. The aim is leverage for callers, locality for maintainers, and testability for everyone.
 
-This is a reference layer: it names and evaluates designs. It never starts a refactor on its own — restructuring is owned by a plan and implemented through `tdd`.
+This is a reference layer: it names and evaluates designs, and recommends where to deepen or reshape. It does not start a refactor in-session — acting on an evaluation is implementation work, a later stage in its own right (`plan` and `tdd` when loaded), which this vocabulary feeds.
 
 Use these terms exactly; do not substitute "component," "service," "API," or "boundary." Consistent language is the whole point.
 

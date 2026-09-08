@@ -34,7 +34,7 @@ This skill governs documentation, not domain or delivery content:
 - write session continuation handoffs;
 - propose a delete-zone or delete-zone entries on the status artifact.
 
-Out of scope: `CONTEXT.md` glossary content and ADR creation (owned by `domain-modeling`); specs, plans, and tickets (owned by their stages); code. A decision that qualifies for an ADR routes to `domain-modeling` — this skill records at most a history entry pointing at it.
+Out of scope for this skill: `CONTEXT.md` glossary content and ADR creation (that is `domain-modeling`'s lane — when loaded it is the full procedure), specs, plans, and tickets (their own stages), and code. A decision that qualifies for an ADR is not written here: at most record a history entry pointing at where the ADR belongs.
 
 ## How It Works
 
