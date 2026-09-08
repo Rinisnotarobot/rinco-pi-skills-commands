@@ -7,10 +7,10 @@ Skills 完成前，不维护安装、复制或发布机制。
 
 ## 工作流架构决策
 
-引入外部 Skill、修改阶段所有权或设计组合调用链前，先读
-[`docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md`](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与
-[`docs/adr/0002-self-install-skills-with-recommended-bundles.md`](docs/adr/0002-self-install-skills-with-recommended-bundles.md)。
-该 ADR 规定 Rinco 是唯一证据与交付内核，Matt 的能力只作为选择性适配的发现、词汇和上下文层。
+引入外部 Skill、修改阶段所有权或设计组合调用链前，先核对以下既定决策（决策沿革见 git 历史，2026-09-08 起并入本文件）：
+- **Rinco 是唯一证据与交付内核**：`spec`、`plan`、`systematic-debugging`、`tdd`、`verification`、`code-review`、`fix` 各有一个唯一 owner，下游结论不平行复制（见 README「设计原则」）。
+- **Matt/ECC 只作选择性适配的发现、词汇和上下文层**：不整套引入与上述 owner 重叠的工作流（如 to-spec、implement、diagnosing-bugs、重复的 tdd/code-review）。
+- **组合依赖只用 `compatibility` 声明、运行时可用性检查与 `BLOCKED`/`PENDING` 重启指令管理**：不提供启动器、安装或发布工具，使用模型是自选安装 + README 推荐套装。
 
 ## 构建新 Skill 必须先查参考源
 

@@ -126,7 +126,7 @@ pi --no-skills --skill skills/workflows/readme
 5. 后续相关修改会使状态绑定的验证与评审证据失效。
 6. user-invoked 阶段完成交接后停止，不继续执行另一个 user-invoked 阶段。
 
-架构依据见 [ADR 0001：Rinco evidence kernel with Matt discovery layer](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与 [ADR 0002：自选安装 Skill，以推荐套装适配工作流](docs/adr/0002-self-install-skills-with-recommended-bundles.md)。
+以上约束的权威维护规则见 [`AGENTS.md`](AGENTS.md)。
 
 ## 仓库结构
 
@@ -139,8 +139,6 @@ pi --no-skills --skill skills/workflows/readme
 │   └── meta/        # agent 文档元技能
 ├── processing/      # 待调研、重构或验证的草稿
 ├── scripts/         # 仓库结构校验（validate.sh）
-├── docs/
-│   └── adr/         # 架构决策
 └── AGENTS.md        # 本仓库的权威维护规则
 ```
 
