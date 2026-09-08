@@ -2,7 +2,7 @@
 
 Use this reference when work crosses an asynchronous transport or must survive the requester process.
 
-For deadlines, retries, idempotency, backpressure, capacity isolation, partial failure, and recovery policy, invoke [`resilience`](../../resilience/SKILL.md). This reference owns messaging shape and delivery semantics only.
+For deadlines, retries, idempotency, backpressure, capacity isolation, partial failure, and recovery policy, follow the resilience method — the `resilience` skill, when loaded, is its full form. This reference covers messaging shape and delivery semantics only.
 
 ## Durable queue
 

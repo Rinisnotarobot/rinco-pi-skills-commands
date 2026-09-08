@@ -70,7 +70,7 @@ Trade CPU for network/storage reduction. Measure payload distribution and avoid 
 
 ## Capacity boundary
 
-Use the performance model to identify the constrained resource and capacity target, then invoke [`resilience`](../../resilience/SKILL.md) to own concurrency, bounded queueing, backpressure, admission, isolation, degradation, and recovery policy. Consume that policy here only to map it into caching or data-access architecture.
+Use the performance model to identify the constrained resource and capacity target, then follow the resilience method for concurrency, bounded queueing, backpressure, admission, isolation, degradation, and recovery policy — the `resilience` skill, when loaded, is its full form. Consume that policy here only to map it into caching or data-access architecture.
 
 ## Verification
 

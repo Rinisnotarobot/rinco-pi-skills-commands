@@ -7,7 +7,7 @@ description: Build and sharpen a project's domain vocabulary and durable decisio
 
 Actively build and sharpen the project's domain model as you design: challenge terms, invent edge-case scenarios, and write the glossary and decisions down the moment they crystallize. Reading `CONTEXT.md` for vocabulary is not this skill — that is a one-line habit any skill can do. This skill is for changing the model, not consuming it.
 
-Domain modeling owns domain language only. It never writes specs, implementation plans, or code: the behavior contract belongs to `spec`, repository strategy to `plan`, implementation to `tdd`.
+Domain modeling changes the model only: glossary terms and ADRs. Requirements, sequencing, and implementation are separate stages with their own skills when loaded (`spec`, `plan`, `tdd`); do not draft those artifacts here.
 
 ## File targets and allowed mutations
 

@@ -7,13 +7,13 @@ description: Model-invoked discipline for designing or reviewing failure behavio
 
 Design and review how a scoped operation fails, sheds load, and recovers. Preserve business correctness before availability: a fast duplicate charge or a successful response for lost work is not resilient.
 
-This Skill owns resilience policy and failure-evidence requirements. `backend-patterns` owns broader architecture integration, `spec` owns desired behavior, `plan` owns the executable verification contract, `security-review` owns exploit paths, and `verification` alone produces the current implementation gate verdict.
+This Skill covers resilience policy and failure-evidence requirements. Adjacent concerns have their own stages and skills when loaded: broader architecture integration (`backend-patterns`), desired behavior (`spec`), the executable verification contract (`plan`), exploit paths (`security-review`), and the current implementation gate verdict (`verification`).
 
 ## Workflow
 
 ### 1. Gate applicability and pin the failure boundary
 
-Apply this Skill when failure crosses a remote dependency, durable queue or worker, multi-step side-effect boundary, or shared capacity limit. Ordinary local exceptions, error type design, response envelopes, user messages, and local async control flow are out of scope: name the relevant owner and stop with `OUT OF SCOPE`. If that stable owner is unavailable, name the missing Skill and the observed discovery problem; ask the user to repair the complete Rinco installation, restart Pi normally, and resume the named owner's invocation with the current scope. If the owner is still a processing candidate, report the handoff as `PENDING` with its source path rather than pretending it is available.
+Apply this Skill when failure crosses a remote dependency, durable queue or worker, multi-step side-effect boundary, or shared capacity limit. Ordinary local exceptions, error type design, response envelopes, user messages, and local async control flow are out of scope: stop with `OUT OF SCOPE` and name the concern the request actually belongs to — its skill, when loaded, is that concern's full procedure; a candidate still in processing is a `PENDING` pointer to its source path, never a pretend-available owner.
 
 Inspect the relevant code, configuration, tests, and operational signals. Record:
 
@@ -71,7 +71,7 @@ Name the concrete call site, queue, transaction, worker, state record, or admiss
 
 Route adjacent concerns without absorbing them:
 
-| Concern from the retired `error-handling` draft | Owner |
+| Concern | Skill (when loaded) |
 |---|---|
 | Error values, cause preservation, catch behavior, cleanup | `coding-standards` |
 | Public error behavior, codes, and compatibility | `spec` |
@@ -81,17 +81,17 @@ Route adjacent concerns without absorbing them:
 | User messaging and render recovery | `PENDING`: `processing/skills/frontend-patterns/` source draft until that Skill is promoted |
 | Deadlines, retries, circuit breaking, overload, recovery | `resilience` |
 
-Resilience consumes error signals from those owners; it does not create a universal error hierarchy or response envelope.
+Resilience consumes error signals from those concerns; it does not create a universal error hierarchy or response envelope.
 
-Completion criterion: each policy has exactly one enforcement owner, every adjacent concern has a named owner, and aggregate attempts and deadlines across layers are accounted for.
+Completion criterion: each policy has exactly one enforcement point in the system, every adjacent concern above is routed to its skill when loaded or recorded as `PENDING`, and aggregate attempts and deadlines across layers are accounted for.
 
 ### 6. Define failure-evidence requirements
 
 Read [Failure evidence](references/failure-evidence.md). Select scenarios that must prove the scoped invariant, including the recovery path rather than only initial rejection. Prefer deterministic fakes or controllable test dependencies; require explicit authority and blast-radius controls for production fault injection.
 
-For pre-implementation design, pass these evidence requirements to `plan`, which owns the executable verification contract. For review of an existing implementation, pass commands or procedures, observations, expected signals, scope, assumptions, and worktree state to `verification`. This Skill may report design gaps; it does not issue `READY`, `NOT READY`, or `BLOCKED` for the implementation.
+For pre-implementation design, pass these evidence requirements to the planning stage — its executable verification contract (`plan` when loaded). For review of an existing implementation, pass commands or procedures, observations, expected signals, scope, assumptions, and worktree state to the verification stage (`verification` when loaded). This Skill may report design gaps; it does not issue `READY`, `NOT READY`, or `BLOCKED` for the implementation.
 
-Completion criterion: every claimed control has a required failure scenario, an observable expected result, and a named downstream owner.
+Completion criterion: every claimed control has a required failure scenario, an observable expected result, and a named downstream stage.
 
 ## Output Contract
 

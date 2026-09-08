@@ -5,7 +5,7 @@ description: Deep review of changed trust boundaries that reports only evidence-
 
 # Security Review
 
-Review the trust boundaries a change crosses, and report only exploitable paths you can trace: attacker-controlled source, reachable sink, and the route between. This is the deep lens on top of `code-review`, not a general audit — broad structural and correctness review belongs to `code-review`.
+Review the trust boundaries a change crosses, and report only exploitable paths you can trace: attacker-controlled source, reachable sink, and the route between. This is the deep lens for trust-boundary changes; a broad structural and correctness review without that focus is the code-review stage's work (the `code-review` skill when loaded).
 
 A security-review verdict is its own report. It consumes verification state as evidence and never re-derives it.
 
