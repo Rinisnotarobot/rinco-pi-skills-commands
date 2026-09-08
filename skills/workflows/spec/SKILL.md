@@ -85,7 +85,7 @@ Map every retained `REQ` and `INV` to one or more `AC` entries. Each criterion i
 - requirement-level proving method: automated behavior, contract, manual UX/accessibility, security review, migration/reconciliation, operational signal, compatibility evidence, or stakeholder acceptance;
 - safe environment or authorized owner when evidence has external effects.
 
-Do not invent repository commands, frameworks, coverage thresholds, or test levels. `plan` turns evidence intent into the executable verification contract; TDD chooses the stable seam and witnesses RED/GREEN; `verification` decides whether final evidence is current and complete.
+Do not invent repository commands, frameworks, coverage thresholds, or test levels. Execution stages own the rest: the planning stage turns evidence intent into the executable verification contract, the TDD stage chooses the stable seam and witnesses RED/GREEN, and the verification stage decides whether final evidence is current and complete.
 
 Completion criterion: every retained `REQ` and `INV` has acceptance evidence, and no `AC` exists without a requirement or invariant it proves.
 
