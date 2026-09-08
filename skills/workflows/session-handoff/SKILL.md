@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: Explicit-only session compaction: serialize the current session into a handoff document a fresh session can continue from, in the session-continuation format owned by living-docs-governance. Invoke when you want to hand off, compact, or package the session for continuation; not for phase-to-phase handoffs inside a lane.
+description: Explicit-only session compaction: serialize the current session into a handoff document a fresh session can continue from, written into the repository's wired handoff location, in the session-continuation format owned by living-docs-governance. Invoke when you want to hand off, compact, or package the session for continuation; not for phase-to-phase handoffs inside a lane.
 disable-model-invocation: true
 compatibility: Requires the living-docs-governance session-continuation format to be readable at one of the resolved locations below (it need not be pre-loaded).
 ---
@@ -36,23 +36,23 @@ Fill rules, in order of honesty: a value evidenced in the sources above; `none` 
 
 Completion criterion: every field of the owner's format has one of these four fill values.
 
-### 3. Write the document outside the repository
+### 3. Write the live handoff into the repository
 
-Write to the OS temporary directory - `$TMPDIR` when set, otherwise `/tmp` - never inside the repository or its docs. Filename: `handoff-<repo-name>-<short-HEAD>-<date>.md` (omit the HEAD part when there is no repository).
+Write to the project's wired handoff location - the path the repo convention or `living-docs-governance` points to, default `docs/handoffs/current.md` (create `docs/handoffs/` when the repository has no docs convention). Prefer a tracked file so a fresh session or clone can find it; if a different live-handoff path is already wired, follow that existing convention instead of creating a competing one. The file is a live slot: overwrite the previous handoff, never accumulate dated copies.
 
 The document contains navigation, not content: artifact references are path plus revision; never copy an artifact's body into the handoff. Redact secrets, tokens, and personally identifying information before writing.
 
-Completion criterion: the file exists outside the repository tree and every referenced path exists on disk at write time.
+Completion criterion: the file exists at the wired path inside the repository and every referenced path exists on disk at write time.
 
 ### 4. Report and stop
 
-Report to the user: the handoff file's absolute path, the target project directory, normal `pi` startup (or an explicit user-requested exception), the next invocation, and any `unresolved` fields with what evidence would resolve them. Tell the user to supply the handoff path to the new session; do not assume it will discover the document or inherit this conversation. Then stop. Starting the next session's work, fixing the unresolved fields, or touching repository files is downstream - not this skill's.
+Report to the user: the handoff file's path, the target project directory, normal `pi` startup (or an explicit user-requested exception), the next invocation, and any `unresolved` fields with what evidence would resolve them. Point out the startup signpost that should let a fresh session find the file by itself (ask `living-docs-governance` to wire it into the harness when it is not yet wired); do not assume the next session inherits this conversation. Then stop. Starting the next session's work, fixing the unresolved fields, or touching anything but the handoff file is downstream - not this skill's.
 
 ## Guardrails
 
 - Never restate the handoff format - the field list lives only in `living-docs-governance`.
-- Never write into the repository; the handoff dies with the session it describes.
+- Write only the live handoff at the wired repo path - never to `/tmp`, never a second copy, never a dated pile. The slot is superseded when the next session consumes the work or completes it.
 - Never fill a field by inference - `none`, `unresolved`, and `no repository` are valid, honest values.
 - Never copy artifact content - path and revision only.
 - Never include secrets or personally identifying information.
-- Never spawn or chain the next session - the user starts it and supplies the reported handoff path.
+- Never spawn or chain the next session - the user starts a fresh session in the project, where the wired startup signpost points it at the handoff file.

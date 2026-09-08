@@ -31,7 +31,7 @@ This skill governs documentation, not domain or delivery content:
 
 - assign roles to, and add signposts or missing sections to, existing docs (with the repo owner's approval for new top-level artifacts);
 - update the map, status, and history artifacts it owns or was asked to maintain;
-- write session continuation handoffs;
+- wire the live session-handoff location and its startup signpost (the handoff artifact itself is produced by `session-handoff` at that location);
 - propose a delete-zone or delete-zone entries on the status artifact.
 
 Out of scope for this skill: `CONTEXT.md` glossary content and ADR creation (that is `domain-modeling`'s lane — when loaded it is the full procedure), specs, plans, and tickets (their own stages), and code. A decision that qualifies for an ADR is not written here: at most record a history entry pointing at where the ADR belongs.
@@ -75,7 +75,7 @@ Every governed artifact declares its lifetime class and invalidation rule, so st
 | **Delivery** | specs, plans, tickets | Authoritative for one effort; revise explicitly and preserve supersession links |
 | **State-bound evidence** | verification and review reports | Reusable only when claim, scope, sequence, worktree, and prerequisites all still match; any later relevant mutation invalidates |
 | **Exploration** | research notes, prototype branches | Evidence for one question; retain a pointer and its limits, never a generalized conclusion |
-| **Session continuation** | compact session handoff | Navigation to primary artifacts plus current owner, state, and next invocation; dies with the session it describes |
+| **Session continuation** | live handoff at the wired repo path (default `docs/handoffs/current.md`) | Navigation to primary artifacts plus current owner, state, and next invocation; one live slot - superseded by the next handoff, removed when the work completes |
 
 Freshness rules (imperative):
 
@@ -98,6 +98,8 @@ Next explicit invocation
 Required skills for the next session
 Evidence invalidated by later changes
 ```
+
+The live handoff file lives at the project's wired path (default `docs/handoffs/current.md`), signposted from the harness so a fresh session reads it before starting any work. This Skill is the format and wiring host; `session-handoff` (explicit-only) is the producer - follow its evidence rules when it is not loaded rather than inventing a second serializer.
 
 ### 5. Wire the active harness honestly
 
@@ -135,7 +137,8 @@ Never place credentials, tokens, private payloads, or raw sensitive logs in gove
 - Structure, ownership, or navigation changes -> update the canonical map in the same change.
 - A threshold, blocker, current milestone, or intentional removal changes -> update status with the commit and date it was established against; keep deleted paths in the delete-zone until recreation is no longer a realistic risk.
 - A durable decision, intentional removal, replacement, or material incident occurs -> add a concise history entry. If the decision also passes `domain-modeling`'s three-part gate, route it there instead and link the ADR from the history entry.
-- A session ends with work in flight -> leave a session continuation handoff (section 4), not a transcript.
+- A session ends with work in flight -> the operator may ask `session-handoff` (explicit-only) to serialize the live handoff using the section 4 format - not a transcript, and not a handoff this Skill writes itself.
+- In-flight work completes -> consume or remove the live handoff (its slot holds one file) and add a history entry when the outcome is durable.
 - Ordinary commits and routine fixes -> rely on Git and the issue tracker unless they change one of the governed roles.
 
 History is append-oriented for traceability, but not immutable at the expense of safety or accuracy:

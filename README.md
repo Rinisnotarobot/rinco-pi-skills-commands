@@ -41,7 +41,7 @@
 | 设计没把握,先试(“这状态机撑得住吗”) | prototype → grilling/spec → plan → tdd | 原型只答一问、只出证据,不进生产分支 | — |
 | 拷问想法 | grilling | 决策+拒绝项+未决阻塞,不产出规格 | — |
 | 大计划拆票分执行 | plan → publish-tickets →(每票一 session)tdd → verification → code-review | 票+base revision 防过期;跨 session 用票 ID | — |
-| 长会话交接新会话 | session-handoff | 交接文档在 /tmp,只存路径与修订,不复制内容 | living-docs-governance |
+| 长会话交接新会话 | session-handoff | 交接文档落仓库 `docs/handoffs/current.md`，只存路径与修订，不复制内容；新会话读 AGENTS signpost 找到它 | living-docs-governance(格式+接线) |
 
 **三个贯穿分叉**(agent 每次组合都要回答):① **根因已知吗?** 未证因先诊断,禁止直接改生产行为;② **改行为还是改需求?** 行为已符合意图却要改 = 新需求,路由 spec/plan,不让 fix 硬接;③ **要证明什么?** 实现完跑 verification 拿新鲜门禁,要独立结论跑 code-review——两者都不自封评审或发布批准。
 
@@ -72,7 +72,7 @@
 | [`domain-modeling`](skills/workflows/domain-modeling/) | 自动 / 显式 | 维护领域词汇，只为难逆转且存在真实权衡的决策创建 ADR。 |
 | [`living-docs-governance`](skills/workflows/living-docs-governance/) | 自动 / 显式 | 为长期文档分派 Constitution、Map、Status、History 角色与新鲜度规则；唯一持有 session-continuation 交接格式。 |
 | [`resilience`](skills/workflows/resilience/) | 自动 / 显式 | 设计并审查 deadline、重试、幂等、过载、局部失败和恢复策略及其证据要求。 |
-| [`session-handoff`](skills/workflows/session-handoff/) | 显式 | 仅当用户要求时，把会话压缩为临时、可恢复的导航式交接文档。 |
+| [`session-handoff`](skills/workflows/session-handoff/) | 显式 | 仅当用户要求时，把当前会话压缩为仓库内活槽位（默认 `docs/handoffs/current.md`）的导航式交接文档；新会话经 AGENTS 启动 signpost 自发现。 |
 
 ### Patterns
 
