@@ -11,7 +11,7 @@
 
 最简单的用法：**克隆本仓库，在 Pi 中打开它，让 agent 帮你安装**——agent 会先问你“装哪些、装到哪”，再动手：
 
-1. **装哪些**：默认全部 19 件（11 workflows + 7 patterns + readme）；可点名子集，如 `spec plan tdd`。
+1. **装哪些**：默认全部 19 件（16 workflows + 2 patterns + readme）；可点名子集，如 `spec plan tdd`。
 2. **装到哪**：默认全局 `~/.pi/agent/skills/`（所有项目可用）；仅限本项目则 `--scope .pi/skills`。
 3. **执行**：`bash scripts/install.sh [--scope <目录>] [skill...]`——把每件 Skill 连同其 `references/` 扁平镜像到 `<scope>/<name>/`，幂等：重复执行只覆盖同名文件。
 
@@ -30,7 +30,7 @@
 
 读法：每格是一个阶段方法；上一阶段产物（决策集、规格 ID、切片、诊断记录、RED/GREEN、验证/评审报告）是下一阶段的**可选输入**——存在且新鲜则复用，缺失就从仓库直接做。箭头是自然交接方向，不是强制管道；agent 按触发词自动选中对应 Skill（不在场则按同一方法自跑），每阶段以证据停止点收尾。
 
-| 场景(典型开口) | 组合 | 关键产物与停止点 | 可调入的 patterns |
+| 场景(典型开口) | 组合 | 关键产物与停止点 | 可调入的 Skill |
 |---|---|---|---|
 | 新功能,需求模糊(“我想做个 X…”) | grilling → spec → plan → tdd → verification → code-review | 决策集 → REQ/INV/AC → 切片 → RED/GREEN → 验证报告 → 评审报告 | domain-modeling、codebase-design |
 | 需求已清,直接实现(“按这份规格做…”) | spec(已有) → plan(compact) → tdd → verification | 最小计划:路径/改动/测试/验证 | coding-standards |
@@ -53,6 +53,8 @@
 
 ### Workflows
 
+> 方法/流程/纪律类技能：阶段方法 + 通用工程流程与规则。调用列读法见上图例。
+
 | Skill | 调用 | 作用 |
 |---|---|---|
 | [`grilling`](skills/workflows/grilling/) | 自动 / 显式 | 以轮询边界问题拷问设计决策树,达成共识即止,只交接决策集。 |
@@ -65,19 +67,21 @@
 | [`tdd`](skills/workflows/tdd/) | 自动 / 显式 | 垂直切片 RED → GREEN → REFACTOR,行为先于实现。 |
 | [`verification`](skills/workflows/verification/) | 自动 / 显式 | 以新鲜仓库证据跑门禁,给出 `READY` / `NOT READY` / `BLOCKED`。 |
 | [`code-review`](skills/workflows/code-review/) | 自动 / 显式 | 只读评审 diff：四 lens、证据分级，报告落盘，不复制验证状态。 |
+| [`codebase-design`](skills/workflows/codebase-design/) | 自动 / 显式 | 提供 module、interface、depth、seam、adapter、leverage、locality 等设计词汇，供切片与测试接口选词。 |
+| [`coding-standards`](skills/workflows/coding-standards/) | 自动 / 显式 | 基于仓库证据应用语言无关的代码质量基线。 |
+| [`domain-modeling`](skills/workflows/domain-modeling/) | 自动 / 显式 | 维护领域词汇，只为难逆转且存在真实权衡的决策创建 ADR。 |
+| [`living-docs-governance`](skills/workflows/living-docs-governance/) | 自动 / 显式 | 为长期文档分派 Constitution、Map、Status、History 角色与新鲜度规则；唯一持有 session-continuation 交接格式。 |
+| [`resilience`](skills/workflows/resilience/) | 自动 / 显式 | 设计并审查 deadline、重试、幂等、过载、局部失败和恢复策略及其证据要求。 |
 | [`session-handoff`](skills/workflows/session-handoff/) | 显式 | 仅当用户要求时，把会话压缩为临时、可恢复的导航式交接文档。 |
 
 ### Patterns
 
+> 特定编程领域的概念与规则库——领域专属；通用方法与纪律见 Workflows。
+
 | Skill | 作用 |
 |---|---|
 | [`backend-patterns`](skills/patterns/backend-patterns/) | 按约束选择服务边界、一致性、消息、缓存、安全和可观测性模式。 |
-| [`codebase-design`](skills/patterns/codebase-design/) | 提供 module、interface、depth、seam、adapter、leverage、locality 等设计词汇。 |
-| [`coding-standards`](skills/patterns/coding-standards/) | 基于仓库证据应用语言无关的代码质量基线。 |
-| [`domain-modeling`](skills/patterns/domain-modeling/) | 维护领域词汇,只为难逆转且存在真实权衡的决策创建 ADR。 |
-| [`living-docs-governance`](skills/patterns/living-docs-governance/) | 为长期文档分派 Constitution、Map、Status、History 角色与新鲜度规则。 |
-| [`resilience`](skills/patterns/resilience/) | 设计并审查 deadline、重试、幂等、过载、局部失败和恢复策略及其证据要求。 |
-| [`security-review`](skills/patterns/security-review/) | 深查变更触及的信任边界,只报告有完整利用路径的安全发现。 |
+| [`security-review`](skills/patterns/security-review/) | 深查变更触及的信任边界，只报告有完整利用路径的安全发现。 |
 
 ### Tools
 
@@ -99,8 +103,8 @@
 ```text
 .
 ├── skills/
-│   ├── workflows/   # 端到端工程工作流(阶段方法)
-│   ├── patterns/    # 可复用工程纪律与设计语言
+│   ├── workflows/   # 阶段方法与通用工程流程/纪律
+│   ├── patterns/    # 特定编程领域概念与规则库
 │   ├── tools/       # 工具纪律
 │   └── meta/        # (预留)agent 文档元技能
 ├── processing/      # 待调研、重构或验证的草稿
@@ -111,7 +115,7 @@
 
 ## 当前状态
 
-稳定 Skills 位于 `skills/`;草稿位于 `processing/skills/`。**2026-09-08:自然组合重构已实施于全部 11 件 workflow**——安装完备性门禁、职责 owner 围栏、强制调用链与交接仪式已移除,各 Skill 独立提供标准化阶段方法;行为对照验证仍在进行。
+稳定 Skills 位于 `skills/`;草稿位于 `processing/skills/`。**自然组合重构已实施于全部 workflow**——初版 11 件(诊断、实现、验证、评审等阶段方法)去除安装门禁与 owner 围栏;随后 5 件通用方法技能(`codebase-design`、`coding-standards`、`domain-modeling`、`living-docs-governance`、`resilience`)自 patterns 并入,现共 16 件;patterns 收窄为特定编程领域概念规则库(`backend-patterns`、`security-review`)。行为对照验证仍在进行。
 
 ## 参与维护
 

@@ -15,7 +15,7 @@ Explicit-only: serialize only when the user asks; never produce one speculativel
 
 ### 1. Read the format from its owner
 
-Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` for flat installations, or `../../patterns/living-docs-governance/SKILL.md` for categorized installations. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
+Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` — this repo's layout and flat installations both keep the two skills as siblings under one family folder, so the same relative path resolves either way. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
 
 Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths and what would make the format readable. Never reconstruct the format from memory.
 

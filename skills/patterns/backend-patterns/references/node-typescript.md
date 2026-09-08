@@ -22,7 +22,7 @@ For HTTP, distinguish malformed input, failed authentication, denied authorizati
 
 ## Resilience mapping
 
-Invoke [`resilience`](../../resilience/SKILL.md) before implementing retries, idempotency, deadlines, cancellation, or concurrency controls. Map its selected policy to the project's existing Node.js primitives without changing budgets or adding another retry owner:
+Invoke [`resilience`](../../../workflows/resilience/SKILL.md) before implementing retries, idempotency, deadlines, cancellation, or concurrency controls. Map its selected policy to the project's existing Node.js primitives without changing budgets or adding another retry owner:
 
 - carry remaining deadlines and cancellation through `AbortSignal` where the called API supports it;
 - expose aggregate attempt count, elapsed time, and final outcome through the existing telemetry stack;
