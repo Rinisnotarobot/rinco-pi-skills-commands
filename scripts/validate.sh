@@ -9,10 +9,11 @@
 #   2. every local Markdown link under skills/ resolves to an existing file
 #   3. every references/ file is reachable from its SKILL.md or a sibling
 #      reference (no orphan progressive-disclosure targets)
-#   4. README inventory: every promoted skill is linked, every skills/ link
-#      target exists
-#   5. invocation contract: workflows table matches disable-model-invocation;
-#      patterns/tools/meta stay model-invoked (no README column for them)
+#   4. README inventory (runs only when README.md exists): every promoted
+#      skill is linked, every skills/ link target exists
+#   5. invocation contract (runs only when README.md exists): workflows table
+#      matches disable-model-invocation; patterns/tools/meta stay model-invoked
+#      (no README column for them)
 #   6. git diff --check is clean
 #
 # Usage: scripts/validate.sh   (run from anywhere; exit 0 = all gates green)
@@ -112,42 +113,50 @@ done
 [[ $orphan_fail -eq 0 ]] && ok "every references/ file is reachable"
 
 # ---------------------------------------------------------------- 4. README inventory
-inventory_fail=0
-for sk in skills/*/*/SKILL.md; do
-  [[ -e "$sk" ]] || continue
-  reldir=${sk%/SKILL.md}
-  grep -qF -- "($reldir/)" README.md \
-    || { fail "README inventory missing: $reldir"; inventory_fail=1; }
-done
-while IFS= read -r link; do
-  target=${link#*(}
-  target=${target%)}
-  [[ -d "$target" ]] || { fail "README links to missing skills/ path: $target"; inventory_fail=1; }
-done < <(grep -oE '\(skills/[a-z0-9-]+/[a-z0-9-]+/\)' README.md | sort -u)
-[[ $inventory_fail -eq 0 ]] && ok "README inventory matches skills/ tree"
+if [[ -f README.md ]]; then
+  inventory_fail=0
+  for sk in skills/*/*/SKILL.md; do
+    [[ -e "$sk" ]] || continue
+    reldir=${sk%/SKILL.md}
+    grep -qF -- "($reldir/)" README.md \
+      || { fail "README inventory missing: $reldir"; inventory_fail=1; }
+  done
+  while IFS= read -r link; do
+    target=${link#*(}
+    target=${target%)}
+    [[ -d "$target" ]] || { fail "README links to missing skills/ path: $target"; inventory_fail=1; }
+  done < <(grep -oE '\(skills/[a-z0-9-]+/[a-z0-9-]+/\)' README.md | sort -u)
+  [[ $inventory_fail -eq 0 ]] && ok "README inventory matches skills/ tree"
+else
+  ok "README.md absent; README inventory gate skipped"
+fi
 
 # ---------------------------------------------------------------- 5. invocation contract
-inv_fail=0
-for sk in skills/workflows/*/SKILL.md; do
-  [[ -e "$sk" ]] || continue
-  name=$(basename "${sk%/SKILL.md}")
-  row=$(grep -F -- "skills/workflows/$name/" README.md | grep '^|' | head -1)
-  if fm_has "$sk" disable-model-invocation; then
-    [[ "$row" == *显式* && "$row" != *自动* ]] \
-      || { fail "README workflows table: $name is explicit-only but its row does not say 显式 (row: ${row:-missing})"; inv_fail=1; }
-  else
-    [[ "$row" == *自动* ]] \
-      || { fail "README workflows table: $name is model-invocable but its row lacks 自动 / 显式 (row: ${row:-missing})"; inv_fail=1; }
-  fi
-done
-for sk in skills/patterns/*/SKILL.md skills/tools/*/SKILL.md skills/meta/*/SKILL.md; do
-  [[ -e "$sk" ]] || continue
-  if fm_has "$sk" disable-model-invocation; then
-    fail "$sk: explicit-only outside workflows/ has no README invocation column; move it or make it model-invocable"
-    inv_fail=1
-  fi
-done
-[[ $inv_fail -eq 0 ]] && ok "invocation contract matches README"
+if [[ -f README.md ]]; then
+  inv_fail=0
+  for sk in skills/workflows/*/SKILL.md; do
+    [[ -e "$sk" ]] || continue
+    name=$(basename "${sk%/SKILL.md}")
+    row=$(grep -F -- "skills/workflows/$name/" README.md | grep '^|' | head -1)
+    if fm_has "$sk" disable-model-invocation; then
+      [[ "$row" == *显式* && "$row" != *自动* ]] \
+        || { fail "README workflows table: $name is explicit-only but its row does not say 显式 (row: ${row:-missing})"; inv_fail=1; }
+    else
+      [[ "$row" == *自动* ]] \
+        || { fail "README workflows table: $name is model-invocable but its row lacks 自动 / 显式 (row: ${row:-missing})"; inv_fail=1; }
+    fi
+  done
+  for sk in skills/patterns/*/SKILL.md skills/tools/*/SKILL.md skills/meta/*/SKILL.md; do
+    [[ -e "$sk" ]] || continue
+    if fm_has "$sk" disable-model-invocation; then
+      fail "$sk: explicit-only outside workflows/ has no README invocation column; move it or make it model-invocable"
+      inv_fail=1
+    fi
+  done
+  [[ $inv_fail -eq 0 ]] && ok "invocation contract matches README"
+else
+  ok "README.md absent; invocation-contract gate skipped"
+fi
 
 # ---------------------------------------------------------------- 6. git hygiene
 if git diff --check >/dev/null 2>&1; then

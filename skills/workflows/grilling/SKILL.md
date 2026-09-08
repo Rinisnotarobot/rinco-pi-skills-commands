@@ -5,7 +5,7 @@ description: Stress-test a plan, design, decision, or idea with rounds of exhaus
 
 # Grilling
 
-Interview the user relentlessly until you reach a shared understanding, then stop with a decision handoff. Grilling owns decision-tree stress testing only: the behavior contract belongs to `spec`, and grilling never writes specs, plans, or implementation code.
+Interview the user relentlessly until you reach a shared understanding, then stop with a decision handoff. Grilling exhausts the decision tree and produces the handoff only — the behavior contract itself (requirements, invariants, acceptance criteria) is written in the spec stage that follows (the `spec` skill when loaded).
 
 ## Workflow
 
@@ -66,12 +66,12 @@ Rejected options: <the options turned down, with the reason given>
 Unresolved blockers: <decisions the user could not answer or facts that were unavailable, each with the condition that would unblock it>
 Source authority: <paths, versions, or links that supported the verified facts>
 Artifact pointers: <entry points the next stage should read: draft notes, related ADRs, CONTEXT.md, upstream issues>
-Next: <the next owner, normally spec, and the explicit invocation to ask the user for>
+Next: <the next stage, normally spec — with the invocation that starts it (/skill:spec)>
 ```
 
-Return the handoff and stop. Do not start writing the spec, plan, or implementation; requirements, invariants, and acceptance criteria belong to `spec`. A later decision change invalidates this handoff: re-grill, or let `spec` record an explicit revision.
+Return the handoff and stop. Do not start writing the spec, plan, or implementation — requirements, invariants, and acceptance criteria belong to the spec stage, not this handoff. A later decision change invalidates this handoff: re-grill, or let the spec record an explicit revision.
 
-Completion criterion: the handoff carries every field plus the next owner, and no contract, plan, or code artifact was produced.
+Completion criterion: the handoff carries every field plus the next stage, and no contract, plan, or code artifact was produced.
 
 ## Guardrails
 

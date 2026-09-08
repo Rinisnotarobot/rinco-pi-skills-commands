@@ -1,15 +1,11 @@
 ---
 name: code-review
-description: Evidence-first review of Git diffs that writes a final Markdown report to disk.
-compatibility: Requires the verification skill to be discoverable in the same Pi session.
-disable-model-invocation: true
+description: Evidence-first review of a Git diff, merge request, or worktree change that writes a final Markdown report to disk without modifying reviewed code. Use when the user asks to review a change or PR/MR, wants evidence-backed findings with a verdict, or hands a scope to /skill:code-review.
 ---
 
 # Code Review
 
-Review the Git scope supplied after `/skill:code-review`. With no scope, review every worktree change relative to `HEAD`. Persist the final report; do not modify the reviewed code.
-
-Before starting, confirm that `verification` appears in the current session's available Skills. If it is unavailable, return `BLOCKED` naming the missing Skill and the observed discovery problem. Ask the user to repair the complete Rinco installation, restart Pi normally in the target project, and resume `/skill:code-review` with the original scope. An unread Skill body is not a missing installation.
+Review the Git scope the user names — supplied directly or via `/skill:code-review`. With no scope, review every worktree change relative to `HEAD`. Persist the final report; do not modify the reviewed code.
 
 ## Workflow
 
@@ -42,7 +38,7 @@ Read [Review Lenses](references/review-lenses.md). Examine every change cluster 
 3. performance;
 4. maintainability.
 
-Adjust depth to risk, but record a conclusion for every lens. Prioritize problems introduced or exposed by the diff. Label related pre-existing problems explicitly as `pre-existing`. Under the maintainability lens, report structural findings in the `codebase-design` vocabulary — shallow interfaces, leaked implementation details, misplaced seams — so each recommendation targets the seam that should own the change.
+Adjust depth to risk, but record a conclusion for every lens. Prioritize problems introduced or exposed by the diff. Label related pre-existing problems explicitly as `pre-existing`. Under the maintainability lens, report structural findings in seam vocabulary — shallow interfaces, leaked implementation details, misplaced seams — so each recommendation targets the seam that should own the change.
 
 Completion criterion: every change cluster has passed through all four lenses, and each candidate finding points to a changed line and an affected execution path.
 
@@ -54,15 +50,19 @@ Remove candidates that lack a trigger, execution path, or concrete consequence f
 
 Completion criterion: every Finding passes the evidence gate, and its severity matches its evidence strength.
 
-### 6. Consume the verification state
+### 6. Establish the pre-review state
 
-Use the model-invoked `verification` skill as the single owner of gate discovery, freshness, execution, attribution, and `READY`/`NOT READY`/`BLOCKED`. Before verification, reserve the final review artifact path using step 7's path rules and explicitly exclude only that path from the pinned verification scope. Reuse an existing report only when the remaining review scope and current worktree state match; otherwise run verification once for the `pre-review` stage. The current review itself is a downstream gate and remains `PENDING` during that run. Do not rerun a reusable passed gate merely to duplicate ownership.
+A verdict about a diff needs to know whether the code is in a working state at the reviewed scope. Gather that state before the verdict, read-only, from the freshest available source:
+
+- a verification report the user already has — reuse its gate rows when its scope and worktree state match the review;
+- otherwise, run the narrowest read-only gates yourself — types, lint, and the affected tests where safe — capturing `git status --short` before and after;
+- when neither is possible, record the missing state explicitly — unproven breakage belongs in Open questions or limits the verdict, never in a silent assumption.
+
+Reserve the final review artifact path (step 7) before running gate commands, so the review's own artifact is not treated as a change under review. Keep one state table: record `Verification State` separately from `Review Verdict`. A proven baseline failure can coexist with `APPROVE WITH COMMENTS`; a change-introduced failure blocks it.
 
 Keep review read-only. Do not install, upgrade, auto-fix, restore, or rewrite reviewed files. The final review artifact is the only expected repository change. An unavailable required gate is `BLOCKED`, not `N/A`; reserve `N/A` for a gate that does not apply.
 
-Record `Verification Stage` and `Verification State` separately from `Review Verdict`, including every command or non-command method, result, attribution, downstream gate, and residual risk.
-
-Completion criterion: the review has one current verification state for its exact scope, with no independently maintained second gate table.
+Completion criterion: the review has one current verification state for its exact scope — from a matching report or its own read-only gates — with no second, independently maintained gate table.
 
 ### 7. Persist and report the verdict
 

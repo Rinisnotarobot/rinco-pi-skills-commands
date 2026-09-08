@@ -1,8 +1,6 @@
 ---
 name: publish-tickets
 description: Serialize an approved implementation plan's slices into tracker tickets - one ticket per approved slice, with blocking edges, requirement traceability, and a base revision - without re-slicing, merging, or reinterpreting the plan. Use when the user asks to publish, create, or file tickets from an approved plan.
-disable-model-invocation: true
-compatibility: Requires a plan artifact produced by the plan skill. Execution sessions use the complete Rinco installation, including tdd, verification, and code-review; hand off the ticket, source plan, and next invocation rather than a per-task launch command.
 ---
 
 # Publish Tickets
@@ -31,7 +29,7 @@ Verify, from the artifact itself:
 
 For the base revision: if the plan records one, use it and check it — when the current worktree has changes on paths the plan's change map names, relative to that revision, the plan is stale. If the plan records none, stamp the current HEAD as the base revision at publish time and flag in the report that the plan pre-dates revision stamping. Either way the ticket carries a real, recorded revision; never fabricate one silently.
 
-Any other missing piece is a plan defect. Report `BLOCKED` with the named gap, source artifact, and `/skill:plan` request — do not repair the plan here or restart merely to switch owners.
+Any other missing piece is a plan defect. Report `BLOCKED` with the named gap, source artifact, and the `/skill:plan` request — do not repair the plan here.
 
 Completion criterion: the plan artifact is present, approved, internally complete, and not stale against its recorded revision, or the session is explicitly blocked with the gap named.
 
@@ -56,7 +54,7 @@ Completion criterion: every ticket traces to exactly one slice identifier, and e
 
 ### 3. Check the dependency graph
 
-Build the graph from the plan's stated edges. Verify it is acyclic and that every blocking edge references a slice that has a ticket. A cycle or dangling edge is a plan defect: report it and stop — the fix belongs to `plan`.
+Build the graph from the plan's stated edges. Verify it is acyclic and that every blocking edge references a slice that has a ticket. A cycle or dangling edge is a plan defect: report it and stop — the plan stage decides the graph, ticket publication only mirrors it.
 
 Completion criterion: the ticket graph is acyclic, complete, and identical to the plan's slice graph.
 
@@ -67,7 +65,7 @@ Publish tickets blockers-first, so each ticket's blocking edges can reference ti
 - **Local files** — one file per ticket under `.tickets/<plan-slug>/`, named `NN-<slice-slug>.md`, numbered from `01` in dependency order; the ticket body carries the slice identifier. Never one combined file.
 - **A real tracker** (GitHub, Linear, ...) — one issue per ticket. Use the platform's native blocking relationship where it has one; where it does not, write the gating tickets' identifiers into the ticket's Blocked-by field. Apply the repository's agent-ready label convention if one is configured.
 
-Do not assign or reassign implementation owners beyond what the plan names — the tracker is a schedule, not a re-assignment of `tdd`, `verification`, or `code-review` ownership.
+Do not assign or reassign who executes each ticket beyond what the plan names — the tracker is a schedule of work, not an assignment of the methods (TDD, verification, review) that will run per ticket.
 
 Completion criterion: every ticket exists at its target with its blocking edges resolved to identifiers of tickets that exist, and nothing else on the tracker was touched.
 
@@ -82,12 +80,12 @@ Tickets published: <count, target, per-ticket identifier and slice>
 Graph: <acyclic confirmation, frontier (tickets with no open blockers)>
 Traceability: <every ticket -> slice -> requirement IDs>
 Deviations: <plan defects found, unstamped base revision, or none>
-Next: <frontier ticket, source plan path and base revision, next owner and explicit invocation>
+Next: <frontier ticket, source plan path and base revision, and the invocation that continues the work>
 ```
 
-Tell the user how to continue with the ticket and plan references: invoke the next owner in the current session, or start Pi normally in the target project with the same complete installation. If a required owner is unavailable, name the installation problem, leave its downstream work `PENDING`, and ask the user to repair the complete installation before resuming.
+Tell the user how to continue with the ticket and plan references: execute the frontier ticket in the target project with the TDD and verification methods (their skills when loaded), starting from the plan and its base revision. When something execution genuinely needs is unavailable, name it and leave that downstream work `PENDING`.
 
-Return the report and stop. Implementation, verification, and review belong to their owning skills, invoked per ticket. A later plan revision supersedes the published set: unpublish or supersede the affected tickets explicitly, never silently.
+Return the report and stop. Implementation, verification, and review are separate stages run per ticket, each with its own method. A later plan revision supersedes the published set: unpublish or supersede the affected tickets explicitly, never silently.
 
 Completion criterion: the report accounts for every published ticket, names the executable next step, and no implementation work has started.
 

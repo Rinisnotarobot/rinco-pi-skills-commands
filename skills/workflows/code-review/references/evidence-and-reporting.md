@@ -75,7 +75,7 @@ After the report title and scope metadata, put Findings first. When there are no
 - Missing evidence and how the answer would change the verdict
 
 ## Verification evidence
-Copy the applicable rows from the single verification report; do not discover or execute a second gate set.
+Copy the applicable rows from the reused verification report, or list the read-only gates this review ran (types, lint, tests, build) with each result and method. Never run a second gate set for gates that already have fresh, same-scope evidence.
 
 | Gate | Result | Method / evidence |
 |---|---|---|

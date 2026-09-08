@@ -5,7 +5,7 @@ description: Build a throwaway prototype that answers one named design question,
 
 # Prototype
 
-A prototype is **throwaway code that answers one question**. The question decides the shape. Prototype evidence ends a discussion; it never starts production work — behavior changes reach the repository only through `spec`, `plan`, `tdd`, and `verification`.
+A prototype is **throwaway code that answers one question**. The question decides the shape. Prototype evidence settles a design discussion; it does not start production work — validated behavior reaches the repository through deliberate implementation (requirement and planning stages, then a RED test of its own), never by folding the throwaway code in.
 
 ## Workflow
 
@@ -60,10 +60,10 @@ Answer: <what was observed and decided, or explicitly unresolved>
 Artifact: <where the throwaway code lives and how to run it>
 Observed result: <the transcript-level evidence behind the answer>
 Limitations: <what this prototype cannot prove - throwaway code, no tests, unrepresentative data>
-Next: <the owner of the follow-up: grilling/spec for requirement decisions, plan for production implementation>
+Next: <the natural follow-up stage: grilling/spec for requirement decisions, plan for production implementation>
 ```
 
-Return the handoff and stop. Do not fold the validated decision into production code: the answer is evidence for `grilling`, `spec`, or `plan` to consume; production behavior is implemented later through `tdd` with its own RED, and gated by `verification`. The prototype code stays on its throwaway branch unless a later Rinco plan deliberately reimplements the validated behavior; retiring the prototype is deleting or archiving that branch, which never leaves residue on the working branch.
+Return the handoff and stop. Do not fold the validated decision into production code: the answer is evidence for the requirement and planning stages to consume; production behavior is implemented later through the TDD method with its own RED and gated by fresh verification. The prototype code stays on its throwaway branch unless a later plan deliberately reimplements the validated behavior; retiring the prototype is deleting or archiving that branch, which never leaves residue on the working branch.
 
 Completion criterion: the handoff carries every field, and the working branch is unchanged.
 

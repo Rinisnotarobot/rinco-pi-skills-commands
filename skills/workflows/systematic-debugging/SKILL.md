@@ -77,13 +77,13 @@ Once the cause is proven, hand off:
 - confirmed and refuted hypotheses;
 - temporary instrumentation and required cleanup;
 - scope, prerequisites, worktree state, and residual uncertainty;
-- downstream implementation and verification owners, or `UNASSIGNED`.
+- recommended next phase: implementation via the TDD method or an approved alternative path, with readiness via the verification method — or `UNASSIGNED`;
 
 Remove temporary instrumentation before handoff, reversing only agent-owned changes. Pass a durable-observability proposal onward only when the repository needs the signal and its risks are explicit.
 
-When a runnable RED is possible, name `tdd` as the recommended implementation owner unless the caller already supplied another owner. When only an alternative evidence gate is possible, name the smallest enabling step or the approval required for an implementation path that preserves the observational gate for post-fix comparison.
+When a runnable RED is possible, recommend implementation through the TDD method — write the regression test at the stable seam, then drive RED to GREEN — with the `tdd` skill, when loaded, as its full procedure. When only an alternative evidence gate is possible, name the smallest enabling step or the approval an implementation path would need to preserve the observational gate for post-fix comparison.
 
-Return the complete handoff and stop before TDD, production edits, or verification. `systematic-debugging` owns diagnosis and temporary cleanup only; the named downstream actors own implementation and readiness.
+Return the complete handoff and stop before TDD, production edits, or verification: diagnosis and its temporary cleanup end here, and implementation plus readiness are their own phases, composed next by the user or a repair workflow such as `fix`.
 
 Completion criterion: the next implementation actor can reproduce the defect at a stable seam or use an explicitly approved alternative gate without rediscovering the causal path.
 
@@ -99,12 +99,12 @@ Root cause and violated invariant
 Causal chain
 Hypotheses and experiments
 Cleanup state
-Implementation owner or UNASSIGNED
-Verification owner or UNASSIGNED
+Next phase: implementation via TDD method | approved alternative path | UNASSIGNED
+Readiness: verification method | delegated | UNASSIGNED
 Residual uncertainty and blockers
 ```
 
-Completion criterion: every root-cause claim points to reproducible evidence, the handoff names its next owner, and implementation plus readiness remain explicitly downstream.
+Completion criterion: every root-cause claim points to reproducible evidence, the handoff names the next phase and route, and implementation plus readiness remain explicitly downstream.
 
 ## Guardrails
 

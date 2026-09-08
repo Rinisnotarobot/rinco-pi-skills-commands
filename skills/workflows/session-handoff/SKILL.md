@@ -1,15 +1,14 @@
 ---
 name: session-handoff
-description: Explicit-only session compaction - serialize the current session into a handoff document for a fresh session, in the session-continuation format owned by living-docs-governance. Use ONLY when the user explicitly asks to hand off, compact, or package the session for continuation (交接 / 打包会话 / 会话交接 / handoff / session handoff). Not for phase-to-phase handoffs inside a lane - those belong to each workflow skill's own output contract.
-disable-model-invocation: true
-compatibility: Requires readable living-docs-governance format content at its installed location (it need not be pre-loaded). Terminal evidence commands come from terminal-ops.
+description: Serialize the current session into a handoff document a fresh session can continue from, in the session-continuation format owned by living-docs-governance. Use when the user asks to hand off, compact, or package the session for continuation (交接 / 打包会话 / 会话交接 / handoff / session handoff), or when a session boundary needs an explicit continuation record. Not for phase-to-phase handoffs inside a lane - those belong to each workflow skill's own output contract.
+compatibility: Requires the living-docs-governance session-continuation format to be readable at one of the resolved locations below (it need not be pre-loaded).
 ---
 
 # Session Handoff
 
 Serialize the current session's state into a handoff document a fresh session can continue from. This skill is a thin serializer: the format, the field list, and the navigate-don't-duplicate rule are owned by `living-docs-governance` — this skill never restates, extends, or overrides them.
 
-Explicit-only: the user asks for the handoff; never produce one speculatively at a session boundary.
+Serialize when the user asks, or when a real session boundary needs a continuation record; never produce one speculatively mid-task.
 
 ## Workflow
 
@@ -17,7 +16,7 @@ Explicit-only: the user asks for the handoff; never produce one speculatively at
 
 Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` for flat installations, or `../../patterns/living-docs-governance/SKILL.md` for categorized installations. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
 
-Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths. Ask the user to repair the complete Rinco installation, including the named format owner, then start Pi normally and resume `/skill:session-handoff`. Do not reconstruct the format from memory or treat a source-checkout read as an installation repair.
+Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths and what would make the format readable. Never reconstruct the format from memory.
 
 Completion criterion: the field list being filled is the one currently in that file, not a remembered or invented one.
 
@@ -28,7 +27,7 @@ For each field the owner's format names, gather from these sources:
 - **Repository state** — branch, HEAD, and worktree status from `git` commands, never from conversation claims.
 - **Artifacts this session produced or consumed** — specs, plans, tickets, reviews, verification reports; each referenced by path and the revision it was established against. Artifacts inherited from prior sessions count when this session consumed them.
 - **Session facts** — the current owner and phase, open blockers and unresolved decisions verbatim, conclusions the session superseded, and the next explicit invocation.
-- **The next session's startup** — use the same complete Rinco installation and normal `pi` startup in the target project, not a subset assembled for the next phase. Verify the next owner's execution/reference dependencies against discovered or registered sources; preserve the current owner when its workflow must resume. Record missing dependencies, trust problems, or conflicting sources as installation blockers, and unknown provenance as `unresolved`. Carry forward explicit user launch constraints as exceptions rather than inventing new ones. The continuation depends on artifact paths, revisions, evidence freshness, and the next invocation, not remembered startup flags.
+- **The next session's startup** — normal `pi` startup in the target project unless the user states an exception. Note any skill or tool the next phase needs and record it as `unresolved` when its availability cannot be verified. The continuation depends on artifact paths, revisions, evidence freshness, and the next invocation — not on remembered startup flags.
 
 If the user passed an argument describing the next session's focus, use it to sharpen the next-invocation and startup entries; do not drop other fields.
 

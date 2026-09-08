@@ -1,19 +1,15 @@
 ---
 name: fix
-description: Run explicitly when repairing a reproducible defect, failed build, CI failure, or confirmed review finding.
-compatibility: Requires the systematic-debugging, tdd, and verification skills to be discoverable in the same Pi session.
-disable-model-invocation: true
+description: Repair a reproducible defect, failed build, CI failure, or confirmed review finding end to end: pin the failure, prove the cause, correct it minimally, and establish the final verification verdict. Use when the user asks to fix a bug, failing build, CI failure, or review finding, or hands in a proven root cause that needs implementing.
 ---
 
 # Fix
 
-Repair the defect, build/type failure, CI failure, or confirmed review finding supplied after `/skill:fix`. Orchestrate existing evidence owners instead of creating parallel diagnosis, test, review, or verification verdicts.
+Repair the defect, build/type failure, CI failure, or confirmed review finding the user names — supplied directly or via `/skill:fix`. Drive each phase to its named evidence; no phase's verdict is duplicated, and none is skipped because its Skill is absent.
 
-Before starting, confirm that `systematic-debugging`, `tdd`, and `verification` appear in the current session's available Skills. If the core set is incomplete, return `BLOCKED` naming every missing Skill and the observed discovery problem. Ask the user to repair the complete Rinco installation, restart Pi normally in the target project, and resume `/skill:fix` with the original target. An unread Skill body is not a missing installation.
+Each phase below names a method and the evidence it must produce. When the phase's skill is loaded, follow its procedure — it is the full, authoritative form of that phase and its handoff is the fastest entry; when it is not loaded, execute the phase yourself to the same standard. No gate is reported passed without the evidence it names.
 
-Check each conditional downstream Skill immediately before handoff. A missing `spec` or `plan` blocks a required reroute; a missing `code-review` leaves that downstream gate `PENDING` rather than changing the completed repair verdict. Report the installation problem and retain the next invocation, source artifacts, and exact scope. When the owner is available, hand off within the current session without reinstalling or restarting. Never claim a handoff to an unavailable Skill.
-
-Use another workflow when the request is not a repair. For diagnosis only, invoke `systematic-debugging` and stop at its proven-cause handoff. For evidence-only gate checks, invoke `verification`. When behavior already matches accepted intent and the user wants it changed, confirm `spec` is available and ask the user to invoke `/skill:spec` if no accepted behavior contract exists; otherwise confirm `plan` is available and hand that contract to `plan`.
+Use another workflow when the request is not a repair. For diagnosis only, stop once the cause is proven and hand off. For evidence-only gate checks, run only the verification phase and stop. When the user wants to change behavior that already matches accepted intent — a new or altered requirement, not a defect — this is not a repair: route it to the spec stage (`spec` when loaded, or `/skill:spec` when the user asks) to establish the behavior contract, or to `plan` for sequenced delivery of an accepted contract.
 
 ## Workflow
 
@@ -35,7 +31,7 @@ Completion criterion: the repair target, comparison point, current worktree, all
 
 Place the target in exactly one route:
 
-- **Unknown cause:** the report establishes a symptom but not the complete causal chain and violated invariant. Invoke `systematic-debugging` with `fix` named as the downstream implementation and verification owner. Require its proven-cause handoff before TDD or production edits. Continue only when the handoff proves the cause or names a blocker.
+- **Unknown cause:** the report establishes a symptom but not the complete causal chain and violated invariant. Diagnose before any production edit: reproduce, minimize, and prove the causal chain and violated invariant through falsifiable experiments. When `systematic-debugging` is loaded, its procedure is the full form of this phase and its proven-cause handoff is the fastest entry; otherwise run the same loop yourself. Continue to implementation only when the cause is proven or the diagnosis names a blocker.
 - **Proven behavioral cause:** current evidence ties the symptom or confirmed finding to a causal chain and violated behavior or invariant. Revalidate that the same chain reaches the current state before implementation.
 - **Direct non-behavioral failure:** a repository-authoritative parser, compiler, type checker, linter, build tool, or artifact check identifies an invalid file, symbol, configuration, or generated state, and the correction need not choose new runtime behavior. Treat ambiguous diagnostics, cascading errors, and proposed public-contract changes as unknown causes.
 
@@ -53,7 +49,7 @@ Completion criterion: fresh pre-change evidence fails for the intended reason an
 
 ### 4. Make the smallest safe correction
 
-For a behavioral cause with a runnable RED test, invoke `tdd` with the pinned symptom, proven cause, violated invariant, stable seam, RED signature, allowed scope, current worktree state, and `fix` explicitly named as the final verification owner. Let TDD own the regression test, RED/GREEN cycle, production edit, and refactor decision, then require its evidence handoff before it invokes verification.
+For a behavioral cause with a runnable RED test, implement through the TDD method: write the regression test that witnesses the violated behavior at the stable seam, watch it fail for the right reason, then make the smallest production change that turns it green, refactoring only while green. When `tdd` is loaded, its procedure is the full form of this phase and its RED/GREEN evidence handoff is the fastest entry; otherwise run the same cycle yourself. Final readiness gates belong to the next phase — do not claim them here.
 
 When the cause is proven but only an alternative observational gate is available, state why TDD cannot apply and ask for approval of the smallest non-TDD implementation path. After approval, preserve that gate, edit one supported cause at a time, and compare the same observation after each change. Return `BLOCKED` when approval or a safe comparison environment is unavailable; never label this route TDD.
 
@@ -70,17 +66,17 @@ Stop and ask before adding, removing, upgrading, or installing dependencies; cha
 
 Completion criterion: the focused gate is green on the original target, the diff is limited to the supported cause, no temporary diagnostics remain, and every scope expansion has explicit approval.
 
-### 5. Delegate the final verdict
+### 5. Establish the final verdict
 
-Invoke `verification` once implementation is stable. Supply the pinned claim and scope, source IDs, debugging handoff, TDD RED/GREEN evidence or direct repair evidence, exact final worktree state, and any observational limitations. Let verification discover required gates, decide evidence freshness, attribute failures, protect worktree integrity, and return `READY`, `NOT READY`, or `BLOCKED`.
+Once implementation is stable, run the verification phase: discover the required gates from repository instructions and CI configuration, run them narrow-to-broad from the final worktree, capture `git status --short` around each command, attribute every non-pass result, and return `READY`, `NOT READY`, or `BLOCKED` from the gate table. Reuse same-state upstream evidence — the debugging record, RED/GREEN results, an earlier verification — where it already proves a gate; rerun what is stale. When the user runs `/skill:verification`, consume its report as this phase and do not run a second gate set.
 
-If verification exposes a repairable failure inside the approved scope, classify it as a new target before another edit. If it is outside scope, baseline, unsafe to reproduce, or unsupported by a proven cause, preserve the verification verdict and ask for the next decision. Rerun verification after every subsequent implementation change; an earlier verdict is stale.
+If a repairable failure appears inside the approved scope, classify it as a new target before another edit. If it is outside scope, baseline, unsafe to reproduce, or unsupported by a proven cause, preserve the verdict and ask for the next decision. Rerun the phase after every subsequent implementation change; an earlier verdict is stale.
 
-Completion criterion: one verification report owns every required final gate for the unchanged final worktree.
+Completion criterion: every required final gate for the unchanged final worktree has fresh evidence and exactly one verdict.
 
 ### 6. Offer review without duplicating it
 
-Code review remains a separate user decision. When the user requested review or the repair changes a security boundary, public contract, migration, concurrency behavior, or other high-risk path, provide the exact scope. When `code-review` is available, ask the user to run `/skill:code-review <scope>`; otherwise record the review as `PENDING`, name the installation problem, and retain that invocation and scope for recovery. Do not issue a review verdict from this workflow or treat `READY` as review approval.
+Code review remains a separate user decision. When the user requested review, or the repair changes a security boundary, public contract, migration, concurrency behavior, or other high-risk path, provide the exact scope and ask the user to run `/skill:code-review <scope>` (or have the review done in this session when they prefer). If review does not run, record it as `PENDING` with its scope and the evidence it would need. Never issue a review verdict from this workflow or treat `READY` as review approval.
 
 Completion criterion: required follow-up review has a reproducible handoff and is recorded as `PENDING` or completed; optional review is recorded as not requested; no second review or verification verdict exists.
 

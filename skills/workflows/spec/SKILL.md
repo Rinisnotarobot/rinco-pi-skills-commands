@@ -1,7 +1,6 @@
 ---
 name: spec
-description: Turn an explored product or engineering change into a durable, implementation-neutral specification with traceable requirements and acceptance evidence.
-disable-model-invocation: true
+description: Turn an explored product or engineering change into a durable, implementation-neutral specification with traceable requirements and acceptance evidence (REQ/INV/AC). Use when the user asks to spec, write out, or finalize a change or feature, when settled decisions need a durable contract before planning, or when a behavior contract is missing before implementation.
 ---
 
 # Specification
@@ -47,7 +46,7 @@ State:
 - definitions needed to interpret requirements consistently;
 - dependencies, constraints, and assumptions.
 
-Keep implementation choices out unless an authoritative source already fixes them as constraints. File paths, symbols, package choices, task slices, and repository commands belong to `plan`, not the specification.
+Keep implementation choices out unless an authoritative source already fixes them as constraints: file paths, symbols, package choices, task slices, and repository commands are planning decisions, not specification content.
 
 Completion criterion: two readers can agree on what success includes and what adjacent work remains excluded.
 
@@ -108,9 +107,6 @@ Completion criterion: the reported artifact exists, satisfies the referenced `RE
 
 ## Boundaries
 
-- `product-lens` owns whether and why to build; `spec` owns the approved behavior contract.
-- `grilling` owns exhaustive decision-tree stress testing; `spec` asks only finalization blockers.
-- `plan` owns repository implementation strategy and executable sequencing.
-- `systematic-debugging` owns unknown causes of observed failures, not desired behavior.
-- `security-review` owns exploit-path analysis; the specification owns required trust and privacy outcomes.
+- A specification records approved behavior and required outcomes. It does not replace the stages that decide whether and why to build (`product-lens`), stress-test decisions before finalization (`grilling`), sequence repository work (`plan`), diagnose observed failures (`systematic-debugging`), or analyse exploit paths (`security-review`) — each of those is a separate artifact, produced by its own skill when loaded.
+- Do not fold those other artifacts into the specification.
 - A specification is neither implementation approval nor release authorization.

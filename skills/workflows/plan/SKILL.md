@@ -23,7 +23,7 @@ Extract:
 
 Validate a supplied specification before planning: it must be ready, internally traceable, and authoritative for desired behavior. Preserve its identifiers and meaning. Repository code is evidence of current behavior, not proof of desired product policy.
 
-Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. When unresolved product or policy truth affects any of those outcomes or acceptance meaning, confirm that `spec` is available, then stop and ask the user to invoke `/skill:spec`; `spec` is user-invoked and planning must not synthesize it silently. When it is unavailable, return `BLOCKED` naming `spec` and the observed discovery problem. Ask the user to repair the complete Rinco installation and restart Pi normally, then retain the explicit `/skill:spec` request and its source artifacts. An available owner needs no restart merely to change phases. Only technical assumptions that do not alter desired behavior or safety may remain open in a persisted plan.
+Ask only about decisions that cannot be discovered and would materially change behavior, safety, compatibility, persistent data, cost, or public interfaces. When unresolved product or policy truth affects any of those outcomes or acceptance meaning, stop and settle it in the spec stage first — run the spec procedure (the `spec` skill when loaded, or `/skill:spec` when the user prefers) — planning must not synthesize product decisions silently. Only technical assumptions that do not alter desired behavior or safety may remain open in a persisted plan.
 
 Completion criterion: the goal is testable, scope is bounded, every material product decision is resolved in the source specification or authoritative input, and remaining technical assumptions are explicit.
 
@@ -93,7 +93,7 @@ Derive completion evidence from the requirement, repository policy, selected des
 
 Separate focused RED/GREEN evidence, affected package checks, repository-required gates, and evidence automation cannot prove. Do not invent a coverage threshold or require every test level. Match the contract to the risk and existing project policy.
 
-Planning defines this contract but does not execute it. TDD supplies behavior-cycle evidence; the `verification` skill accepts or rejects reusable evidence, runs missing gates, and owns the final gate state.
+Planning defines this contract but does not execute it. Execution is a separate stage: TDD supplies behavior-cycle evidence at each named seam, and the verification phase — run by the executor, or via `/skill:verification` — decides which evidence is reusable, runs the missing gates, and states the final gate verdict.
 
 Completion criterion: every acceptance condition and material risk maps to a required or optional proving method without assigning the same gate to multiple executors.
 

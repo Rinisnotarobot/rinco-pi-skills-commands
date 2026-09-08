@@ -1,14 +1,13 @@
 ---
 name: tdd
 description: Behavior-first test-driven development with vertical red-green-refactor slices. Use when implementing a feature, implementing a bug fix after its cause is known, choosing an observable test seam, or reviewing whether tests specify behavior rather than implementation; use systematic-debugging first when an observed failure has an unproven cause.
-compatibility: Requires verification unless an upstream orchestrator owns the final verdict; also requires systematic-debugging when a defect's cause is unproven.
 ---
 
 # Test-Driven Development
 
 Drive one observable behavior at a time through a verified **red → green → refactor** cycle. Let repository evidence define the test runner, conventions, and required gates.
 
-Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. If neither route can consume the final evidence handoff, return `BLOCKED` naming the missing Skill and the observed discovery problem. Ask the user to repair the complete Rinco installation and restart Pi normally, preserving the current artifacts, next invocation, and any upstream owner. An unread Skill body is not a missing installation.
+Before editing, decide who owns the final gate state. When the caller states it will verify — or the user will run `/skill:verification` — TDD ends at a complete evidence handoff and does not chase broad gates. Otherwise, once the requested capability is complete, run the missing required gates yourself following the verification method: discover gates from repository instructions and CI configuration, run narrow before broad, and capture `git status --short` around each command. Missing evidence is repaired by running or rerunning gates — never by reporting a missing sibling Skill.
 
 ## Workflow
 
@@ -22,7 +21,7 @@ Inspect the requirement, affected code, nearby tests, test configuration, and re
 - the independent source of truth for the expected result;
 - the smallest relevant test command.
 
-For a defect with an unproven cause, confirm that `systematic-debugging` is available, then invoke it with `tdd` named as the downstream implementation owner and retain any upstream final verification owner unchanged. If the diagnosis dependency is missing, return `BLOCKED` and request the same installation recovery before resuming. Resume TDD only after validating and reusing the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. When debugging returns a blocker, return it to the caller without production edits. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
+For a defect with an unproven cause, do not write a speculative regression test. Diagnose first — reproduce, minimize, and prove the causal chain and violated invariant before editing production behavior. When the `systematic-debugging` skill is loaded, its handoff is the fastest entry: validate and reuse its minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. When diagnosis returns a blocker, return it to the caller without production edits. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
 
 Ask the user about the seam only when repository evidence cannot resolve a consequential choice, such as changing a public interface or adding an expensive system test.
 
@@ -90,9 +89,9 @@ Record evidence produced after the final relevant code or test mutation:
 - relevant `git status --short` before and after those commands;
 - broader gates not run, required prerequisites, and residual risks.
 
-When an upstream orchestrator explicitly names itself as the final verification owner, return this complete evidence handoff and stop before invoking `verification`. The orchestrator must pass that ownership instruction when invoking TDD; do not infer it from surrounding context.
+When the caller names itself as the final verdict owner, return this complete evidence handoff and stop — the caller passes that instruction when invoking TDD; do not infer it from surrounding context.
 
-Otherwise, let the model-invoked `verification` skill decide whether this same-state evidence is reusable and run every missing required gate. A stale, partial, differently scoped, or unverifiable result must be rerun; a reusable result must not be rerun merely to duplicate ownership.
+Otherwise, decide the final gate state now: reuse this same-state evidence where it already proves a gate, and run every missing required gate via the verification method — gate discovery, evidence freshness, and worktree capture before and after each command. When the user separately runs `/skill:verification`, hand the evidence over and let it be reused or rerun on its merits. A stale, partial, differently scoped, or unverifiable result must be rerun; a reusable result must not be rerun merely to duplicate ownership.
 
 Report:
 
