@@ -13,9 +13,7 @@
 #      target exists
 #   5. invocation contract: workflows table matches disable-model-invocation;
 #      patterns/tools/meta stay model-invoked (no README column for them)
-#   6. .pi/skills copies are byte-identical to their canonical skills/ source
-#   7. global-install mirrors (informational; repository copies are canonical)
-#   8. git diff --check is clean
+#   6. git diff --check is clean
 #
 # Usage: scripts/validate.sh   (run from anywhere; exit 0 = all gates green)
 
@@ -151,43 +149,7 @@ for sk in skills/patterns/*/SKILL.md skills/tools/*/SKILL.md skills/meta/*/SKILL
 done
 [[ $inv_fail -eq 0 ]] && ok "invocation contract matches README"
 
-# ---------------------------------------------------------------- 6. .pi/skills parity
-pi_fail=0
-for d in .pi/skills/*/; do
-  [[ -d "$d" ]] || continue
-  name=$(basename "$d")
-  canonical=$(find skills -mindepth 2 -maxdepth 2 -type d -name "$name" | head -1)
-  if [[ -z "$canonical" ]]; then
-    warn ".pi/skills/$name has no canonical skills/ copy"
-    continue
-  fi
-  diff -rq "$d" "$canonical" >/dev/null 2>&1 \
-    || { fail ".pi/skills/$name drifted from $canonical"; pi_fail=1; }
-done
-[[ $pi_fail -eq 0 ]] && ok ".pi/skills copies match their canonical skills/ source"
-
-# ---------------------------------------------------------------- 7. global mirrors
-GLOBAL_SKILLS="${HOME}/.pi/agent/skills"
-if [[ -d "$GLOBAL_SKILLS" ]]; then
-  mirrored=0
-  drifted=0
-  for d in skills/*/*/; do
-    name=$(basename "$d")
-    [[ -d "$GLOBAL_SKILLS/$name" ]] || continue
-    mirrored=$((mirrored + 1))
-    if diff -rq "$d" "$GLOBAL_SKILLS/$name" >/dev/null 2>&1; then
-      :
-    else
-      warn "global install $name differs from the repository copy (repository is canonical; refresh the global install when convenient)"
-      drifted=$((drifted + 1))
-    fi
-  done
-  note "global mirror check: $mirrored mirrored, $drifted drifted (informational)"
-else
-  note "global skills directory not present; mirror check skipped"
-fi
-
-# ---------------------------------------------------------------- 8. git hygiene
+# ---------------------------------------------------------------- 6. git hygiene
 if git diff --check >/dev/null 2>&1; then
   ok "git diff --check is clean"
 else

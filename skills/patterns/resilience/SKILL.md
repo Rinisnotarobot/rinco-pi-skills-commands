@@ -13,7 +13,7 @@ This Skill owns resilience policy and failure-evidence requirements. `backend-pa
 
 ### 1. Gate applicability and pin the failure boundary
 
-Apply this Skill when failure crosses a remote dependency, durable queue or worker, multi-step side-effect boundary, or shared capacity limit. Ordinary local exceptions, error type design, response envelopes, user messages, and local async control flow are out of scope: name the relevant owner and stop with `OUT OF SCOPE`. If that stable owner is not installed, include a restart instruction that names it: install it into the Pi skill discovery path and restart the session, or temporarily launch with an explicit `pi --no-skills --skill ...` command. If the owner is still a processing candidate, report the handoff as `PENDING` with its source path rather than pretending it is available.
+Apply this Skill when failure crosses a remote dependency, durable queue or worker, multi-step side-effect boundary, or shared capacity limit. Ordinary local exceptions, error type design, response envelopes, user messages, and local async control flow are out of scope: name the relevant owner and stop with `OUT OF SCOPE`. If that stable owner is unavailable, name the missing Skill and the observed discovery problem; ask the user to repair the complete Rinco installation, restart Pi normally, and resume the named owner's invocation with the current scope. If the owner is still a processing candidate, report the handoff as `PENDING` with its source path rather than pretending it is available.
 
 Inspect the relevant code, configuration, tests, and operational signals. Record:
 

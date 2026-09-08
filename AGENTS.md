@@ -10,7 +10,8 @@ Skills 完成前，不维护安装、复制或发布机制。
 引入外部 Skill、修改阶段所有权或设计组合调用链前，先核对以下既定决策（决策沿革见 git 历史，2026-09-08 起并入本文件）：
 - **Rinco 是唯一证据与交付内核**：`spec`、`plan`、`systematic-debugging`、`tdd`、`verification`、`code-review`、`fix` 各有一个唯一 owner，下游结论不平行复制（见 README「设计原则」）。
 - **Matt/ECC 只作选择性适配的发现、词汇和上下文层**：不整套引入与上述 owner 重叠的工作流（如 to-spec、implement、diagnosing-bugs、重复的 tdd/code-review）。
-- **组合依赖只用 `compatibility` 声明、运行时可用性检查与 `BLOCKED`/`PENDING` 重启指令管理**：不提供启动器、安装或发布工具，使用模型是自选安装 + README 推荐套装。
+- **整套安装、普通启动**：面向大型持续开发项目，一次性安装全部已完成 Skills（含 workflows 及 patterns/tools/meta 配套内容），在长会话或多个 session 中持续使用。以 Pi 默认发现为入口，不要求按任务选装或每次启动传 Skill 参数；安装范围与任务路径见 README「快速开始」「任务路径」。
+- **依赖检查用于异常恢复**：用 `compatibility` 声明和运行时检查识别安装缺失、发现异常与来源冲突；必需伙伴不可用时 `BLOCKED`，可选下游保留 `PENDING`，修复完整安装后正常重启。区分整套可用、正文按需加载与阶段执行授权；跨 session 传递制品、证据状态和下一调用，不重新装配 Skills。
 
 ## 构建新 Skill 必须先查参考源
 
@@ -45,6 +46,6 @@ Skills 完成前，不维护安装、复制或发布机制。
 ## 校验
 
 - 新增 Skill 时同步更新 `README.md` 的 Skills 列表。
-- 提升或修改 Skill 后运行 `scripts/validate.sh`，全绿才算通过结构门禁（frontmatter、本地链接、孤儿引用、README 清点、调用模式、`.pi/skills` 副本）。
-- `skills/` 是所有 Skill 的权威副本：`.pi/skills/` 与 `~/.pi/agent/skills/` 中的镜像漂移时以仓库为准刷新；`metadata.origin` 等 provenance frontmatter 是镜像间唯一预期的差异。
+- 提升或修改 Skill 后运行 `scripts/validate.sh`，全绿才算通过结构门禁（frontmatter、本地链接、孤儿引用、README 清点、调用模式）。
+- `skills/` 是所有 Skill 的权威副本；`.pi/skills/` 与 `~/.pi/agent/skills/` 中的镜像漂移时以仓库为准刷新；`metadata.origin` 等 provenance frontmatter 是镜像间唯一预期的差异。
 - 若 Crawl4AI 或 `npx skills` 不可用，明确说明未能核对，不要把记忆当作已验证的调研结果。

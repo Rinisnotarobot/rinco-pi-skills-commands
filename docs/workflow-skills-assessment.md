@@ -1,5 +1,21 @@
 # Rinco Pi Workflow 技能组评估报告
 
+> 文档角色：探索性评估快照，不是当前安装规范。现行使用约定见 [README「快速开始」](../README.md#快速开始)，维护决策见 [AGENTS.md](../AGENTS.md)。
+
+## 使用前提校正（2026-09-08）
+
+用户确认：workflow Skills 面向大型持续开发项目，采用一次性完整安装，在一个长 session 或多个 session 中完成任务。用户平常启动 coding agent，不应承担按任务选择 Skills、记住启动参数或在阶段切换时补装的成本。
+
+这改变了原评估的改进方向：
+
+- `shape / build / fix / review` 是整套能力内的任务路径，不是安装套装。「按任务装配」和「为只装单个提供路径」不再作为目标。
+- 缺失伙伴、发现异常和来源冲突属于安装异常；保留 `BLOCKED` / `PENDING` 及恢复后的调用指引，不再要求每个 workflow 拼出参数化启动命令。正常阶段交接留在当前 session，跨 session 依靠制品、证据状态和下一调用续接。
+- 整套安装不等于正文全量注入或所有阶段自动执行。Pi 仍按调用模式暴露入口、按需读取正文；显式授权、唯一 owner 和证据新鲜度规则保持不变。
+
+本轮已对齐 README、AGENTS 及原报告指出的 8 处 Skill 恢复说明。下文保留原始评估，以呈现误设「自由混搭安装」带来的设计摩擦；其中 12 个 workflow、样板数量、评分等均为历史统计，不是当前状态，也未在本次校正中重新评估。仅抽取重启样板而保留按任务装配，不能解决这一使用前提偏差。
+
+---
+
 **范围**:`skills/workflows/` 12 个 Skill 的约束体系、设计使用方式与"拧巴程度"评估
 **方法**:通读 README.md、AGENTS.md 及 12 个 `SKILL.md` 全文;`references/` 仅核对目录清单;辅以词频/样板统计(grep);未实际运行技能,未跑 `scripts/validate.sh`
 **结论预览**:概念层一致性很强(约束 2/10 拧巴);文本层与运行层拧巴明显(8/10)——整体约 **6.5/10**,根因是"软约束被写成硬条款形态,而宿主无强制执行手段,文档以重复与自我引用代偿"
@@ -34,7 +50,7 @@
 8. **每步 Completion Criterion 门控**:每步以可验证完成判据收尾(全组共 71 处)。
 9. **制品纪律**:产出型 workflow 唯一期望的仓库变更 = 单个 Markdown artifact;路径优先级(用户指定 → 仓库权威目录 → `docs/specs|plans|reviews/YYYY-MM-DD-<slug>.md`),存在则 `-2/-3` 不覆盖;写完读回;会话只回路径+摘要;`session-handoff` 写 `$TMPDIR`、只给 path+revision、禁止推断填空。
 
-### 1.3 设计使用方式
+### 1.3 当时文档声明的使用方式
 
 - **安装 = 目录复制**:项目级 `.pi/skills/<name>/` 或全局 `~/.pi/agent/skills/<name>/`;重启或 `/reload` 生效;删除即卸载;`skills/` 为权威安装源。
 - **按任务装配 + 推荐套装**(shape / build / fix / review),套装带"必需参考内容":`codebase-design`(plan/tdd/code-review 共享词汇)、`living-docs-governance`(session-handoff 格式唯一来源)。
@@ -94,7 +110,7 @@ AGENTS.md 最高原则是"Rinco 唯一内核、下游结论不平行复制",但�
 
 ---
 
-## 三、改进建议(按性价比排序)
+## 三、原改进建议(历史记录，安装相关建议已由上文校正取代)
 
 1. **收敛恢复协议为单一引用源**:把 BLOCKED-重启样板抽成一份共享引用(如 `references/recovery-protocol.md` 或 meta skill),8 处改为指向它,只保留一行的差异描述;把"本安装路径""前置条件"等易漂移措辞收口。
 2. **Completion Criterion 分档标注**:区分 `[verifiable]`(命令/观察可证伪)与 `[declarative]`(进度声明)两类,或把声明式判据改写为"下一步可观察产物";至少停止用不可证伪句子冒充门禁。

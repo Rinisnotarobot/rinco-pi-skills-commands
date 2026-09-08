@@ -8,7 +8,7 @@ compatibility: Requires verification unless an upstream orchestrator owns the fi
 
 Drive one observable behavior at a time through a verified **red → green → refactor** cycle. Let repository evidence define the test runner, conventions, and required gates.
 
-Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. Stop with `BLOCKED` and name the missing Skill when neither route can consume the final evidence handoff. Supply its installation destination and an exact `pi --no-skills --skill <path> ...` restart command using this installation's paths, retaining `tdd` and any upstream owner plus their required partners. Mark missing destinations as installation prerequisites; do not imply that reading a source file loads it into the session.
+Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. If neither route can consume the final evidence handoff, return `BLOCKED` naming the missing Skill and the observed discovery problem. Ask the user to repair the complete Rinco installation and restart Pi normally, preserving the current artifacts, next invocation, and any upstream owner. An unread Skill body is not a missing installation.
 
 ## Workflow
 
@@ -22,7 +22,7 @@ Inspect the requirement, affected code, nearby tests, test configuration, and re
 - the independent source of truth for the expected result;
 - the smallest relevant test command.
 
-For a defect with an unproven cause, confirm that `systematic-debugging` is available, then invoke it with `tdd` named as the downstream implementation owner and retain any upstream final verification owner unchanged. Stop with `BLOCKED` and provide a relaunch command when the diagnosis dependency is missing. Resume TDD only after validating and reusing the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. When debugging returns a blocker, return it to the caller without production edits. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
+For a defect with an unproven cause, confirm that `systematic-debugging` is available, then invoke it with `tdd` named as the downstream implementation owner and retain any upstream final verification owner unchanged. If the diagnosis dependency is missing, return `BLOCKED` and request the same installation recovery before resuming. Resume TDD only after validating and reusing the minimal reproduction, causal chain, violated invariant, expected RED signature, and cleanup state instead of rediscovering them. When debugging returns a blocker, return it to the caller without production edits. For behavior-preserving refactoring, establish a green baseline and identify any behavior that needs characterization.
 
 Ask the user about the seam only when repository evidence cannot resolve a consequential choice, such as changing a public interface or adding an expensive system test.
 

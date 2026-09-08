@@ -15,9 +15,9 @@ Explicit-only: the user asks for the handoff; never produce one speculatively at
 
 ### 1. Read the format from its owner
 
-Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` for flat installations, or `../../patterns/living-docs-governance/SKILL.md` for the source layout. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
+Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` for flat installations, or `../../patterns/living-docs-governance/SKILL.md` for categorized installations. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
 
-Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths. Ask the user to copy or repair the named format owner in the installation, then give a restart command using the actual installation paths. Preserve `session-handoff`, the next phase's owner, and its required dependencies; label a missing destination as requiring installation before that command can work. Do not substitute a checkout-relative example or reconstruct the format from memory.
+Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths. Ask the user to repair the complete Rinco installation, including the named format owner, then start Pi normally and resume `/skill:session-handoff`. Do not reconstruct the format from memory or treat a source-checkout read as an installation repair.
 
 Completion criterion: the field list being filled is the one currently in that file, not a remembered or invented one.
 
@@ -28,7 +28,7 @@ For each field the owner's format names, gather from these sources:
 - **Repository state** — branch, HEAD, and worktree status from `git` commands, never from conversation claims.
 - **Artifacts this session produced or consumed** — specs, plans, tickets, reviews, verification reports; each referenced by path and the revision it was established against. Artifacts inherited from prior sessions count when this session consumed them.
 - **Session facts** — the current owner and phase, open blockers and unresolved decisions verbatim, conclusions the session superseded, and the next explicit invocation.
-- **The next session's startup** — resolve the next phase's owner and required execution/reference dependencies to the installed paths. Preserve the current owner when its workflow must resume. Keep an isolated session isolated: supply `pi --no-skills --skill <verified-path> ...` covering that set, not bare `pi` or source-checkout paths. A verified installed parent directory is usable when all its Skills are intended. If discovery provenance is unknown, prefer this explicit command; if a dependency is missing, label the installation prerequisite rather than claiming the command is already sufficient. Normal discovery is an option only after confirming the intended paths, trust, and absence of conflicting sources.
+- **The next session's startup** — use the same complete Rinco installation and normal `pi` startup in the target project, not a subset assembled for the next phase. Verify the next owner's execution/reference dependencies against discovered or registered sources; preserve the current owner when its workflow must resume. Record missing dependencies, trust problems, or conflicting sources as installation blockers, and unknown provenance as `unresolved`. Carry forward explicit user launch constraints as exceptions rather than inventing new ones. The continuation depends on artifact paths, revisions, evidence freshness, and the next invocation, not remembered startup flags.
 
 If the user passed an argument describing the next session's focus, use it to sharpen the next-invocation and startup entries; do not drop other fields.
 
@@ -46,7 +46,7 @@ Completion criterion: the file exists outside the repository tree and every refe
 
 ### 4. Report and stop
 
-Report to the user: the handoff file's absolute path, the exact restart command for the next session, and any `unresolved` fields with what evidence would resolve them. Then stop. Starting the next session's work, fixing the unresolved fields, or touching repository files is downstream - not this skill's.
+Report to the user: the handoff file's absolute path, the target project directory, normal `pi` startup (or an explicit user-requested exception), the next invocation, and any `unresolved` fields with what evidence would resolve them. Tell the user to supply the handoff path to the new session; do not assume it will discover the document or inherit this conversation. Then stop. Starting the next session's work, fixing the unresolved fields, or touching repository files is downstream - not this skill's.
 
 ## Guardrails
 
@@ -55,4 +55,4 @@ Report to the user: the handoff file's absolute path, the exact restart command 
 - Never fill a field by inference - `none`, `unresolved`, and `no repository` are valid, honest values.
 - Never copy artifact content - path and revision only.
 - Never include secrets or personally identifying information.
-- Never spawn or chain the next session - the user starts it with the reported command.
+- Never spawn or chain the next session - the user starts it and supplies the reported handoff path.

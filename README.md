@@ -1,15 +1,15 @@
 # Rinco Pi Skills & Commands
 
-面向 [Pi coding agent](https://github.com/badlogic/pi-mono) 的工程 Skills 集合：用**单一所有者、无环交接和新鲜证据**连接需求、计划、实现、验证与评审。
+面向大型持续开发项目的 [Pi coding agent](https://github.com/badlogic/pi-mono) 工程 Skills 集合：**一次性完整安装，在长会话或多个 session 中持续使用**，以单一所有者、无环交接和新鲜证据连接需求、计划、实现、验证与评审。
 
-[快速开始](#快速开始) · [推荐套装](#推荐套装) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [参与维护](#参与维护)
+[快速开始](#快速开始) · [任务路径](#任务路径) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [参与维护](#参与维护)
 
 > [!IMPORTANT]
 > 项目仍在建设中，尚未提供统一的安装、升级或发布机制，也不会自动修改用户的 Pi 全局配置。`skills/` 中的内容已通过仓库内审查，但不等同于已发布的软件包；`processing/` 中的草稿不应作为稳定 Skill 使用。
 
 ## 为什么使用 Rinco
 
-- **按任务装配**：只安装当前工作需要的 Skills，减少上下文与同名冲突。
+- **整套常备**：完整安装全部已完成 Skills，阶段切换时选择调用，不重新选择安装组合。
 - **职责唯一**：规格、计划、诊断、实现、验证和评审各有一个明确 owner。
 - **证据门控**：结论必须绑定命令、观察结果和具体 worktree 状态。
 - **可恢复交接**：阶段间传递可检查的 handoff；后续变更会使旧证据失效。
@@ -17,51 +17,41 @@
 
 ## 快速开始
 
-### 按需安装
+### 一次性完整安装
 
-每个 Skill 是自包含目录（`SKILL.md` + `references/`）。安装就是复制目录：从 [`skills/`](skills/) 挑选需要的 Skill，复制进 Pi 的发现路径之一：
+将 [`skills/`](skills/) 下 `workflows/`、`patterns/`、`tools/`、`meta/` 的全部已完成 Skills 一次性复制到同一 Pi 发现范围，保留每个 Skill 的 `SKILL.md` 及引用、脚本和资源。可保留分类目录层级，Pi 会递归发现 `SKILL.md`。
 
-- 项目级：`<你的项目>/.pi/skills/<name>/`（仅该项目可用）
-- 全局级：`~/.pi/agent/skills/<name>/`（所有项目可用）
+选择一个安装范围，而不是选择一个任务套装：
 
-重启 Pi 后生效；移除 Skill 就是删除对应目录。本仓库不提供安装、升级或卸载工具，[`skills/`](skills/) 下的目录即安装源。
+- 项目级：`<你的项目>/.pi/skills/`（项目受信任后可用）
+- 全局级：`~/.pi/agent/skills/`（跨项目可用）
 
-### 试用单个 Skill
+配套的工程纪律、工具与共享引用一并携带；`processing/` 草稿不在安装范围内。本仓库的 `.pi/skills/` 是维护用镜像，不是完整安装清单。安装源以 `skills/` 为准；目前仍不提供安装、升级或卸载工具。
 
-不想安装时，可在本仓库根目录临时试用任一 Skill：
+### 平常启动与持续使用
+
+完整安装后，在目标项目目录按平常方式启动：
 
 ```bash
-pi --no-skills --skill skills/tools/readme
+pi
 ```
 
-进入 Pi 后调用：
+无需每次按任务拼接 `--skill`，也不以 `--no-skills` 隔离子集作为正常入口。阶段切换不要求重启或补装：在当前 session 中按任务选择 Skill，显式阶段仍由用户调用。
 
-```text
-/skill:readme
-```
+Pi 的「整套可用」不等于把所有正文一次塞进上下文：启动时发现已安装 Skills，将 model-invoked 的名称与描述放入上下文，正文与引用按任务读取；user-invoked 仍保留为显式入口。机制见 [Pi Skills 文档](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md)。
 
-`--no-skills` 可避免本机或项目中的同名 Skill 产生冲突。
+跨 session 时仍使用同一整套 Skills，传递当前 owner、制品路径与版本、证据适用状态、阻塞项及下一调用；新 session 据此恢复并核对证据新鲜度，而不是重新挑选安装组合。需要打包当前会话时显式调用 `/skill:session-handoff`，新 session 读取其交接文档；不假定新会话继承了旧对话。
 
-## 推荐套装
+## 任务路径
 
-套装是建议安装组合，不是机制，可以整套装用、只装其中一个，或自由混搭。未安装的依赖不会静默失败——工作流通过 frontmatter `compatibility` 声明伙伴，运行时检查可用性，缺失时以 `BLOCKED` 指名缺失的 Skill 并给出安装后重启的指令。
+以下是同一整套 Skills 内的常见任务路径，不是安装套装，也不要求每项任务执行全部 Skills。箭头表示交接顺序，调用授权见「设计原则」。
 
-| 套装 | 适配任务 | 链路 |
+| 路径 | 适配任务 | 链路 |
 |---|---|---|
 | shape | 需求模糊，需要先澄清再规格化 | grilling → domain-modeling → spec → plan |
 | build | 已有计划，开始实现 | plan → tdd → verification → code-review |
 | fix | 故障根因未知 | fix → systematic-debugging → tdd → verification |
 | review | 独立审查当前变更 | verification → code-review |
-
-**shape**：workflows `grilling`、`spec`、`plan`、`session-handoff`；patterns `domain-modeling`、`codebase-design`、`resilience`；tools `terminal-ops`、`context7-docs`。
-
-**build**：workflows `plan`、`tdd`、`systematic-debugging`、`verification`、`code-review`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
-
-**fix**：workflows `fix`、`systematic-debugging`、`tdd`、`verification`、`code-review`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
-
-**review**：workflows `code-review`、`verification`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
-
-**必需参考内容**：以上套装还需携带 patterns `codebase-design`（plan、tdd、code-review 的共享词汇）和 `living-docs-governance`（session-handoff 的唯一格式来源）；已有的无需重复复制。携带完整目录及引用文件，不代表每个任务都执行整个文档治理流程。build / fix / review 的合并集合共 12 个目录。
 
 ## Skills 目录
 
@@ -113,7 +103,7 @@ pi --no-skills --skill skills/tools/readme
 未知故障：fix → systematic-debugging → tdd → verification → code-review
 ```
 
-箭头表示证据与所有权交接，不授权自动调用下一个显式 Skill。Pi 在启动时发现 Skills，也支持 `/reload` 重载；本仓库以安装后重启作为依赖恢复流程，提示词或读取源文件本身不会完成安装或发现。必需依赖缺失时返回 `BLOCKED`，可选下游保留 `PENDING`，并指名恢复所需的实际安装路径。
+箭头表示证据与所有权交接，不授权自动调用下一个显式 Skill。`compatibility` 声明与运行时可用性检查用于发现异常，不是引导用户按阶段补装。必需依赖不可用时返回 `BLOCKED`，可选下游保留 `PENDING`；报告缺失项、已核实的发现路径或来源冲突，请用户修复完整安装后正常启动 Pi，再按原制品与调用恢复。仅仅尚未读取正文不算依赖缺失，读取源文件也不等于安装或注册 Skill。
 
 显式 Skill 可从模型列表隐藏，不能仅凭未出现在列表就判为未安装；同时检查 `/skill:<name>` 命令及对应来源。模型列表、命令注册和执行授权是不同状态。同名冲突会告警并保留先发现项，不会自动阻止运行；消除冲突、确认实际来源后再继续。
 

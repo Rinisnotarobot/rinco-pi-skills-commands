@@ -2,7 +2,7 @@
 name: publish-tickets
 description: Serialize an approved implementation plan's slices into tracker tickets - one ticket per approved slice, with blocking edges, requirement traceability, and a base revision - without re-slicing, merging, or reinterpreting the plan. Use when the user asks to publish, create, or file tickets from an approved plan.
 disable-model-invocation: true
-compatibility: Requires a plan artifact produced by the plan skill. Ticket owners (tdd, verification, code-review) run in later sessions; when reporting the first ticket, name the exact pi relaunch command that loads them.
+compatibility: Requires a plan artifact produced by the plan skill. Execution sessions use the complete Rinco installation, including tdd, verification, and code-review; hand off the ticket, source plan, and next invocation rather than a per-task launch command.
 ---
 
 # Publish Tickets
@@ -18,7 +18,8 @@ Accept only an approved `plan` artifact: a persisted implementation plan with an
 ```text
 BLOCKED: publish-tickets accepts only an approved plan artifact.
 Found: <what was actually supplied>.
-Run plan first, then re-invoke: pi --no-skills --skill skills/workflows/plan
+Next: /skill:plan <goal or source specification>
+After plan approval: /skill:publish-tickets <plan artifact>
 ```
 
 Verify, from the artifact itself:
@@ -30,7 +31,7 @@ Verify, from the artifact itself:
 
 For the base revision: if the plan records one, use it and check it — when the current worktree has changes on paths the plan's change map names, relative to that revision, the plan is stale. If the plan records none, stamp the current HEAD as the base revision at publish time and flag in the report that the plan pre-dates revision stamping. Either way the ticket carries a real, recorded revision; never fabricate one silently.
 
-Any other missing piece is a plan defect. Report `BLOCKED` with the named gap and the exact `plan` relaunch command — do not repair the plan here.
+Any other missing piece is a plan defect. Report `BLOCKED` with the named gap, source artifact, and `/skill:plan` request — do not repair the plan here or restart merely to switch owners.
 
 Completion criterion: the plan artifact is present, approved, internally complete, and not stale against its recorded revision, or the session is explicitly blocked with the gap named.
 
@@ -81,8 +82,10 @@ Tickets published: <count, target, per-ticket identifier and slice>
 Graph: <acyclic confirmation, frontier (tickets with no open blockers)>
 Traceability: <every ticket -> slice -> requirement IDs>
 Deviations: <plan defects found, unstamped base revision, or none>
-Next: <the frontier ticket to start with, and the exact pi relaunch command that loads tdd, verification, and code-review for its owner>
+Next: <frontier ticket, source plan path and base revision, next owner and explicit invocation>
 ```
+
+Tell the user how to continue with the ticket and plan references: invoke the next owner in the current session, or start Pi normally in the target project with the same complete installation. If a required owner is unavailable, name the installation problem, leave its downstream work `PENDING`, and ask the user to repair the complete installation before resuming.
 
 Return the report and stop. Implementation, verification, and review belong to their owning skills, invoked per ticket. A later plan revision supersedes the published set: unpublish or supersede the affected tickets explicitly, never silently.
 

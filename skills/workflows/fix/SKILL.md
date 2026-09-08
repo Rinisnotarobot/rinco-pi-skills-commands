@@ -9,9 +9,9 @@ disable-model-invocation: true
 
 Repair the defect, build/type failure, CI failure, or confirmed review finding supplied after `/skill:fix`. Orchestrate existing evidence owners instead of creating parallel diagnosis, test, review, or verification verdicts.
 
-Before starting, confirm that `systematic-debugging`, `tdd`, and `verification` appear in the current session's available Skills. Stop with `BLOCKED` and name every missing Skill when the core set is incomplete. Give its installation destination and an exact `pi --no-skills --skill <path> ...` restart command preserving `fix` and all three core partners. Derive paths from this installation, mark missing destinations as prerequisites, and retain the explicit `/skill:fix` invocation; source-checkout examples are not portable recovery commands. Prompt instructions alone cannot make an undiscovered dependency available.
+Before starting, confirm that `systematic-debugging`, `tdd`, and `verification` appear in the current session's available Skills. If the core set is incomplete, return `BLOCKED` naming every missing Skill and the observed discovery problem. Ask the user to repair the complete Rinco installation, restart Pi normally in the target project, and resume `/skill:fix` with the original target. An unread Skill body is not a missing installation.
 
-Check each conditional downstream Skill immediately before handoff. A missing `spec` or `plan` blocks a required reroute: name the missing Skill and provide a relaunch command that preserves the loaded core set and adds it. A missing `code-review` leaves that downstream gate `PENDING` rather than changing the completed repair verdict; provide the corresponding relaunch command and exact review scope. Never claim a handoff to an unavailable Skill.
+Check each conditional downstream Skill immediately before handoff. A missing `spec` or `plan` blocks a required reroute; a missing `code-review` leaves that downstream gate `PENDING` rather than changing the completed repair verdict. Report the installation problem and retain the next invocation, source artifacts, and exact scope. When the owner is available, hand off within the current session without reinstalling or restarting. Never claim a handoff to an unavailable Skill.
 
 Use another workflow when the request is not a repair. For diagnosis only, invoke `systematic-debugging` and stop at its proven-cause handoff. For evidence-only gate checks, invoke `verification`. When behavior already matches accepted intent and the user wants it changed, confirm `spec` is available and ask the user to invoke `/skill:spec` if no accepted behavior contract exists; otherwise confirm `plan` is available and hand that contract to `plan`.
 
@@ -80,7 +80,7 @@ Completion criterion: one verification report owns every required final gate for
 
 ### 6. Offer review without duplicating it
 
-Code review remains a separate user decision. When the user requested review or the repair changes a security boundary, public contract, migration, concurrency behavior, or other high-risk path, provide the exact scope. When `code-review` is available, ask the user to run `/skill:code-review <scope>`; otherwise record the review as `PENDING` and provide a relaunch command that adds it. Do not issue a review verdict from this workflow or treat `READY` as review approval.
+Code review remains a separate user decision. When the user requested review or the repair changes a security boundary, public contract, migration, concurrency behavior, or other high-risk path, provide the exact scope. When `code-review` is available, ask the user to run `/skill:code-review <scope>`; otherwise record the review as `PENDING`, name the installation problem, and retain that invocation and scope for recovery. Do not issue a review verdict from this workflow or treat `READY` as review approval.
 
 Completion criterion: required follow-up review has a reproducible handoff and is recorded as `PENDING` or completed; optional review is recorded as not requested; no second review or verification verdict exists.
 
