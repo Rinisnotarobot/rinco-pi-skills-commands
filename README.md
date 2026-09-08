@@ -2,10 +2,20 @@
 
 面向 [Pi coding agent](https://github.com/earendil-works/pi) 的工程 Skills 集合。Skills 提供**标准化的阶段方法**(诊断、规格、计划、TDD、验证、评审……),由 agent 按问题自由组合;不依赖任何"完整安装"或兄弟 Skill 在场。
 
-[组合方式](#组合方式) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [仓库结构](#仓库结构) · [参与维护](#参与维护)
+[安装](#安装让-agent-代劳) · [组合方式](#组合方式) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [仓库结构](#仓库结构) · [参与维护](#参与维护)
 
-> [!IMPORTANT]
-> 项目仍在建设中，尚未提供安装、升级或发布工具。`skills/` 是 Skill 的权威副本，已通过仓库内结构校验；`processing/` 中的草稿不是稳定 Skill。
+> [!NOTE]
+> `skills/` 是 Skill 的权威副本，已通过仓库内结构校验（`bash scripts/validate.sh`）；`processing/` 中的草稿不是稳定 Skill。安装 = 克隆 + 让 agent 代装（下方三步），仓库不维护版本清单——克隆即最新。
+
+## 安装(让 agent 代劳)
+
+最简单的用法：**克隆本仓库，在 Pi 中打开它，让 agent 帮你安装**——agent 会先问你“装哪些、装到哪”，再动手：
+
+1. **装哪些**：默认全部 19 件（11 workflows + 7 patterns + readme）；可点名子集，如 `spec plan tdd`。
+2. **装到哪**：默认全局 `~/.pi/agent/skills/`（所有项目可用）；仅限本项目则 `--scope .pi/skills`。
+3. **执行**：`bash scripts/install.sh [--scope <目录>] [skill...]`——把每件 Skill 连同其 `references/` 扁平镜像到 `<scope>/<name>/`，幂等：重复执行只覆盖同名文件。
+
+安装后 `verification` 这类自动 Skill 自下次会话起按描述触发；`/skill:<name>` 随时可显式调用（事件型 `publish-tickets` / `session-handoff` 只能这样调）。**卸载** = `rm -rf <scope>/<name>`；**升级** = 拉取仓库最新后重跑 install.sh。
 
 ## 组合方式
 
