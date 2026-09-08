@@ -16,14 +16,24 @@
 - **输入即会话证据。** 阶段产物(规格 ID、计划切片、诊断 handoff、测试记录)是可选输入:存在且新鲜则复用,缺失就从仓库直接做。没有必须收集的上游仪式。
 - **调用模式表达“谁可发起”。** 全部 workflow 均为自动——Pi 可按触发词自主选择，也可由用户经 `/skill:<name>` 显式调用；不代表“必须与别的 Skill 同场安装”。
 
-常用组合示例(链路是方向参考,不是固定流程):
+### 真实场景组合
 
-| 场景 | 自然组合 |
-|---|---|
-| 需求模糊,先澄清再规格化 | grilling → spec → plan |
-| 已有契约,开始实现 | plan → tdd → verification → code-review |
-| 故障且根因未知 | systematic-debugging(证因)→ tdd(修复)→ verification → code-review |
-| 独立审查当前变更 | verification(状态)→ code-review(结论) |
+读法：每格是一个阶段方法；上一阶段产物（决策集、规格 ID、切片、诊断记录、RED/GREEN、验证/评审报告）是下一阶段的**可选输入**——存在且新鲜则复用，缺失就从仓库直接做。箭头是自然交接方向，不是强制管道；agent 按触发词自动选中对应 Skill（不在场则按同一方法自跑），每阶段以证据停止点收尾。
+
+| 场景(典型开口) | 组合 | 关键产物与停止点 | 可调入的 patterns |
+|---|---|---|---|
+| 新功能,需求模糊(“我想做个 X…”) | grilling → spec → plan → tdd → verification → code-review | 决策集 → REQ/INV/AC → 切片 → RED/GREEN → 验证报告 → 评审报告 | domain-modeling、codebase-design |
+| 需求已清,直接实现(“按这份规格做…”) | spec(已有) → plan(compact) → tdd → verification | 最小计划:路径/改动/测试/验证 | coding-standards |
+| Bug 根因未知(最常见修复) | systematic-debugging → tdd → verification →(可选)code-review | 证因前硬闸:未证因不进实现;RED 必须真红 | resilience(超时/重试类) |
+| 构建/类型/CI 失败,原因直接 | fix(直接非行为路线) → verification | 逐因修改,每改重跑聚焦 gate;签名变了回分类 | — |
+| 数据/API/依赖迁移 | spec(consequential) → plan(rollout) →(可选)publish-tickets → 逐票 tdd → verification → code-review | 迁移/回滚/可观测即执行契约;frontier 票=当前阶段 | resilience |
+| 评审变更(“review 这个 PR”) | verification(pre-review 状态) → code-review | Review Verdict 与 Verification State 分列;报告只读落盘 | security-review、codebase-design |
+| 设计没把握,先试(“这状态机撑得住吗”) | prototype → grilling/spec → plan → tdd | 原型只答一问、只出证据,不进生产分支 | — |
+| 拷问想法 | grilling | 决策+拒绝项+未决阻塞,不产出规格 | — |
+| 大计划拆票分执行 | plan → publish-tickets →(每票一 session)tdd → verification → code-review | 票+base revision 防过期;跨 session 用票 ID | — |
+| 长会话交接新会话 | session-handoff | 交接文档在 /tmp,只存路径与修订,不复制内容 | living-docs-governance |
+
+**三个贯穿分叉**(agent 每次组合都要回答):① **根因已知吗?** 未证因先诊断,禁止直接改生产行为;② **改行为还是改需求?** 行为已符合意图却要改 = 新需求,路由 spec/plan,不让 fix 硬接;③ **要证明什么?** 实现完跑 verification 拿新鲜门禁,要独立结论跑 code-review——两者都不自封评审或发布批准。
 
 所有 workflow 均可由 Pi 按触发词自主选择（修复、评审、出规格、发票、会话交接亦然），也始终可经 `/skill:<name>` 由用户显式调用。agent 需要某阶段的方法而对应 Skill 不在场时，在当前会话内按同一方法执行。
 
