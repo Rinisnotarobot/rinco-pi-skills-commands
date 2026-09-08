@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Repair the defect, build/type failure, CI failure, or confirmed review finding supplied after `/skill:fix`. Orchestrate existing evidence owners instead of creating parallel diagnosis, test, review, or verification verdicts.
 
-Before starting, confirm that `systematic-debugging`, `tdd`, and `verification` appear in the current session's available Skills. Stop with `BLOCKED` and name every missing Skill when the core set is incomplete; Pi discovers Skills at startup, so instructions cannot make an unloaded dependency available.
+Before starting, confirm that `systematic-debugging`, `tdd`, and `verification` appear in the current session's available Skills. Stop with `BLOCKED` and name every missing Skill when the core set is incomplete. Give its installation destination and an exact `pi --no-skills --skill <path> ...` restart command preserving `fix` and all three core partners. Derive paths from this installation, mark missing destinations as prerequisites, and retain the explicit `/skill:fix` invocation; source-checkout examples are not portable recovery commands. Prompt instructions alone cannot make an undiscovered dependency available.
 
 Check each conditional downstream Skill immediately before handoff. A missing `spec` or `plan` blocks a required reroute: name the missing Skill and provide a relaunch command that preserves the loaded core set and adds it. A missing `code-review` leaves that downstream gate `PENDING` rather than changing the completed repair verdict; provide the corresponding relaunch command and exact review scope. Never claim a handoff to an unavailable Skill.
 

@@ -44,7 +44,7 @@ pi --no-skills --skill skills/workflows/readme
 
 ## 推荐套装
 
-套装是建议安装组合，不是机制；真实任务组合验证仍按 [`docs/pilots/PROTOCOL.md`](docs/pilots/PROTOCOL.md) 进行。可以整套装用、只装其中一个，或自由混搭。未安装的依赖不会静默失败——工作流通过 frontmatter `compatibility` 声明伙伴，运行时检查可用性，缺失时以 `BLOCKED` 指名缺失的 Skill 并给出安装后重启的指令。
+套装是建议安装组合，不是机制，可以整套装用、只装其中一个，或自由混搭。未安装的依赖不会静默失败——工作流通过 frontmatter `compatibility` 声明伙伴，运行时检查可用性，缺失时以 `BLOCKED` 指名缺失的 Skill 并给出安装后重启的指令。
 
 | 套装 | 适配任务 | 链路 |
 |---|---|---|
@@ -60,6 +60,8 @@ pi --no-skills --skill skills/workflows/readme
 **fix**：workflows `fix`、`systematic-debugging`、`tdd`、`verification`、`code-review`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
 
 **review**：workflows `code-review`、`verification`、`session-handoff`；patterns `coding-standards`、`resilience`；tools `terminal-ops`。
+
+**必需参考内容**：以上套装还需携带 patterns `codebase-design`（plan、tdd、code-review 的共享词汇）和 `living-docs-governance`（session-handoff 的唯一格式来源）；已有的无需重复复制。携带完整目录及引用文件，不代表每个任务都执行整个文档治理流程。build / fix / review 的合并集合共 12 个目录。
 
 ## Skills 目录
 
@@ -111,7 +113,9 @@ pi --no-skills --skill skills/workflows/readme
 未知故障：fix → systematic-debugging → tdd → verification → code-review
 ```
 
-箭头表示证据与所有权交接。Pi 在启动时发现已安装的 Skill，不会在会话中动态加载缺失 Skill；未安装的依赖由 `BLOCKED` 重启指令指名，安装后重启会话即可继续。
+箭头表示证据与所有权交接，不授权自动调用下一个显式 Skill。Pi 在启动时发现 Skills，也支持 `/reload` 重载；本仓库以安装后重启作为依赖恢复流程，提示词或读取源文件本身不会完成安装或发现。必需依赖缺失时返回 `BLOCKED`，可选下游保留 `PENDING`，并指名恢复所需的实际安装路径。
+
+显式 Skill 可从模型列表隐藏，不能仅凭未出现在列表就判为未安装；同时检查 `/skill:<name>` 命令及对应来源。模型列表、命令注册和执行授权是不同状态。同名冲突会告警并保留先发现项，不会自动阻止运行；消除冲突、确认实际来源后再继续。
 
 核心约束：
 
@@ -122,7 +126,7 @@ pi --no-skills --skill skills/workflows/readme
 5. 后续相关修改会使状态绑定的验证与评审证据失效。
 6. user-invoked 阶段完成交接后停止，不继续执行另一个 user-invoked 阶段。
 
-架构依据见 [ADR 0001：Rinco evidence kernel with Matt discovery layer](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与 [ADR 0002：自选安装 Skill，以推荐套装适配工作流](docs/adr/0002-self-install-skills-with-recommended-bundles.md)，实施记录见 [融合计划](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
+架构依据见 [ADR 0001：Rinco evidence kernel with Matt discovery layer](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与 [ADR 0002：自选安装 Skill，以推荐套装适配工作流](docs/adr/0002-self-install-skills-with-recommended-bundles.md)。
 
 ## 仓库结构
 
@@ -136,9 +140,7 @@ pi --no-skills --skill skills/workflows/readme
 ├── processing/      # 待调研、重构或验证的草稿
 ├── scripts/         # 仓库结构校验（validate.sh）
 ├── docs/
-│   ├── adr/         # 架构决策
-│   ├── plans/       # 实施与组合计划
-│   └── pilots/      # 组合验证协议
+│   └── adr/         # 架构决策
 └── AGENTS.md        # 本仓库的权威维护规则
 ```
 
@@ -146,7 +148,7 @@ pi --no-skills --skill skills/workflows/readme
 
 ## 当前状态
 
-已稳定的 Skills 位于 [`skills/`](skills/)；待处理候选位于 [`processing/skills/`](processing/skills/)。剩余 Skill 开发见 [Skill portfolio focus](docs/plans/2026-09-03-skill-portfolio-focus.md)；真实任务组合验证的状态和方法见 [Pilot 协议](docs/pilots/PROTOCOL.md)，执行顺序见 [验证计划](docs/plans/2026-09-07-composition-pilot-validation.md)。在全部目标 Skills 完成并验证前，本仓库不维护安装、复制或发布工具。
+已稳定的 Skills 位于 [`skills/`](skills/)；待处理候选位于 [`processing/skills/`](processing/skills/)。在全部目标 Skills 完成并验证前，本仓库不维护安装、复制或发布工具。
 
 ## 参与维护
 

@@ -70,7 +70,7 @@ Pi 缺少通用长期记忆时，以有类型、有所有者和有寿命的文�
 - 需要维护任务型 Pi 启动 profile，并承担适配上游更新的成本。
 - 每个 artifact 必须声明其权威范围和失效条件，防止文件型记忆变成陈旧缓存。
 
-详细迁移步骤见 [`../plans/2026-09-03-rinco-matt-skill-integration.md`](../plans/2026-09-03-rinco-matt-skill-integration.md)。
+> 2026-09-08 修订：`docs/plans/*` 与 `docs/pilots/*`（迁移实施计划、组合验证协议与试点记录）判定为过度设计产物后移除，本决策不再指向它们；`processing/` → `skills/` 的提升把关改由 AGENTS.md 产出规则与 `scripts/validate.sh` 结构门禁承担。其余内容不变。
 
 ## 重新评估条件
 

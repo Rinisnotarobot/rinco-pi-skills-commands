@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # Structural validation for the promoted-skill portfolio.
 #
-# Revives the structural gates removed with tests/ in 56255be, per the roadmap
-# item "dependency-free Bash using repository-local files"
-# (docs/plans/2026-08-28-skill-roadmap.md, manifest-validation section).
+# Revives the structural gates removed with tests/ in 56255be.
 #
 # FAIL blocks promotion; WARN is informational only.
 #   1. frontmatter: starts on line 1, name present and kebab-case, name equals

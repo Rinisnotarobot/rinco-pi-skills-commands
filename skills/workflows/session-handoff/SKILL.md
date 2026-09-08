@@ -2,7 +2,7 @@
 name: session-handoff
 description: Explicit-only session compaction - serialize the current session into a handoff document for a fresh session, in the session-continuation format owned by living-docs-governance. Use ONLY when the user explicitly asks to hand off, compact, or package the session for continuation (交接 / 打包会话 / 会话交接 / handoff / session handoff). Not for phase-to-phase handoffs inside a lane - those belong to each workflow skill's own output contract.
 disable-model-invocation: true
-compatibility: The handoff format is owned by skills/patterns/living-docs-governance (read its SKILL.md at invocation time; it need not be pre-loaded). Terminal evidence commands come from terminal-ops.
+compatibility: Requires readable living-docs-governance format content at its installed location (it need not be pre-loaded). Terminal evidence commands come from terminal-ops.
 ---
 
 # Session Handoff
@@ -15,13 +15,9 @@ Explicit-only: the user asks for the handoff; never produce one speculatively at
 
 ### 1. Read the format from its owner
 
-Open `skills/patterns/living-docs-governance/SKILL.md`, section "Session continuation handoff". Serialize exactly the fields defined there, however many that is and whatever they name. If that section or file is missing, report BLOCKED naming the exact next-session command that loads both skills:
+Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` for flat installations, or `../../patterns/living-docs-governance/SKILL.md` for the source layout. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
 
-```text
-pi --no-skills --skill skills/workflows/session-handoff --skill skills/patterns/living-docs-governance
-```
-
-Do not reconstruct the format from memory.
+Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths. Ask the user to copy or repair the named format owner in the installation, then give a restart command using the actual installation paths. Preserve `session-handoff`, the next phase's owner, and its required dependencies; label a missing destination as requiring installation before that command can work. Do not substitute a checkout-relative example or reconstruct the format from memory.
 
 Completion criterion: the field list being filled is the one currently in that file, not a remembered or invented one.
 
@@ -32,7 +28,7 @@ For each field the owner's format names, gather from these sources:
 - **Repository state** — branch, HEAD, and worktree status from `git` commands, never from conversation claims.
 - **Artifacts this session produced or consumed** — specs, plans, tickets, reviews, verification reports; each referenced by path and the revision it was established against. Artifacts inherited from prior sessions count when this session consumed them.
 - **Session facts** — the current owner and phase, open blockers and unresolved decisions verbatim, conclusions the session superseded, and the next explicit invocation.
-- **The next session's startup** — how to make the next phase's owning skill available: install or enable it in the Pi skill discovery path (project `.pi/skills/` or the global skills directory) and restart the session, or state an explicit `pi --no-skills --skill ...` command for temporary trial, derived from the next phase's owning skill.
+- **The next session's startup** — resolve the next phase's owner and required execution/reference dependencies to the installed paths. Preserve the current owner when its workflow must resume. Keep an isolated session isolated: supply `pi --no-skills --skill <verified-path> ...` covering that set, not bare `pi` or source-checkout paths. A verified installed parent directory is usable when all its Skills are intended. If discovery provenance is unknown, prefer this explicit command; if a dependency is missing, label the installation prerequisite rather than claiming the command is already sufficient. Normal discovery is an option only after confirming the intended paths, trust, and absence of conflicting sources.
 
 If the user passed an argument describing the next session's focus, use it to sharpen the next-invocation and startup entries; do not drop other fields.
 

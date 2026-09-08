@@ -10,8 +10,7 @@ Skills 完成前，不维护安装、复制或发布机制。
 引入外部 Skill、修改阶段所有权或设计组合调用链前，先读
 [`docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md`](docs/adr/0001-rinco-evidence-kernel-with-matt-discovery-layer.md) 与
 [`docs/adr/0002-self-install-skills-with-recommended-bundles.md`](docs/adr/0002-self-install-skills-with-recommended-bundles.md)。
-该 ADR 规定 Rinco 是唯一证据与交付内核，Matt 的能力只作为选择性适配的发现、词汇和上下文层；
-实施顺序见 [`docs/plans/2026-09-03-rinco-matt-skill-integration.md`](docs/plans/2026-09-03-rinco-matt-skill-integration.md)。
+该 ADR 规定 Rinco 是唯一证据与交付内核，Matt 的能力只作为选择性适配的发现、词汇和上下文层。
 
 ## 构建新 Skill 必须先查参考源
 

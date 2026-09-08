@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Review the Git scope supplied after `/skill:code-review`. With no scope, review every worktree change relative to `HEAD`. Persist the final report; do not modify the reviewed code.
 
-Before starting, confirm that `verification` appears in the current session's available Skills. Stop with `BLOCKED`, name the missing Skill, and provide a relaunch command when it is unavailable.
+Before starting, confirm that `verification` appears in the current session's available Skills. Stop with `BLOCKED` when it is unavailable. Name its installation destination and provide an exact `pi --no-skills --skill <path> ...` restart command preserving `code-review`, `verification`, and needed reference content from this installation, followed by the explicit `/skill:code-review` scope. Mark missing paths as installation prerequisites rather than claiming the command already works.
 
 ## Workflow
 

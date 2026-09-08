@@ -8,7 +8,7 @@ compatibility: Requires verification unless an upstream orchestrator owns the fi
 
 Drive one observable behavior at a time through a verified **red → green → refactor** cycle. Let repository evidence define the test runner, conventions, and required gates.
 
-Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. Stop with `BLOCKED` and name the missing Skill when neither route can consume the final evidence handoff.
+Before editing, confirm that `verification` is available unless an upstream orchestrator explicitly owns the final verdict. Stop with `BLOCKED` and name the missing Skill when neither route can consume the final evidence handoff. Supply its installation destination and an exact `pi --no-skills --skill <path> ...` restart command using this installation's paths, retaining `tdd` and any upstream owner plus their required partners. Mark missing destinations as installation prerequisites; do not imply that reading a source file loads it into the session.
 
 ## Workflow
 
