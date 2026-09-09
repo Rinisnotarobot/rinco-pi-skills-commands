@@ -99,7 +99,7 @@ Required skills for the next session
 Evidence invalidated by later changes
 ```
 
-The live handoff file lives at the project's wired path (default `docs/handoffs/current.md`), signposted from the harness so a fresh session reads it before starting any work. This Skill is the format and wiring host; `session-handoff` (explicit-only) is the producer - follow its evidence rules when it is not loaded rather than inventing a second serializer.
+The live handoff file lives at the project's wired path (default `docs/handoffs/current.md`). A fresh session finds it through the operator's direction, or through an AGENTS signpost this Skill wires (§5); until that wiring exists, do not claim automatic discovery. This Skill is the format and wiring host; `session-handoff` (explicit-only) is the producer - follow its evidence rules when it is not loaded rather than inventing a second serializer.
 
 ### 5. Wire the active harness honestly
 
