@@ -1,6 +1,6 @@
 # Rinco Pi Skills
 
-面向 [Pi coding agent](https://github.com/earendil-works/pi) 的工程 Skills 集合。Skills 提供**标准化的阶段方法**(诊断、规格、计划、TDD、验证、评审……),由 agent 按问题自由组合;不依赖任何"完整安装"或兄弟 Skill 在场。
+面向 [Pi coding agent](https://github.com/earendil-works/pi) 的工程 Skills 集合。Skills 提供**标准化的阶段方法**(诊断、规格、计划、TDD、验证、评审……),由 agent 按问题自由组合;不依赖任何"完整安装"或兄弟 Skill 在场——唯一例外:`session-handoff` 是薄序列化器,其交接格式只由 `living-docs-governance` 持有,点名安装时 `install.sh` 自动同装该宿主。
 
 [安装](#安装让-agent-代劳) · [组合方式](#组合方式) · [Skills 目录](#skills-目录) · [设计原则](#设计原则) · [仓库结构](#仓库结构) · [参与维护](#参与维护)
 
@@ -14,6 +14,8 @@
 1. **装哪些**：默认全部 19 件（16 workflows + 2 patterns + readme）；可点名子集，如 `spec plan tdd`。
 2. **装到哪**：默认全局 `~/.pi/agent/skills/`（所有项目可用）；仅限本项目则 `--scope .pi/skills`。
 3. **执行**：`bash scripts/install.sh [--scope <目录>] [skill...]`——把每件 Skill 连同其 `references/` 扁平镜像到 `<scope>/<name>/`，幂等：重复执行只覆盖同名文件。
+
+**依赖例外**：`session-handoff` 的交接格式只存在于 `living-docs-governance`（单一真源）；点名安装 `session-handoff` 时 install.sh 会自动同装该宿主并提示。除这一条外，其余 Skill 均可独立安装使用，缺失时按方法自跑。
 
 安装后 `verification` 这类自动 Skill 自下次会话起按描述触发；`/skill:<name>` 随时可显式调用（事件型 `publish-tickets` / `session-handoff` 只能这样调）。**卸载** = `rm -rf <scope>/<name>`；**升级** = 拉取仓库最新后重跑 install.sh。
 

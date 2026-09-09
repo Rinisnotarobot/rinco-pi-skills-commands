@@ -65,9 +65,11 @@ Completion criterion: every edit or finding is traceable to one applicable rule,
 
 Inspect the final diff for accidental formatting churn, generated-file edits, stale comments, and scope expansion. Give the affected scope, standards sources, and expected formatter, lint, type, and behavior checks to `verification` when it is available. Consume its current evidence instead of rediscovering gates, rerunning reusable checks, or assigning a second readiness state.
 
-When `verification` is unavailable, report the standards assessment as `UNVERIFIED` and name the missing evidence. A narrow manual inspection supports only the scoped maintainability observations, not repository readiness.
+When `verification` is unavailable, run the same method yourself: discover the affected scope's required gates from repository instructions and CI configuration, run the narrowest first, and capture `git status --short` before and after each command. Absence of the skill is not absence of the gate — reuse fresh same-scope evidence where it exists; do not lower the standard because the skill is not loaded.
 
-Completion criterion: the final diff has been inspected, and the single verification state is either consumed from `verification` or explicitly unavailable.
+Report `UNVERIFIED` only when evidence genuinely cannot be obtained — a gate environment or authorization is missing, or the task is maintainability-observation only and makes no readiness claim — and name the missing evidence in every such case. A narrow manual inspection alone supports only the scoped maintainability observations, not repository readiness.
+
+Completion criterion: the final diff has been inspected, and the single verification state is consumed from `verification`, established by the gates run under this method, or explicitly named `UNVERIFIED` with the evidence that is genuinely unobtainable.
 
 ## Output Contract
 

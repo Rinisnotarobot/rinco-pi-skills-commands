@@ -84,6 +84,8 @@ Copy the applicable rows from the reused verification report, or list the read-o
 | Tests | PASS/FAIL/N/A/BLOCKED | `...` |
 | Build | PASS/FAIL/N/A/BLOCKED | `...` |
 
+Required gates not run: <gate and why, e.g. generated-artifact consistency that needs a non-read-only build step>. A required gate due in the current stage that was not run makes the overall Verification State `BLOCKED` (or `NOT READY` when a required gate already `FAIL`ed); the gate rows above record per-gate results but never re-define the overall state. Never imply a gate that was not run.
+
 ## Requirement coverage
 - `<source ID>`: satisfied | violated by finding | not implemented | out of scope — <evidence>
 

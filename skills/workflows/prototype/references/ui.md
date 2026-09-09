@@ -19,7 +19,7 @@ A UI prototype is much easier to judge when it's **butting up against the rest o
 
 The route already exists. All sub-shape A work happens **on the throwaway branch**: the host page's render path is edited on that branch, never on the working branch. On the throwaway branch, variants are rendered **on the same route**, gated by a `?variant=` URL search param. The existing data fetching, params, and auth all stay. Only the rendering swaps — on the throwaway branch.
 
-Default is the original: with no `?variant=` param, the page renders exactly what it renders today. Prototype variants appear only when the param is present, and the switcher and the whole variant path gate on a non-production check, so a stray merge of prototype code cannot surface variants or the bar in a production build.
+Default is the original: with no `?variant=` param, the page renders exactly what it renders today. Prototype variants appear only when the param names a known variant, and the switcher and the whole variant path gate on a single activation condition — a known variant in a non-production build. A stray merge of prototype code therefore cannot surface variants or the bar in a production build, and absent, unknown, or production `variant` values all degrade to the original page: never a blank page or a partial UI.
 
 If the prototype is for something that doesn't yet have a page but *would naturally live inside one* (a new section of the dashboard, a new card on the settings screen, a new step in an existing flow), it's still sub-shape A. Mount the variants inside the host page's copy on the throwaway branch.
 
@@ -58,23 +58,27 @@ Create a single switcher component on the route:
 
 ```tsx
 // pseudo-code, adapt to the project's framework — throwaway branch only
-const variant = searchParams.get('variant'); // no default: absent param renders the original
+const variant = searchParams.get('variant');
+// One activation condition: a known variant name in a non-production build.
+// Absent, unknown, and production values all render the original page -
+// never a blank page or a partial UI.
+const active = isPrototypeEnv && ['A', 'B', 'C'].includes(variant) ? variant : null;
 return (
   <>
-    {!variant && <OriginalPage {...data} />}
-    {isPrototypeEnv && variant === 'A' && <VariantA {...data} />}
-    {isPrototypeEnv && variant === 'B' && <VariantB {...data} />}
-    {isPrototypeEnv && variant === 'C' && <VariantC {...data} />}
-    {isPrototypeEnv && <PrototypeSwitcher variants={['A','B','C']} current={variant} />}
+    {!active && <OriginalPage {...data} />}
+    {active === 'A' && <VariantA {...data} />}
+    {active === 'B' && <VariantB {...data} />}
+    {active === 'C' && <VariantC {...data} />}
+    {active && <PrototypeSwitcher variants={['A', 'B', 'C']} current={active} />}
   </>
 );
 ```
 
 The floating bottom bar:
 
-- Shows the current variant; clicking cycles; keyboard `←`/`→` also cycle.
+- Shows the active variant; clicking cycles; keyboard `←`/`→` also cycle.
 - Visually distinct from the page (e.g. high-contrast pill, subtle shadow) so it's obviously not part of the design being evaluated.
-- Gated, together with the entire variant render path, on a non-production check.
+- Gated together with the entire variant render path on the same activation condition: a known variant in a non-production build.
 
 Put the switcher in a single shared component on the throwaway branch so both sub-shapes can reuse it.
 

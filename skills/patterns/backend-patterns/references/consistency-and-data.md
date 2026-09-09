@@ -1,6 +1,6 @@
 # Consistency and Data Patterns
 
-Use this reference for structural data mechanisms: atomicity, concurrent updates, duplicate-effect storage, cross-system workflows, query shape, and read/write models. Invoke [`resilience`](../../../workflows/resilience/SKILL.md) to decide failure classification, budgets, retry or replay safety, and recovery policy; map that policy to the mechanisms here.
+Use this reference for structural data mechanisms: atomicity, concurrent updates, duplicate-effect storage, cross-system workflows, query shape, and read/write models. Invoke the `resilience` skill to decide failure classification, budgets, retry or replay safety, and recovery policy; map that policy to the mechanisms here.
 
 ## Local consistency
 

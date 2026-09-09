@@ -91,6 +91,8 @@ Derive completion evidence from the requirement, repository policy, selected des
 - authority: requirement, repository instruction, CI job, configuration, or explicit risk decision;
 - exact command or observable result, including prerequisites.
 
+Compact plans may compress these fields into stated common defaults — for example: every evidence item `required`, owner = executor, due at the `verification` stage, authority = the repository configuration the row cites — with per-row overrides. The fields are compressed, never dropped.
+
 Separate focused RED/GREEN evidence, affected package checks, repository-required gates, and evidence automation cannot prove. Do not invent a coverage threshold or require every test level. Match the contract to the risk and existing project policy.
 
 Planning defines this contract but does not execute it. Execution is a separate stage: TDD supplies behavior-cycle evidence at each named seam, and the verification phase — run by the executor, or via `/skill:verification` — decides which evidence is reusable, runs the missing gates, and states the final gate verdict.
@@ -117,7 +119,7 @@ Completion criterion: the final, self-reviewed plan exists at the reported path 
 
 ## Choose the Depth
 
-- **Compact:** one or two local files, established pattern, no persistent-data or public-contract change. Return current path, ordered changes, tests, and verification.
+- **Compact:** one or two local files, established pattern, no persistent-data or public-contract change. Return current path, ordered changes, tests, and verification — compressing the presentation, not the evidence contract: record the base revision and state each verification command's claim, scope, and proving method, with `required`/`optional`, owner/stage, and authority carried as stated defaults or per-row overrides, so downstream stages do not rediscover or re-guess them.
 - **Standard:** several modules or a new behavior crossing boundaries. Use the full output contract.
 - **Migration:** persistent data, public API/protocol, dependency replacement, multi-stage rollout, or compatibility window. Include transition states, rollback, observability, and cleanup.
 

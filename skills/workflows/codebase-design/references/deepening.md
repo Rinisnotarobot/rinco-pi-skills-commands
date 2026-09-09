@@ -31,7 +31,7 @@ Third-party services you do not control (payment processors, messaging providers
 
 ## Testing strategy: replace, don't layer
 
-- Old unit tests on shallow modules become waste once tests at the deepened module's interface exist; deleting them is part of the implementing slice, not this skill.
+- Old unit tests on shallow modules are deletable only when every behavior or regression they protect is mapped to a test at the deepened module's interface; a test whose protection does not migrate stays. Deleting happens in the implementing slice, with the mapping — or a concrete redundancy reason — recorded per deletion; this skill's evaluation never deletes tests.
 - New tests are written at the deepened module's interface. The **interface is the test surface**.
 - Tests assert on observable outcomes through the interface, not internal state.
 - Tests should survive internal refactors, since they describe behavior, not implementation. If a test has to change when the implementation changes, it is testing past the interface.

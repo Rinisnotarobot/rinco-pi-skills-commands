@@ -80,13 +80,13 @@ Completion criterion: behavior is unchanged, tests remain green, and the slice i
 
 Repeat RED → GREEN → REFACTOR for the next behavior. When the requested capability is complete, read [references/coverage-and-verification.md](references/coverage-and-verification.md). Run the affected tests needed to establish the completed behavior, then prepare a verification evidence handoff instead of independently rerunning every broad repository gate.
 
-Record evidence produced after the final relevant code or test mutation:
+Prepare the evidence handoff after the final relevant code or test mutation. Judge freshness per claim — each piece of evidence proves the state it was captured in, not automatically the final state:
 
 - every source `REQ`, `INV`, and `AC` identifier assigned to the TDD stage, mapped to RED/GREEN evidence, `N/A`, or another named owner;
 - behavior, seam, and acceptance claim;
-- exact RED and GREEN commands, exit results, and key output;
-- affected tests run after the final mutation;
-- relevant `git status --short` before and after those commands;
+- RED evidence — commands, exit results, and key output captured before the fix that it motivated, bound to the then-current code, the failing test, and the expected failure signature; a historical RED is never rerun as a current failure after the fix;
+- GREEN evidence and affected-test results — commands and output captured after the final relevant mutation;
+- relevant `git status --short` before and after those commands, with the worktree state each sample refers to;
 - broader gates not run, required prerequisites, and residual risks.
 
 When the caller names itself as the final verdict owner, return this complete evidence handoff and stop — the caller passes that instruction when invoking TDD; do not infer it from surrounding context.

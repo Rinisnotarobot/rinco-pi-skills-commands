@@ -15,7 +15,7 @@ Explicit-only: serialize only when the user asks; never produce one speculativel
 
 ### 1. Read the format from its owner
 
-Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` — this repo's layout and flat installations both keep the two skills as siblings under one family folder, so the same relative path resolves either way. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
+Resolve `living-docs-governance` from its location in the current session's discovered Skills. If it is reference-only and not discovered, look relative to the directory containing this `SKILL.md`: `../living-docs-governance/SKILL.md` — this repo's layout and flat installations both keep the two skills as siblings under one family folder, so the same relative path resolves either way. `scripts/install.sh` installs the host automatically whenever `session-handoff` is requested; if the host is absent from every discovery location, the sibling path cannot resolve and the `BLOCKED` rule below applies. Use an existing file whose frontmatter names `living-docs-governance`; stop on conflicting copies rather than choosing silently. Never resolve these paths against the user's working directory or assume the source checkout is installed.
 
 Read only its "Session continuation handoff" section as format content, not an instruction to start documentation governance. Serialize exactly the fields defined there. If the file or section is missing, report `BLOCKED` with the attempted paths and what would make the format readable. Never reconstruct the format from memory.
 
@@ -42,7 +42,9 @@ Write to the project's wired handoff location - the path the repo convention or 
 
 The document contains navigation, not content: artifact references are path plus revision; never copy an artifact's body into the handoff. Redact secrets, tokens, and personally identifying information before writing.
 
-Completion criterion: the file exists at the wired path inside the repository and every referenced path exists on disk at write time.
+After writing, re-sample the repository state (`branch`, `HEAD`, `git status --short`) and refresh the repository-state fields with the post-write snapshot. The write itself is a worktree change whenever the handoff file is untracked or modified — name that self-inflicted change explicitly instead of inheriting the pre-write snapshot; mark which repository fields are pre-write and which are post-write when they differ.
+
+Completion criterion: the file exists at the wired path inside the repository, every referenced path exists on disk at write time, and the repository-state fields describe the state after the write with the handoff file's own untracked or modified status named.
 
 ### 4. Report and stop
 

@@ -23,6 +23,8 @@ a `--compact` flag that prints one line per record with only `ts`, `level`, and
 
 ## Repository Evidence
 
+- Base revision: the commit at planning time (illustrative: `abc1234`) — recorded at the top of Repository Evidence so downstream stages and tickets can detect staleness against the code state this plan was planned for.
+
 ```text
 Fact: the command is a click CLI in cli/logs.py; render_log() returns a JSON line.
 Evidence: cli/logs.py::render_log
@@ -70,7 +72,7 @@ tests/test_logs.py :: test_logs_output (existing) plus two new tests
 - Implementation outline: add `@click.option("--compact", is_flag=True)` and pass
   `compact=compact` into the render call; `render_log` ignores the argument for
   now.
-- Verification: `uv run pytest tests/test_logs.py`
+- Verification (claim: `--compact` is accepted as an option; scope: the click command): `uv run pytest tests/test_logs.py`
 - Blocked by: none
 - Risks: none material
 
@@ -83,16 +85,25 @@ tests/test_logs.py :: test_logs_output (existing) plus two new tests
   the three fields and no JSON keys; it fails until the branch lands.
 - Implementation outline: when compact, join the three record fields in order;
   otherwise keep the existing `json.dumps` output.
-- Verification: `uv run pytest tests/test_logs.py`; a manual smoke run
-  `uv run python -m cli.logs --compact`.
+- Verification (claim: compact output is exactly `ts level message`; scope:
+  `render_log` with `compact=True`): `uv run pytest tests/test_logs.py`; a manual
+  smoke run `uv run python -m cli.logs --compact` shows only `ts level message`
+  lines.
 - Blocked by: slice 1
 - Risks: field order is a format decision — the RED test pins it, so it is
   explicit rather than implicit.
 
 ## Final Verification
 
-- `uv run pytest tests/`
-- `uv run python -m cli.logs` (no flag) still prints JSON lines.
+Common contract for every row below and for each slice's Verification line: `required`; owner = the executor; due at the `verification` stage (a slice line is due with that slice); authority = the repository configuration or interface the row cites. State an override in its own row instead of hiding it.
+
+| Claim | Scope | Method | Command |
+|---|---|---|---|
+| Default output unchanged: `logs` still prints one JSON object per line | `cli/logs.py` entry without `--compact` | manual observation | `uv run python -m cli.logs` |
+| `--compact` prints exactly `ts level message` per record | `render_log(compact=True)` (slice 2) | focused test | `uv run pytest tests/test_logs.py` |
+| Full suite green after both slices | whole change | repository test suite | `uv run pytest tests/` |
+
+Each row carries its claim, scope, proving method, and exact command — the executor and downstream stages do not rediscover or re-guess them. Compact compresses the presentation, not the contract: the `required`/`optional`, owner/stage, and authority defaults above apply to every row unless the row overrides them.
 
 ## Assumptions and Open Questions
 

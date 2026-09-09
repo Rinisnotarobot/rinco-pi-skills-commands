@@ -58,11 +58,13 @@ A verdict about a diff needs to know whether the code is in a working state at t
 - otherwise, run the narrowest read-only gates yourself — types, lint, and the affected tests where safe — capturing `git status --short` before and after;
 - when neither is possible, record the missing state explicitly — unproven breakage belongs in Open questions or limits the verdict, never in a silent assumption.
 
+Base the gate set on the current stage's verification contract: discover required gates from repository instructions and CI configuration, not from a remembered default list. Run the read-only, narrow ones; for every required gate you do not run — one that needs generated artifacts, a build step, external state, or approval — record the gate and why. Synthesize the single Verification State exactly as the `verification` method does: `READY` only when every required gate due in the current stage is `PASS` or has a credible `N/A` reason; `NOT READY` when any required gate is `FAIL`; `BLOCKED` when a required gate due now cannot be evidenced. Per-gate `PASS` rows record local progress but never re-define the overall state — a partial gate set produces no narrower `READY`. Evidence owned by a later stage remains `PENDING` and does not block this one.
+
 Reserve the final review artifact path (step 7) before running gate commands, so the review's own artifact is not treated as a change under review. Keep one state table: record `Verification State` separately from `Review Verdict`. A proven baseline failure can coexist with `APPROVE WITH COMMENTS`; a change-introduced failure blocks it.
 
 Keep review read-only. Do not install, upgrade, auto-fix, restore, or rewrite reviewed files. The final review artifact is the only expected repository change. An unavailable required gate is `BLOCKED`, not `N/A`; reserve `N/A` for a gate that does not apply.
 
-Completion criterion: the review has one current verification state for its exact scope — from a matching report or its own read-only gates — with no second, independently maintained gate table.
+Completion criterion: the review has one current verification state for its exact scope — from a matching report or its own read-only gates, synthesized under the `verification` rules — with no second, independently maintained gate table.
 
 ### 7. Persist and report the verdict
 

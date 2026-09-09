@@ -21,7 +21,7 @@ Before writing code, write down what state model and what question is being prot
 
 ### 2. Isolate the logic in a portable module
 
-Put the actual logic (the bit that's answering the question) in a single `<script>` block written as a small, pure module that a later plan could adopt into the real codebase. The page around it is throwaway; this module is the candidate.
+Put the actual logic (the bit that's answering the question) in a single `<script>` block written as a small, pure module that pins down the interface and state model a later production module must mirror. The whole demo — page and module — is throwaway: what a later plan adopts is the validated interface, state model, and evidence, re-implemented under TDD — never the prototype code itself.
 
 The right shape depends on the question:
 
@@ -30,7 +30,7 @@ The right shape depends on the question:
 - **A small set of pure functions** over a plain data type. Good when there's no implicit current state, just transformations.
 - **A class or module with a clear method surface** when the logic genuinely owns ongoing internal state.
 
-Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a page. Keep it pure: no DOM, no `document`, no button handlers reaching inside it. The page calls into it; nothing flows the other way. This is what makes the module adoptable later: once the question is answered, the validated reducer / machine / function set is a candidate for the production module — but adopting it is a plan decision, implemented through `tdd`, never a direct lift during the prototype.
+Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a page. Keep it pure: no DOM, no `document`, no button handlers reaching inside it. The page calls into it; nothing flows the other way. This is what makes the module adoptable later: once the question is answered, the validated reducer / machine / function set fixes the interface, state model, and behavior the production module must implement — but reaching production is a later plan decision executed through `tdd` at the production seam with its own RED test; the prototype code is never copied in, during the prototype or after.
 
 ### 3. Build the shareable HTML file
 
@@ -55,7 +55,7 @@ Send them the file, or open it for them. They'll click through the walkthroughs 
 
 ### 5. Capture the answer and the prototype
 
-Once the prototype has answered its question, capture the answer (per the main skill's handoff), then capture the prototype itself on the throwaway branch: the whole self-contained file stays trivially re-runnable there, a primary source for the decision. The validated module shape rides along as the adoptable candidate for a later plan; nothing is lifted into production code during the prototype.
+Once the prototype has answered its question, capture the answer (per the main skill's handoff), then capture the prototype itself on the throwaway branch: the whole self-contained file stays trivially re-runnable there, a primary source for the decision. The validated module shape rides along as the reference a later plan re-implements under TDD; nothing is lifted into production code, during the prototype or after.
 
 ## Anti-patterns
 
@@ -64,4 +64,4 @@ Once the prototype has answered its question, capture the answer (per the main s
 - **Don't generalize.** No "what if we wanted to support X later." The prototype answers one question.
 - **Don't blur the logic and the page together.** If the pure module references the DOM, `document`, or button handlers, it's no longer adoptable. Keep the page as a thin shell over a pure module.
 - **Don't reach for a framework, bundler, or server.** One file the recipient double-clicks; a React app or a dev server defeats "shareable".
-- **Don't lift the module into production during the prototype.** Adoption is a plan decision, implemented through `tdd`.
+- **Don't lift the module into production.** The prototype code never becomes production code; a later plan may adopt the validated interface and state model by re-implementing them under `tdd`.

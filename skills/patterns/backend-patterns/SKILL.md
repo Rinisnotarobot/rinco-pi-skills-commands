@@ -41,7 +41,7 @@ Read only the references needed for the active branch:
 |---|---|
 | Module boundaries, layering, dependency direction | [references/boundaries.md](references/boundaries.md) |
 | Transactions, concurrency, distributed consistency, data access | [references/consistency-and-data.md](references/consistency-and-data.md) |
-| Remote, asynchronous, partial-failure, or capacity policy | Invoke [resilience](../../workflows/resilience/SKILL.md); consume its policy and evidence requirements |
+| Remote, asynchronous, partial-failure, or capacity policy | Invoke the `resilience` skill — in this repository at `skills/workflows/resilience/`, in an installed flat scope as a sibling `resilience/` folder — and consume its policy and evidence requirements |
 | Queues, delivery semantics, publish/subscribe | [references/messaging.md](references/messaging.md) |
 | Caching, batching, pagination, throughput modeling | [references/caching-and-performance.md](references/caching-and-performance.md) |
 | Authentication, authorization, auditability, telemetry | [references/security-and-observability.md](references/security-and-observability.md) |

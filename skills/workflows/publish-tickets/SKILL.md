@@ -23,16 +23,18 @@ After plan approval: /skill:publish-tickets <plan artifact>
 
 Verify, from the artifact itself:
 
-- the plan states its source specification and requirement IDs;
+- requirement traceability is stated in one of two forms: the source specification's `REQ`/`INV`/`AC` identifiers when the plan was made from a spec, or the authoritative requirement source (approved behavior, decision set, spec path) with its behavior → slice → acceptance mapping when it was not;
 - the slice list is explicit and each slice has an identifier;
 - the dependency edges between slices are stated;
-- the plan records a base revision (the commit it was planned against) in its Repository Evidence.
+- the plan records a base revision (the commit it was planned against) in its Repository Evidence, or states why it cannot.
 
-For the base revision: if the plan records one, use it and check it — when the current worktree has changes on paths the plan's change map names, relative to that revision, the plan is stale. If the plan records none, stamp the current HEAD as the base revision at publish time and flag in the report that the plan pre-dates revision stamping. Either way the ticket carries a real, recorded revision; never fabricate one silently.
+Requirement IDs are not mandatory: a plan approved against a user-authoritative behavior with no spec file is still a publishable plan. What must be present is a named, traceable requirement source per slice — never an invented one.
+
+For the base revision: if the plan records one, use it and check it — when the current worktree has changes on paths the plan's change map names, relative to that revision, the plan is stale. If the plan records none, the plan pre-dates revision stamping, and the publish-time HEAD cannot stand in for a planning baseline: re-verify the change map — the paths, symbols, interfaces, and dependencies the plan names — against the current repository, and record the re-confirmation and the publish-time HEAD separately from the (unknown) planning baseline. If the change map cannot be re-confirmed, report `BLOCKED` with the gap named; do not stamp a revision that would make staleness undetectable. Never fabricate a baseline silently.
 
 Any other missing piece is a plan defect. Report `BLOCKED` with the named gap, source artifact, and the `/skill:plan` request — do not repair the plan here.
 
-Completion criterion: the plan artifact is present, approved, internally complete, and not stale against its recorded revision, or the session is explicitly blocked with the gap named.
+Completion criterion: the plan artifact is present, approved, and internally complete; it is either not stale against its recorded revision or, when it records none, re-confirmed against the current worktree; or the session is explicitly blocked with the gap named.
 
 ### 2. Map slices to tickets one-to-one
 
@@ -41,10 +43,10 @@ Map exactly one ticket per plan slice. Do not merge similar slices, split large 
 Each ticket carries, from the plan:
 
 - **Delivers**: the slice's behavior statement, copied verbatim from the plan;
-- **Requirements**: the source `REQ`/`INV`/`AC` identifiers the slice implements — IDs and pointers only, never the requirement text;
+- **Requirements**: the requirement identifiers the slice implements when the plan traces to a spec (`REQ`/`INV`/`AC` IDs and pointers only, never the requirement text); when the plan carries no spec identifiers, the authoritative requirement source and the slice's behavior statement instead;
 - **Source**: the plan artifact path and the slice identifier;
 - **Blocked by**: the slice identifiers of the gating slices, or "none";
-- **Base revision**: the commit recorded in step 1, so a stale ticket is detectable;
+- **Base revision**: the planning baseline or the re-confirmation record from step 1, so a stale ticket is detectable;
 - **Acceptance pointer**: the plan's per-slice verification contract, referenced by location, never restated.
 
 Keep exact file paths, symbols, and commands in the plan. A ticket references them by slice, never copies them — copied paths go stale and fork the plan's authority. Do not inline snippets from any non-plan source.
@@ -79,12 +81,12 @@ Producer: publish-tickets (plan serialization)
 Plan source: <artifact path, base revision, approval state>
 Tickets published: <count, target, per-ticket identifier and slice>
 Graph: <acyclic confirmation, frontier (tickets with no open blockers)>
-Traceability: <every ticket -> slice -> requirement IDs>
-Deviations: <plan defects found, unstamped base revision, or none>
-Next: <frontier ticket, source plan path and base revision, and the invocation that continues the work>
+Traceability: <every ticket -> slice -> requirement IDs, or authoritative requirement source when the plan has no spec identifiers>
+Deviations: <plan defects found, plan with no recorded baseline (re-confirmed at publish), or none>
+Next: <frontier ticket, source plan path and baseline or re-confirmation record, and the invocation that continues the work>
 ```
 
-Tell the user how to continue with the ticket and plan references: execute the frontier ticket in the target project with the TDD and verification methods (their skills when loaded), starting from the plan and its base revision. When something execution genuinely needs is unavailable, name it and leave that downstream work `PENDING`.
+Tell the user how to continue with the ticket and plan references: execute the frontier ticket in the target project with the TDD and verification methods (their skills when loaded), starting from the plan and its base revision — or its re-confirmation record when it pre-dates revision stamping. When something execution genuinely needs is unavailable, name it and leave that downstream work `PENDING`.
 
 Return the report and stop. Implementation, verification, and review are separate stages run per ticket, each with its own method. A later plan revision supersedes the published set: unpublish or supersede the affected tickets explicitly, never silently.
 

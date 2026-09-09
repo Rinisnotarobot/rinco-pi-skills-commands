@@ -59,6 +59,16 @@ for want in "${NAMES[@]}"; do
   }
 done
 
+# --- dependencies ---------------------------------------------------------
+# session-handoff is a thin serializer: its handoff format lives only in
+# living-docs-governance (single source of truth). Keep that single source and
+# make single installs work by pulling the format host in with the serializer.
+if [[ " ${NAMES[*]} " == *" session-handoff "* \
+  && " ${NAMES[*]} " != *" living-docs-governance "* ]]; then
+  NAMES+=(living-docs-governance)
+  echo "note: session-handoff reads its handoff format from living-docs-governance; installing the host too"
+fi
+
 # --- install ------------------------------------------------------------
 mkdir -p "$SCOPE"
 echo "installing ${#NAMES[@]} skill(s) into $SCOPE"

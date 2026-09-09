@@ -72,5 +72,5 @@ Completion criterion: the handoff carries every field, and the working branch is
 - Never answer two questions with one prototype.
 - Never edit production behavior to build or run a prototype.
 - Never present the prototype as production-ready, tested, or deployable.
-- Never let prototype code reach the production merge path without a later plan.
+- Never let prototype code reach the production merge path: a later plan may adopt the prototype's validated interface, state model, and evidence by re-implementing them under TDD — the throwaway code itself never lands.
 - Never skip recording the limitations — a prototype without limits stated is being oversold.
