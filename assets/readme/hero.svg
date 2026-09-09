@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title id="title">Rinco Pi Skills — 给 Pi 一套写代码的方法</title>
+  <desc id="desc">工程方法手册式封面。Rinco Pi Skills 包含 19 个按需选用的工程 Skills：16 个 Workflows、2 个 Patterns、1 个 Tool。每个 Skill 的入口是 SKILL.md。</desc>
+  <rect width="1200" height="460" rx="8" fill="#171717"/>
+
+  <!-- Publisher line: restrained identity, not a second headline. -->
+  <g id="masthead">
+    <text x="64" y="72" font-size="30" font-weight="600" letter-spacing="-0.5" fill="#F1EDE5">rinco<tspan fill="#C599A6">.</tspan></text>
+    <text x="1136" y="70" text-anchor="end" font-size="18" letter-spacing="1.4" fill="#ABA69F">METHODS FOR PI CODING AGENT</text>
+  </g>
+
+  <!-- The title owns the canvas; no panel, shadow, or decorative illustration. -->
+  <g id="title-block">
+    <text x="56" y="258" font-size="154" font-weight="500" letter-spacing="-7" fill="#F1EDE5">Pi Skills<tspan fill="#C599A6">.</tspan></text>
+    <text x="64" y="336" font-size="38" letter-spacing="2" fill="#F1EDE5">给 Pi 一套写代码的方法</text>
+  </g>
+
+  <!-- Repository-native marginal index; detailed inventory remains in Markdown. -->
+  <g id="skill-file-index" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <path d="M861 163 V326" fill="none" stroke="#46433F"/>
+    <text x="894" y="180" font-size="22" fill="#C599A6">SKILL.md</text>
+    <g font-size="20" fill="#ABA69F">
+      <text x="894" y="238"><tspan fill="#F1EDE5">16</tspan><tspan dx="20">workflows</tspan></text>
+      <text x="894" y="278"><tspan fill="#F1EDE5">02</tspan><tspan dx="20">patterns</tspan></text>
+      <text x="894" y="318"><tspan fill="#F1EDE5">01</tspan><tspan dx="20">tool</tspan></text>
+    </g>
+  </g>
+
+  <g id="colophon" font-size="18" fill="#ABA69F">
+    <text x="64" y="416" letter-spacing="1">19 个工程 Skills / 按需选用</text>
+    <text x="1136" y="416" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">skills/</text>
+  </g>
+</svg>
