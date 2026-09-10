@@ -2,6 +2,12 @@
 
 Use this reference for identity, policy enforcement, secrets, auditability, telemetry, health, and incident diagnosis.
 
+## Threat and abuse model
+
+Before selecting controls, identify protected assets, actors, trust boundaries, data classifications, privileged operations, and realistic abuse cases. For each case, name the authoritative enforcement point and the evidence that a bypass is denied. Do not turn a generic threat checklist into findings.
+
+When reviewing a change that crosses a trust boundary, invoke `security-review` for its source-to-sink evidence method and verdict. This reference retains architecture selection—identity propagation, policy placement, tenant isolation, audit, and telemetry—without issuing exploit findings.
+
 ## Security boundaries
 
 ### Authentication at the Boundary
@@ -58,6 +64,16 @@ Prefer service-level indicators tied to user-visible behavior over counts withou
 
 Trace causal work across process boundaries and annotate spans with operation and outcome, not secret payloads. Sampling policy must preserve enough errors and slow paths for diagnosis.
 
+### Service objectives and alerting
+
+Define SLIs from user-visible correctness, availability, latency, durability, and freshness. Set an SLO and observation window where the service has an operational commitment; use error-budget consumption to govern risk rather than treating every threshold breach equally.
+
+An alert must identify an owner and an actionable response. Prefer sustained or burn-rate signals over single-point noise, and connect alerts to a runbook or explicit first diagnostic step. Dashboard visibility without ownership is not an operating control.
+
+### Telemetry budget
+
+Bound event volume, metric cardinality, trace sampling, retention, and payload size. Preserve errors, slow paths, security decisions, and recovery transitions within that budget. Measure telemetry loss or throttling explicitly instead of silently dropping the evidence needed during an incident.
+
 ### Health and Readiness
 
 - **Liveness:** the process can continue or should be restarted.
@@ -81,3 +97,4 @@ A deep health check that creates load or shares the failing path can amplify inc
 - Confirm sensitive values are absent from logs, traces, metrics, and queue payloads.
 - Trace one workflow across synchronous and asynchronous boundaries.
 - Exercise readiness, telemetry backpressure, rotation, and audit retrieval during failure.
+- Prove each SLI from emitted signals, test alert routing and runbook entry conditions, and verify cardinality and sampling remain bounded under abuse or outage load.

@@ -10,9 +10,28 @@ Record:
 - latency percentiles, throughput, and error budget;
 - saturated resource: CPU, memory, connection pool, storage, network, lock, or dependency;
 - acceptable freshness and degradation behavior;
-- expected read/write ratio and key distribution.
+- expected read/write ratio, arrival rate, service time, concurrency, queueing, and key distribution;
+- cost per request, job, tenant, or unit of useful work when cost is a design constraint.
 
 An average latency without load and percentile context is not a sufficient baseline.
+
+## Analytical tools
+
+### Critical-path budget
+
+Allocate the end-to-end latency objective across serial waits and account for fan-out tail amplification. A downstream P99 cannot consume the caller's entire P99 budget. `resilience` owns deadlines and attempt budgets; this reference uses them in the performance model.
+
+### Queueing and concurrency
+
+Use Little's Law, `concurrency = throughput × time-in-system`, as a consistency check on measured steady-state workloads. Treat rising queue time and utilization near saturation as warning signals: adding workers or connections helps only when the constrained downstream resource has capacity. Model burst size and workload skew rather than assuming uniform arrival.
+
+### Hotspot analysis
+
+Measure per-key, tenant, partition, shard, and endpoint distributions. An acceptable aggregate can conceal one overloaded partition or noisy tenant. Select partition keys and isolation boundaries from observed or bounded skew, and define a rebalancing path.
+
+### Query and storage evidence
+
+Use representative query plans, index selectivity, rows scanned versus returned, lock time, I/O, memory, and write amplification. An index accelerates some reads by consuming storage and write capacity; retain it only when measured workload justifies that cost.
 
 ## Caching patterns
 
@@ -74,4 +93,4 @@ Use the performance model to identify the constrained resource and capacity targ
 
 ## Verification
 
-Compare the same representative workload before and after. Measure percentiles, throughput, resource saturation, cache hit ratio, load amplification, freshness age, and eviction. Consume overload and recovery evidence requirements from `resilience`; a faster happy path without that evidence is not a complete improvement.
+Compare the same representative workload and data distribution before and after. Measure percentiles, throughput, queue time, resource saturation, hotspot skew, rows scanned, cache hit ratio, load amplification, freshness age, eviction, and unit cost. State warm-up, cache state, concurrency, dataset size, and environmental differences so results are comparable. Consume overload and recovery evidence requirements from `resilience`; a faster happy path without that evidence is not a complete improvement.

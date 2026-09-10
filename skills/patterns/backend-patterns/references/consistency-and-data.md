@@ -108,9 +108,19 @@ Use a stable, unique ordering key when datasets change during traversal or deep 
 
 **Costs:** synchronization lag, additional storage, replay/backfill, and operational complexity. A separate class for reads and writes is not by itself CQRS.
 
+## Data lifecycle
+
+Persistent data needs an owner from creation through deletion. Define classification, authority, retention, archival, legal hold, deletion propagation, and the behavior of caches, indexes, replicas, events, backups, and derived views after the source changes or expires.
+
+For online schema or data transitions, use [Contracts and Evolution](contracts-and-evolution.md) to define coexistence and authority. Hand the selected transition to `plan` for expand-migrate-contract sequencing, checkpoints, rollout gates, and rollback or roll-forward actions.
+
+A backup is not recovery evidence. Name restore ownership, integrity checks, encryption and access boundaries, retained history, and the maximum acceptable un-restored interval. Regional placement and failover belong to [Topology and Continuity](topology-and-continuity.md).
+
 ## Verification
 
 - Exercise concurrent writers rather than only sequential unit tests.
 - Back invariants with storage constraints where available.
 - Run the duplicate, delayed, reordered, partial-failure, and recovery scenarios required by the consumed resilience assessment.
 - Measure reconciliation lag and outbox/inbox growth.
+- Test retention and deletion propagation across derived stores, caches, search indexes, messages, and restore procedures.
+- Reconcile migrated or backfilled data against the declared authority before removing the old representation.

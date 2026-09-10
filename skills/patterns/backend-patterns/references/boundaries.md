@@ -13,7 +13,23 @@ A useful boundary has:
 
 A directory or class is not automatically a boundary. Separate deployment is not automatically a service boundary.
 
+## Domain and capability ownership
+
+Consume the project's canonical vocabulary before drawing boundaries. A useful service or module boundary normally owns a capability, its policy, and the data needed to enforce its invariants. If terms or context ownership are disputed, invoke `domain-modeling`; this reference maps an accepted model into architecture rather than inventing a second one.
+
+Treat team ownership and deployment independence as forces, not proof of a boundary. Splitting one invariant across teams, stores, or synchronous services increases coordination and failure cost; require an explicit recovery mechanism when the split is unavoidable.
+
 ## Candidate patterns
+
+### Consistency Boundary (Aggregate)
+
+**Context:** several entities or state transitions participate in one synchronously enforced business invariant.
+
+**Shape:** one authoritative boundary loads the required state, decides the transition, and commits it atomically where the storage model permits.
+
+**Invariant:** no caller or adapter can commit a partial transition that violates the protected business rule.
+
+**Cost/failure mode:** an oversized aggregate increases contention and load; splitting it across services turns a local invariant into a distributed workflow. Keep only immediately consistent rules inside and use explicit eventual workflows for the rest.
 
 ### Transaction Script
 
@@ -78,5 +94,8 @@ A directory or class is not automatically a boundary. Separate deployment is not
 - Are multiple implementations real, likely, or merely imagined?
 - Does the boundary preserve useful storage/framework capabilities?
 - Can the behavior be tested without reproducing the implementation?
+- Which team owns the policy, data, operation, and incident response at this boundary?
+- Does a synchronous dependency reveal that one invariant was split across services?
+- Can the contract evolve while old and new callers coexist?
 
 Prefer the current structure when no meaningful change or policy boundary can be named.

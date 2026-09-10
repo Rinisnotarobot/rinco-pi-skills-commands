@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
   <title id="title">Rinco Pi Skills — 给 Pi 一套写代码的方法</title>
-  <desc id="desc">工程方法手册式封面。Rinco Pi Skills 包含 19 个按需选用的工程 Skills：16 个 Workflows、2 个 Patterns、1 个 Tool。每个 Skill 的入口是 SKILL.md。</desc>
+  <desc id="desc">工程方法手册式封面。Rinco Pi Skills 包含 20 个按需选用的工程 Skills：16 个 Workflows、3 个 Patterns、1 个 Tool。每个 Skill 的入口是 SKILL.md。</desc>
   <rect width="1200" height="460" rx="8" fill="#171717"/>
 
   <!-- Publisher line: restrained identity, not a second headline. -->
@@ -21,13 +21,13 @@
     <text x="894" y="180" font-size="22" fill="#C599A6">SKILL.md</text>
     <g font-size="20" fill="#ABA69F">
       <text x="894" y="238"><tspan fill="#F1EDE5">16</tspan><tspan dx="20">workflows</tspan></text>
-      <text x="894" y="278"><tspan fill="#F1EDE5">02</tspan><tspan dx="20">patterns</tspan></text>
+      <text x="894" y="278"><tspan fill="#F1EDE5">03</tspan><tspan dx="20">patterns</tspan></text>
       <text x="894" y="318"><tspan fill="#F1EDE5">01</tspan><tspan dx="20">tool</tspan></text>
     </g>
   </g>
 
   <g id="colophon" font-size="18" fill="#ABA69F">
-    <text x="64" y="416" letter-spacing="1">19 个工程 Skills / 按需选用</text>
+    <text x="64" y="416" letter-spacing="1">20 个工程 Skills / 按需选用</text>
     <text x="1136" y="416" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">skills/</text>
   </g>
 </svg>

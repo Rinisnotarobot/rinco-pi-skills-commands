@@ -4,7 +4,7 @@
   <img src="./assets/readme/hero.svg" width="100%" alt="Rinco Pi Skills：给 Pi 一套写代码的方法。修 Bug 可搭配 systematic-debugging 查原因、tdd 写测试和修复、verification 检查结果。">
 </p>
 
-给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 **19 个工程 Skills**，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
+给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 **20 个工程 Skills**，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
 
 每个 Skill 都是一份可按需读取的做事说明，**不是新模型，也不是自动跑到底的程序**。你可以直接描述任务，也可以点名指定方法。
 
@@ -29,7 +29,7 @@
 > [!WARNING]
 > 默认安装到 `~/.pi/agent/skills/`，供所有项目使用。再次安装会覆盖同名文件；请先备份对已安装 Skills 的自定义修改。
 
-在终端执行，安装全部 19 个 Skills：
+在终端执行，安装全部 20 个 Skills：
 
 ```bash
 git clone https://github.com/Rinisnotarobot/rinco-pi-skills-commands.git
@@ -111,7 +111,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 完整目录
 
-正式安装目录分为 **16 个 Workflows + 2 个 Patterns + 1 个 Tool**。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
+正式安装目录分为 **16 个 Workflows + 3 个 Patterns + 1 个 Tool**。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
 
 <details>
 <summary>Workflows · 16 个开发方法（展开查看用途与调用方式）</summary>
@@ -138,13 +138,14 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 </details>
 
 <details>
-<summary>Patterns 与 Tools · 后端设计、安全检查、README</summary>
+<summary>Patterns 与 Tools · 前后端设计、安全检查、README</summary>
 
 ### Patterns
 
 | Skill | 用途 |
 |---|---|
 | [`backend-patterns`](skills/patterns/backend-patterns/) | 根据项目需要，选择服务拆分、数据一致性、消息和缓存等方案。 |
+| [`frontend-patterns`](skills/patterns/frontend-patterns/) | 根据用户旅程和平台约束，选择界面组合、状态、渲染、交互与性能方案。 |
 | [`security-review`](skills/patterns/security-review/) | 检查数据和权限边界，只报告能说明完整利用过程的安全问题。 |
 
 ### Tools
@@ -157,7 +158,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 维护仓库
 
-`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 19 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。
+`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 20 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。
 
 <details>
 <summary>仓库结构与新增 Skill 的步骤</summary>
@@ -168,7 +169,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 ├── assets/readme/       # README 头图
 ├── skills/              # 安装脚本从这里复制
 │   ├── workflows/       # 开发步骤与做事方法
-│   ├── patterns/        # 后端设计与安全检查
+│   ├── patterns/        # 前后端设计与安全检查
 │   └── tools/           # README 工具
 ├── processing/          # 尚未进入正式目录的草稿
 └── scripts/

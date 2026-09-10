@@ -265,7 +265,7 @@ This skill is router-agnostic. The patterns above work with React Router, TanSta
 
 ## Related
 
-- Related draft skills: [frontend-patterns](../frontend-patterns/SKILL.md) for cross-framework UI concerns and [react-testing](../react-testing/SKILL.md) for component testing
+- Promoted cross-framework owner: [frontend-patterns](../../../skills/patterns/frontend-patterns/SKILL.md); this React draft must consume its settled architecture decisions before promotion. Related draft: [react-testing](../react-testing/SKILL.md) for component testing
 - Agents: `react-reviewer` for code review, `react-build-resolver` for build/bundler errors
 - Commands: `/react-review`, `/react-build`, `/react-test`
 

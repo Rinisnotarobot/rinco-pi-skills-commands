@@ -7,7 +7,7 @@ description: Model-invoked discipline for designing or reviewing failure behavio
 
 Design and review how a scoped operation fails, sheds load, and recovers. Preserve business correctness before availability: a fast duplicate charge or a successful response for lost work is not resilient.
 
-This Skill covers resilience policy and failure-evidence requirements. Adjacent concerns have their own stages and skills when loaded: broader architecture integration (`backend-patterns`), desired behavior (`spec`), the executable verification contract (`plan`), exploit paths (`security-review`), and the current implementation gate verdict (`verification`).
+This Skill covers resilience policy and failure-evidence requirements. Adjacent concerns have their own stages and skills when loaded: architecture integration (`backend-patterns` or `frontend-patterns`), desired behavior (`spec`), the executable verification contract (`plan`), exploit paths (`security-review`), and the current implementation gate verdict (`verification`).
 
 ## Workflow
 
@@ -78,7 +78,7 @@ Route adjacent concerns without absorbing them:
 | Unknown cascading failure or silent swallowing diagnosis | `systematic-debugging` |
 | Sensitive details exposed in responses or logs | `security-review` |
 | Diagnostic context, structured logs, metrics, and traces | `backend-patterns` observability guidance |
-| User messaging and render recovery | `PENDING`: `processing/skills/frontend-patterns/` source draft until that Skill is promoted |
+| User-visible pending, degraded, error, and recovery presentation | `frontend-patterns` |
 | Deadlines, retries, circuit breaking, overload, recovery | `resilience` |
 
 Resilience consumes error signals from those concerns; it does not create a universal error hierarchy or response envelope.
