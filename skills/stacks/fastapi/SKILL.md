@@ -1,6 +1,6 @@
 ---
 name: fastapi
-description: FastAPI application conventions - app factory and lifespan, pydantic-settings configuration, Pydantic v2 request and response schemas, dependency injection, router design, service and persistence seams, and httpx-based app testing. Use when working in a FastAPI service: adding or reviewing endpoints, schemas, dependencies, auth wiring, or settings, when a request-layer change needs the app's structure, or when FastAPI behavior must be reconciled with the project's existing layout. 中文触发：FastAPI、接口开发、路由、依赖注入、Pydantic
+description: FastAPI application conventions - app factory and lifespan, pydantic-settings configuration, Pydantic v2 request and response schemas, dependency injection, router design, service and persistence seams, and httpx-based app testing. Use when working in a FastAPI service - adding or reviewing endpoints, schemas, dependencies, auth wiring, or settings, when a request-layer change needs the app's structure, or when FastAPI behavior must be reconciled with the project's existing layout. 中文触发：FastAPI、接口开发、路由、依赖注入、Pydantic
 ---
 
 # FastAPI

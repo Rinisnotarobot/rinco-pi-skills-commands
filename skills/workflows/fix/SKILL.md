@@ -1,6 +1,6 @@
 ---
 name: fix
-description: Repair a reproducible defect, failed build, CI failure, or confirmed review finding end to end: pin the failure, prove the cause, correct it minimally, and establish the final verification verdict. Use when the user asks to fix a bug, failing build, CI failure, or review finding, or hands in a proven root cause that needs implementing.
+description: Repair a reproducible defect, failed build, CI failure, or confirmed review finding end to end - pin the failure, prove the cause, correct it minimally, and establish the final verification verdict. Use when the user asks to fix a bug, failing build, CI failure, or review finding, or hands in a proven root cause that needs implementing.
 ---
 
 # Fix

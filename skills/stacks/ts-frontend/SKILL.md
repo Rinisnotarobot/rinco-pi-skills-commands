@@ -1,6 +1,6 @@
 ---
 name: ts-frontend
-description: React and TypeScript frontend conventions - hooks discipline, component composition, server/client component boundaries, Suspense and error boundaries, data fetching and form actions, memoization and bundling, and component testing with React Testing Library. Use when working in a React or TypeScript frontend: writing or reviewing components, hooks, pages, or TSX, wiring data fetching or forms, tuning render cost, configuring tsconfig or module resolution, or when a React change must reconcile with the project's selected frontend architecture. 中文触发：React、前端组件、hooks、TSX、组件测试
+description: React and TypeScript frontend conventions - hooks discipline, component composition, server/client component boundaries, Suspense and error boundaries, data fetching and form actions, memoization and bundling, and component testing with React Testing Library. Use when working in a React or TypeScript frontend - writing or reviewing components, hooks, pages, or TSX, wiring data fetching or forms, tuning render cost, configuring tsconfig or module resolution, or when a React change must reconcile with the project's selected frontend architecture. 中文触发：React、前端组件、hooks、TSX、组件测试
 ---
 
 # TS Frontend

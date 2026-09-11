@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: Explicit-only session compaction: serialize the current session into a handoff document a fresh session can continue from, written into the repository's wired handoff location, in the session-continuation format owned by living-docs-governance. Invoke when you want to hand off, compact, or package the session for continuation; not for phase-to-phase handoffs inside a lane.
+description: Explicit-only session compaction - serialize the current session into a handoff document a fresh session can continue from, written into the repository's wired handoff location, in the session-continuation format owned by living-docs-governance. Invoke when you want to hand off, compact, or package the session for continuation; not for phase-to-phase handoffs inside a lane.
 disable-model-invocation: true
 compatibility: Requires the living-docs-governance session-continuation format to be readable at one of the resolved locations below (it need not be pre-loaded).
 ---

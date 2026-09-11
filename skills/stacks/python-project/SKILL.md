@@ -1,6 +1,6 @@
 ---
 name: python-project
-description: Python stack baseline for an arbitrary Python project - detect its toolchain, layout, typing posture, and pytest setup from the repository, then follow that repository's own idiom instead of a generic template. Use when working in any Python project: adding or reviewing Python code, choosing a package layout, configuring uv/ruff/mypy/pytest, or when a FastAPI, Django, script, or library change needs the stack's baseline. 中文触发：Python 项目、Python 常识、pyproject、pytest 配置、类型注解
+description: Python stack baseline for an arbitrary Python project - detect its toolchain, layout, typing posture, and pytest setup from the repository, then follow that repository's own idiom instead of a generic template. Use when working in any Python project - adding or reviewing Python code, choosing a package layout, configuring uv/ruff/mypy/pytest, or when a FastAPI, Django, script, or library change needs the stack's baseline. 中文触发：Python 项目、Python 常识、pyproject、pytest 配置、类型注解
 ---
 
 # Python Project
