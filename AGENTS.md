@@ -1,6 +1,6 @@
 # 在本仓库工作的约定
 
-Pi 每次会话自动加载这份文件。这里放每次都要守的约定；为什么这样设计见 [DESIGN.md](DESIGN.md)，每件 Skill 自己的流程见它的 `SKILL.md`。
+Pi 每次会话自动加载这份文件。这里放每次都要守的约定；为什么这样设计见 [DESIGN.md](docs/DESIGN.md)，每件 Skill 自己的流程见它的 `SKILL.md`。
 
 ## 每次改动
 

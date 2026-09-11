@@ -5,9 +5,9 @@
 下面这个顺序是权威顺序，冲突时按它取值；各部分各写各的，不重复维护：
 
 1. 各件 `SKILL.md` 是它自己流程的唯一准绳；
-2. [AGENTS.md](AGENTS.md) 是在本仓库改动时的常驻约定、提升步骤与收工门禁（Pi 每次会话自动加载）；
-3. 根 [README](README.md) 负责安装、清单与调用方式；
-4. [skills/workflows/README.md](skills/workflows/README.md) 负责阶段链与 16 件 Workflows 的简介；
+2. [AGENTS.md](../AGENTS.md) 是在本仓库改动时的常驻约定、提升步骤与收工门禁（Pi 每次会话自动加载）；
+3. 根 [README](../README.md) 负责安装、清单与调用方式；
+4. [skills/workflows/README.md](../skills/workflows/README.md) 负责阶段链与 16 件 Workflows 的简介；
 5. 本文负责上面都没写的那部分：分层、依赖方向、设计约束，以及几处刻意取舍的原因。
 
 本文档不随 `scripts/install.sh` 分发（它只复制 `skills/<family>/<name>/`）。
@@ -77,7 +77,7 @@ grep -rn '`verification`' skills --include='*.md' | wc -l    # 谁在引用 veri
 | 证据 | 完成 = 新鲜证据；旧结果不算数；"没装那件 Skill" 不是 `BLOCKED` 的理由 | 拿过期报告免检，拿缺件当借口 |
 | 权限 | 只读 / 可写 / 只能点名三级，会对外部世界产生副作用的只能点名 | agent 自作主张发工单、写交接文档 |
 
-骨架分节、frontmatter 字段、`## Output Contract` / `## Guardrails` 和渐进披露都是上游 Agent Skills 规范与 Pi 自带 `docs/skills.md` 已经规定的东西，本文不重复。本仓库自己的惯例只有三条：门面用 `## Workflow` 起骨架（`codebase-design`、`living-docs-governance` 这类词典与治理型除外），`description` 带 `Use when …`（只能点名的三件不需要触发句），来源说明写 `metadata:`。调用方式怎么选见 [`.pi/skills/writing-for-agents/SKILL-MECHANICS.md`](.pi/skills/writing-for-agents/SKILL-MECHANICS.md)。
+骨架分节、frontmatter 字段、`## Output Contract` / `## Guardrails` 和渐进披露都是上游 Agent Skills 规范与 Pi 自带 `docs/skills.md` 已经规定的东西，本文不重复。本仓库自己的惯例只有三条：门面用 `## Workflow` 起骨架（`codebase-design`、`living-docs-governance` 这类词典与治理型除外），`description` 带 `Use when …`（只能点名的三件不需要触发句），来源说明写 `metadata:`。调用方式怎么选见 [`../.pi/skills/writing-for-agents/SKILL-MECHANICS.md`](../.pi/skills/writing-for-agents/SKILL-MECHANICS.md)。
 
 ## 6. 边界与裁决：路由，而不是覆盖
 
@@ -94,8 +94,8 @@ grep -rn '`verification`' skills --include='*.md' | wc -l    # 谁在引用 veri
 ## 7. 治理
 
 - 结构门禁：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。其中 frontmatter 这道门调 Pi 自己的加载器（`scripts/validate-skills.mjs`），判定标准是"会话真能加载这份 Skill"，而不是本仓库重写一遍 frontmatter 解析；机器上没有 node 或 Pi 时降级为 WARN 加内建检查。它只检查结构与加载，不代表 Skill 在实际任务中的效果已经验证。
-- 草稿区：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
-- 提升成本固定：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以按 family 成批提升，不零敲碎打。
+- 草稿区：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](../AGENTS.md)。
+- 提升成本固定：新增一件要同步写死的计数，都集中在两个文件——根 `README.md` 的总数、安装命令、目录分解、分组标题和维护段，`assets/readme/hero.svg` 的 desc、四行计数和页脚。`scripts/install.sh` 只在新增依赖关系时补路由，`validate.sh` 的数字全部从 `skills/` 树现算，两者都不用改计数。所以按 family 成批提升，不零敲碎打。
 - 唯一原件：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来，所以点名安装 `session-handoff` 会自动补装前者。
 
 ## 8. 几处刻意的取舍
@@ -119,7 +119,7 @@ grep -rn '`verification`' skills --include='*.md' | wc -l    # 谁在引用 veri
 
 ## 10. 改动时同步哪几处
 
-- 新增或删除 Skill：按 [AGENTS.md](AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
+- 新增或删除 Skill：按 [AGENTS.md](../AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
 - 改了阶段边界或结论规则：`skills/workflows/README.md` 与相关 `SKILL.md` 一起改。
-- 改了分层、依赖方向或设计约束：本文与 [AGENTS.md](AGENTS.md) 一起改。
+- 改了分层、依赖方向或设计约束：本文与 [AGENTS.md](../AGENTS.md) 一起改。
 - 收工前：`bash scripts/validate.sh` 全绿。

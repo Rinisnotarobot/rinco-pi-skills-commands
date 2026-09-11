@@ -87,6 +87,6 @@ Skill 可以单独装、也可以缺着用，但行为红线不变：
 ## 阅读与维护
 
 - 本文只是导航，每件 Skill 的完整流程、边界和例外都以它自己的 `SKILL.md` 为准。
-- 安装方法、调用列图例、场景组合表以[根 README](../../README.md) 为准；跨 family 的设计原则、分层与依赖方向以 [DESIGN.md](../../DESIGN.md) 为准。各文档改动时保持一致。
+- 安装方法、调用列图例、场景组合表以[根 README](../../README.md) 为准；跨 family 的设计原则、分层与依赖方向以 [DESIGN.md](../../docs/DESIGN.md) 为准。各文档改动时保持一致。
 - 新增或改动后跑 `bash scripts/validate.sh`（检查 frontmatter、引用可达性、根 README 清单与调用契约），全绿才算过。
 - 新增成员：先在 `processing/skills/` 起草验证，再移入本目录，同时更新本文的分组与简介和根 README 的目录表。
