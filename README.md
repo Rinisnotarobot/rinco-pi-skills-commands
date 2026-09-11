@@ -192,7 +192,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 新增或修改 Skill 时：
 
-1. 先在 `processing/skills/<name>/` 起草和验证。
+1. 先在 `processing/skills/<name>/` 起草，按[草稿区说明](processing/README.md)的自查清单验证。
 2. 准备好正式使用后，放入 `skills/<family>/<name>/`。
 3. 同步更新本页的完整目录；Workflows 还需更新其[分组导航](skills/workflows/README.md)。
 
