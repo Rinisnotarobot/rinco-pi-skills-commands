@@ -184,7 +184,8 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 │   ├── patterns/        # 前后端设计与安全检查
 │   ├── stacks/          # 技术栈常识（Python、FastAPI、React、Node 后端）
 │   └── tools/           # README 工具
-├── processing/          # 尚未进入正式目录的草稿
+├── skills-lock.json     # .pi/skills/ 两个辅助 Skill 的来源与内容哈希
+├── processing/          # 草稿区与提升前自查清单
 └── scripts/
     ├── install.sh       # 安装或更新 Skills
     └── validate.sh      # 检查结构、链接和目录
