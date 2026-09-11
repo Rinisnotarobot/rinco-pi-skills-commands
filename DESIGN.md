@@ -5,9 +5,9 @@
 **权威顺序**（冲突时按此，各写各的那部分，不重复维护）：
 
 1. 各件 `SKILL.md` 是它自己流程的唯一准绳；
-2. 根 [README](README.md) 负责安装、清单与调用方式；
-3. [skills/workflows/README.md](skills/workflows/README.md) 负责阶段链与 16 件 Workflows 的简介；
-4. [processing/README.md](processing/README.md) 负责草稿怎么提升；
+2. [AGENTS.md](AGENTS.md) 是在本仓库改动时的常驻约定、提升步骤与收工门禁（Pi 每次会话自动加载）；
+3. 根 [README](README.md) 负责安装、清单与调用方式；
+4. [skills/workflows/README.md](skills/workflows/README.md) 负责阶段链与 16 件 Workflows 的简介；
 5. 本文负责上面都没写的那部分：分层、依赖方向、设计约束，以及几处刻意取舍的原因。
 
 本文档不随 `scripts/install.sh` 分发（它只复制 `skills/<family>/<name>/`）。
@@ -103,7 +103,7 @@ description             触发句 + 中文触发词
 
 正文（去掉 frontmatter）中位 99 行、最长 183 行，`description` 中位 346 字符。这三项是行为特征快照，不是门禁指标，新增 Skill 后不必回来同步。
 
-`frontmatter` 只要求 `name` + `description`；`disable-model-invocation` 是唯一影响加载方式的功能字段（目前 `publish-tickets`、`session-handoff` 在用）；来源说明写在 `metadata:` 下。字段级的检查清单见 [processing/README.md](processing/README.md)。
+`frontmatter` 只要求 `name` + `description`；`disable-model-invocation` 是唯一影响加载方式的功能字段（目前 `publish-tickets`、`session-handoff` 在用）；来源说明写在 `metadata:` 下。字段级约定见 [AGENTS.md](AGENTS.md)。
 
 ## 7. 边界与裁决：路由，而不是覆盖
 
@@ -120,7 +120,7 @@ description             触发句 + 中文触发词
 ## 8. 治理
 
 - **结构门禁**：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。它**只查结构**，不代表 Skill 在实际任务中的效果已经验证。
-- **草稿区**：`processing/` 只放还没进正式目录的东西，提升前按 [processing/README.md](processing/README.md) 的清单自查。
+- **草稿区**：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
 - **提升成本固定**：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以**按 family 成批提升**，不零敲碎打。
 - **唯一原件**：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来——所以点名安装 `session-handoff` 会自动补装前者。
 
@@ -146,7 +146,7 @@ description             触发句 + 中文触发词
 
 ## 11. 改动时同步哪几处
 
-- **新增或删除 Skill**：根 README 的 4 处计数与目录表、`assets/readme/hero.svg` 的两处计数、`skills/workflows/README.md`（仅涉及 workflows 时）、`scripts/install.sh` 的补装路由（如需要）。
+- **新增或删除 Skill**：按 [AGENTS.md](AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
 - **改了阶段边界或结论规则**：`skills/workflows/README.md` 与相关 `SKILL.md` 一起改。
-- **改了分层、依赖方向或设计约束**：改本文。
+- **改了分层、依赖方向或设计约束**：本文与 [AGENTS.md](AGENTS.md) 一起改。
 - **收工前**：`bash scripts/validate.sh` 全绿。

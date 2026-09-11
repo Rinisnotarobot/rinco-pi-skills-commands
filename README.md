@@ -170,13 +170,14 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 维护仓库
 
-`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 24 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。跨 family 的设计哲学、分层与依赖方向见 [DESIGN.md](DESIGN.md)。
+`skills/` 是正式安装来源；`processing/` 是[草稿区](processing/README.md)，不计入 24 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。在本仓库改动时的约定与门禁见 [AGENTS.md](AGENTS.md)；跨 family 的设计哲学、分层与依赖方向见 [DESIGN.md](DESIGN.md)。
 
 <details>
 <summary>仓库结构与新增 Skill 的步骤</summary>
 
 ```text
 .
+├── AGENTS.md            # 在本仓库改动时的常驻约定与门禁（Pi 自动加载）
 ├── .pi/skills/          # 维护本仓库时使用的辅助 Skills
 ├── assets/readme/       # README 头图
 ├── LICENSE              # 本仓库内容的 MIT 许可证
@@ -188,7 +189,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 │   ├── stacks/          # 技术栈常识（Python、FastAPI、React、Node 后端）
 │   └── tools/           # README 工具
 ├── skills-lock.json     # .pi/skills/ 两个辅助 Skill 的来源与内容哈希
-├── processing/          # 草稿区与提升前自查清单
+├── processing/          # 草稿区（规则见 AGENTS.md）
 └── scripts/
     ├── install.sh       # 安装或更新 Skills
     └── validate.sh      # 检查结构、链接和目录
@@ -196,7 +197,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 新增或修改 Skill 时：
 
-1. 先在 `processing/skills/<name>/` 起草，按[草稿区说明](processing/README.md)的自查清单验证。
+1. 先在 `processing/skills/<name>/` 起草，按 [AGENTS.md](AGENTS.md) 的五条约定对照。
 2. 准备好正式使用后，放入 `skills/<family>/<name>/`。
 3. 同步更新本页的完整目录；Workflows 还需更新其[分组导航](skills/workflows/README.md)。
 
