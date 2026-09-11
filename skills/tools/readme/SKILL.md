@@ -5,7 +5,7 @@ metadata:
   version: 4.0.0
   origin: in-house
   upstream: none
-  note: Original synthesis; patterns drawn from mattpocock/skills, affaan-m/ECC, awesome-copilot create-readme, and softaworks crafting-effective-readmes (sources listed in commit 6947d5d).
+  note: Original synthesis; patterns drawn from mattpocock/skills, awesome-copilot create-readme, and softaworks crafting-effective-readmes (sources listed in commit 6947d5d).
 ---
 
 # README
