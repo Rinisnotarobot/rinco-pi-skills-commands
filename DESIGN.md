@@ -66,46 +66,20 @@
 grep -rn '`verification`' skills --include='*.md' | wc -l    # 谁在引用 verification
 ```
 
-完整依赖图的扫法是一次性脚本，没有进仓库（见第 10 节）。
+完整依赖图的扫法是一次性脚本，没有进仓库（见第 9 节）。
 
-## 5. 五条设计约束
+## 5. 四条设计约束
 
 | 约束 | 规则 | 违反后的症状 |
 |---|---|---|
 | 切分 | 一件 Skill 负责一个阶段或领域，结论不串门 | 报告里冒出"整体没问题"这类越权结论 |
-| 触发 | 只有 `name` + `description` 常驻上下文，由 `description` 决定加载（上限 1024 字符）；正文里的 `## When to Activate` 不触发 | 内容写了但不加载，等于死码 |
 | 权威 | 仓库 > Skill。栈层是"惯例"，与仓库冲突时仓库赢，并报告差异 | Skill 变成模板，覆盖项目自己的写法 |
 | 证据 | 完成 = 新鲜证据；旧结果不算数；"没装那件 Skill" 不是 `BLOCKED` 的理由 | 拿过期报告免检，拿缺件当借口 |
 | 权限 | 只读 / 可写 / 只能点名三级，会对外部世界产生副作用的只能点名 | agent 自作主张发工单、写交接文档 |
 
-## 6. 统一骨架
+骨架分节、frontmatter 字段、`## Output Contract` / `## Guardrails` 和渐进披露都是上游 Agent Skills 规范与 Pi 自带 `docs/skills.md` 已经规定的东西，本文不重复。本仓库自己的惯例只有三条：门面用 `## Workflow` 起骨架（`codebase-design`、`living-docs-governance` 这类词典与治理型除外），`description` 带 `Use when …`（只能点名的三件不需要触发句），来源说明写 `metadata:`。调用方式怎么选见 [`.pi/skills/writing-for-agents/SKILL-MECHANICS.md`](.pi/skills/writing-for-agents/SKILL-MECHANICS.md)。
 
-```text
-description             触发句 + 中文触发词
-├── ## Workflow          编号步骤，每步一条 completion criterion
-├── ## <家族专属 Rules>  Baseline / Service / Component / Route / Pattern Selection / Boundaries
-├── ## Output Contract   固定输出槽位（可选）
-├── ## Guardrails        安全红线（可选）
-└── references/*.md      渐进披露；分支表写"读哪份文档"或"转交给哪件 Skill"
-```
-
-量级快照（2026-09-11）：
-
-| 项 | 值 | 复核命令 |
-|---|---|---|
-| Skill 数 | 24 | `find skills -name SKILL.md \| wc -l` |
-| reference 文件数 | 68 | `find skills -path '*/references/*.md' \| wc -l` |
-| `SKILL.md` 总行数 | 2,578 | `find skills -name SKILL.md -exec cat {} + \| wc -l` |
-| 以 `## Workflow` 为骨架 | 22 | `find skills -name SKILL.md -exec grep -l '^## Workflow' {} + \| wc -l` |
-| 带 `## Output Contract` | 9 | 同上，换成 `'^## Output Contract'` |
-| 带 `## Guardrails` | 8 | 同上，换成 `'^## Guardrails'` |
-| `description` 带 `Use when` | 21 | `find skills -name SKILL.md -exec grep -l 'Use when' {} + \| wc -l` |
-
-正文（去掉 frontmatter）中位 99 行、最长 183 行，`description` 中位 346 字符。这三项是行为特征快照，不是门禁指标，新增 Skill 后不必回来同步。
-
-`frontmatter` 只要求 `name` + `description`；`disable-model-invocation` 是唯一影响加载方式的功能字段（目前 `publish-tickets`、`session-handoff` 在用）；来源说明写在 `metadata:` 下。字段级约定见 [AGENTS.md](AGENTS.md)。
-
-## 7. 边界与裁决：路由，而不是覆盖
+## 6. 边界与裁决：路由，而不是覆盖
 
 多数 Skill 系统写"能做什么"，这套的重点是"到哪里为止"：
 
@@ -115,28 +89,27 @@ description             触发句 + 中文触发词
 - `verification` 是 `READY` / `NOT READY` / `BLOCKED` 合成规则的唯一来源，`code-review` 遵守同一套；
 - `code-review` 只读、报告落盘、不改被审代码。
 
-冲突怎么裁决：路由，不是覆盖。另一种常见做法是用优先级让专用规则盖掉通用规则（"specific overrides general"，像 CSS 权重）；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 "Invoke `resilience`; do not invent failure policy here" 这样的句子。代价是没有自动一致性检查（见第 10 节），收益是不会出现伪装成"通用"的栈知识。
+冲突怎么裁决：路由，不是覆盖。另一种常见做法是用优先级让专用规则盖掉通用规则（"specific overrides general"，像 CSS 权重）；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 "Invoke `resilience`; do not invent failure policy here" 这样的句子。代价是没有自动一致性检查（见第 9 节），收益是不会出现伪装成"通用"的栈知识。
 
-## 8. 治理
+## 7. 治理
 
 - 结构门禁：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。其中 frontmatter 这道门调 Pi 自己的加载器（`scripts/validate-skills.mjs`），判定标准是"会话真能加载这份 Skill"，而不是本仓库重写一遍 frontmatter 解析；机器上没有 node 或 Pi 时降级为 WARN 加内建检查。它只检查结构与加载，不代表 Skill 在实际任务中的效果已经验证。
 - 草稿区：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
 - 提升成本固定：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以按 family 成批提升，不零敲碎打。
 - 唯一原件：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来，所以点名安装 `session-handoff` 会自动补装前者。
 
-## 9. 几处刻意的取舍
+## 8. 几处刻意的取舍
 
 下面这些做法在别处很常见，这里选了另一条路，理由都是可核对的：
 
 | 常见做法 | 这里的做法 | 原因 |
 |---|---|---|
-| 门面写满代码示例，把正文压到很长 | 门面写主干，细节进 `references/`（渐进披露） | 长代码示例会挤掉"先探测仓库"的注意力 |
 | 把阈值与强制流程写进 Skill（覆盖率 80%、必须 RED→GREEN→REFACTOR） | 阈值交给项目或调用方，Skill 只要求取证 | 阈值属于项目策略，写进 Skill 就会与仓库冲突 |
-| 用优先级让专用规则盖掉通用规则 | 路由：转交给 owner | 见第 7 节 |
+| 用优先级让专用规则盖掉通用规则 | 路由：转交给 owner | 见第 6 节 |
 | 复制即分发（同一内容镜像到多个框架目录） | 单一来源 + 安装时复制（`scripts/install.sh`） | 复制出来的副本没法维护 |
 | 引用框架自带的 agent、命令、persona | 不引用本仓库里不存在的东西 | 单独摘出来就是死链 |
 
-## 10. 已知取舍与未解
+## 9. 已知取舍与未解
 
 1. L3 不写 API 手册：换来不过期，代价是每次都要现场取证。
 2. 没有语义一致性工具：六道门全是结构检查，跨 Skill 的重复与冲突靠人发现。第 4 节那张依赖图目前没有门禁，候选做法是把它做成第 7 道门。
@@ -144,7 +117,7 @@ description             触发句 + 中文触发词
 4. 中文触发词有误触发风险：`ts-frontend` 在 Vue、Svelte 项目里也可能被触发（已接受）。
 5. 策略阈值一律不由 Skill 规定：覆盖率、重试上限、超时值交给项目或调用方。
 
-## 11. 改动时同步哪几处
+## 10. 改动时同步哪几处
 
 - 新增或删除 Skill：按 [AGENTS.md](AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
 - 改了阶段边界或结论规则：`skills/workflows/README.md` 与相关 `SKILL.md` 一起改。

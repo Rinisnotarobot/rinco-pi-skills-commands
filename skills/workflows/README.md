@@ -28,9 +28,9 @@ Skill 可以单独装、也可以缺着用，但行为红线不变：
 - 原型代码永远不进生产；评审的结论和验证的状态是两件分开记录的事；
 - 少数会对外部世界产生影响的 Skill（`publish-tickets` 发票、`session-handoff` 写交接）只能由用户点名调用，agent 不能自作主张。
 
-### 门面与 references 的分工
+### 共用格式只留一份原件
 
-每件 `SKILL.md` 读一遍就够判断"何时用、怎么走、以什么收尾"，分支情况和细则放进旁边的 `references/`，需要时才翻。跨 Skill 共用的格式只保留一份原件：交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来，所以点名安装 `session-handoff` 时会自动带上 `living-docs-governance`。
+跨 Skill 共用的格式只保留一份原件：交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来，所以点名安装 `session-handoff` 时会自动带上 `living-docs-governance`。
 
 ## 组合方式
 
