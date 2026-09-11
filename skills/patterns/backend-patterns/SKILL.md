@@ -51,7 +51,7 @@ Read only the references needed for the active branch:
 | Caching, batching, pagination, throughput and cost modeling | [references/caching-and-performance.md](references/caching-and-performance.md) |
 | Regional topology, replication placement, failover, restore | [references/topology-and-continuity.md](references/topology-and-continuity.md) |
 | Authentication, authorization, auditability, telemetry | [references/security-and-observability.md](references/security-and-observability.md); invoke `security-review` for a deep review of changed trust boundaries |
-| Node.js/TypeScript implementation choices | [references/node-typescript.md](references/node-typescript.md) |
+| Node.js/TypeScript implementation: project and runtime setup, composition, validation and error mapping, persistence and job wiring | Invoke `ts-backend`; it expresses the selected backend architecture in Node.js and TypeScript forms |
 
 Completion criterion: candidate patterns come from the problem branch rather than from habit.
 

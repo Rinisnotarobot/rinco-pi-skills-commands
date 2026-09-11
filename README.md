@@ -4,7 +4,7 @@
   <img src="./assets/readme/hero.svg" width="100%" alt="Rinco Pi Skills：给 Pi 一套写代码的方法。修 Bug 可搭配 systematic-debugging 查原因、tdd 写测试和修复、verification 检查结果。">
 </p>
 
-给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 **23 个工程 Skills**，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
+给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 **24 个工程 Skills**，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
 
 每个 Skill 都是一份可按需读取的做事说明，**不是新模型，也不是自动跑到底的程序**。你可以直接描述任务，也可以点名指定方法。
 
@@ -29,7 +29,7 @@
 > [!WARNING]
 > 默认安装到 `~/.pi/agent/skills/`，供所有项目使用。再次安装会覆盖同名文件；请先备份对已安装 Skills 的自定义修改。
 
-在终端执行，安装全部 23 个 Skills：
+在终端执行，安装全部 24 个 Skills：
 
 ```bash
 git clone https://github.com/Rinisnotarobot/rinco-pi-skills-commands.git
@@ -72,7 +72,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 **卸载**：删除安装目录里对应的 Skill 文件夹，例如全局安装的 `~/.pi/agent/skills/spec/`。删除前确认其中没有需要保留的自定义内容。
 
-单独安装 `session-handoff` 时，会自动补装 `living-docs-governance`，因为交接文档的格式定义在后者里。其他 Skills 可以独立安装。
+单独安装 `session-handoff` 时，会自动补装 `living-docs-governance`，因为交接文档的格式定义在后者里。`fastapi`、`ts-frontend`、`ts-backend` 同理，会各自补装它上面的决策 Skill（`python-project`、`frontend-patterns`、`backend-patterns`）。其他 Skills 可以独立安装。
 
 </details>
 
@@ -105,14 +105,14 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 | Bug 根因未知 | systematic-debugging → tdd → verification |
 | 构建或 CI 失败且原因明确 | fix → verification |
 | 评审一组变更 | verification → code-review |
-| 在陌生的 Python / TypeScript 项目里写代码 | python-project → fastapi · ts-frontend |
+| 在陌生的 Python / TypeScript 项目里写代码 | python-project → fastapi · ts-frontend · ts-backend |
 | 会话太长，需要交接 | `/skill:session-handoff` |
 
 想换一种行为是新需求，不一定是 Bug。测试通过、评审通过、获准发布也分别是不同的结论。更多阶段边界和搭配理由见 [Workflows 设计与用法](skills/workflows/README.md)。
 
 ## 完整目录
 
-正式安装目录分为 **16 个 Workflows + 3 个 Patterns + 3 个 Stacks + 1 个 Tool**。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
+正式安装目录分为 **16 个 Workflows + 3 个 Patterns + 4 个 Stacks + 1 个 Tool**。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
 
 <details>
 <summary>Workflows · 16 个开发方法（展开查看用途与调用方式）</summary>
@@ -164,12 +164,13 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 | [`python-project`](skills/stacks/python-project/) | 任何 Python 项目的公共底座：工具链、包结构、类型与错误处理、pytest 组织。 |
 | [`fastapi`](skills/stacks/fastapi/) | FastAPI 服务层：app factory、配置、Pydantic v2 模式、依赖注入、路由与鉴权、httpx 应用测试。 |
 | [`ts-frontend`](skills/stacks/ts-frontend/) | React + TypeScript 前端：hooks 纪律、组件组合、server/client 边界、取数与表单、渲染成本、RTL 组件测试。 |
+| [`ts-backend`](skills/stacks/ts-backend/) | Node.js + TypeScript 服务端：工程与模块配置、依赖注入与应用组装、校验与错误映射、事务与后台任务、遥测与进程健康、NestJS 形态。 |
 
 </details>
 
 ## 维护仓库
 
-`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 23 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。
+`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 24 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。
 
 <details>
 <summary>仓库结构与新增 Skill 的步骤</summary>
@@ -181,7 +182,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 ├── skills/              # 安装脚本从这里复制
 │   ├── workflows/       # 开发步骤与做事方法
 │   ├── patterns/        # 前后端设计与安全检查
-│   ├── stacks/          # 技术栈常识（Python、FastAPI、React）
+│   ├── stacks/          # 技术栈常识（Python、FastAPI、React、Node 后端）
 │   └── tools/           # README 工具
 ├── processing/          # 尚未进入正式目录的草稿
 └── scripts/

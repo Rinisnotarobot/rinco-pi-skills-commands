@@ -62,13 +62,15 @@ done
 # --- dependencies ---------------------------------------------------------
 # Some skills route their content to another skill: session-handoff reads its
 # handoff format from living-docs-governance, fastapi routes the Python baseline
-# to python-project, and ts-frontend routes frontend architecture decisions to
-# frontend-patterns. Keep one owner per format and make single installs work by
+# to python-project, ts-frontend routes frontend architecture decisions to
+# frontend-patterns, and ts-backend routes backend architecture decisions to
+# backend-patterns. Keep one owner per decision and make single installs work by
 # pulling the routed-to skill in alongside the router.
 declare -A ROUTES_TO=(
   [session-handoff]=living-docs-governance
   [fastapi]=python-project
   [ts-frontend]=frontend-patterns
+  [ts-backend]=backend-patterns
 )
 for router in $(printf '%s\n' "${!ROUTES_TO[@]}" | sort); do
   host="${ROUTES_TO[$router]}"
