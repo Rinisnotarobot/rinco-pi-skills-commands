@@ -179,6 +179,8 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 .
 ├── .pi/skills/          # 维护本仓库时使用的辅助 Skills
 ├── assets/readme/       # README 头图
+├── LICENSE              # 本仓库内容的 MIT 许可证
+├── THIRD-PARTY.md       # .pi/skills/ 两个第三方 Skill 的来源与署名
 ├── skills/              # 安装脚本从这里复制
 │   ├── workflows/       # 开发步骤与做事方法
 │   ├── patterns/        # 前后端设计与安全检查
@@ -206,3 +208,5 @@ bash scripts/validate.sh
 ```
 
 检查名称与描述、链接、参考文档可达性、README 目录、调用方式和 Git 空白错误。这些是结构检查，不代表 Skill 在实际任务中的效果已经通过验证。
+
+本仓库内容以 [MIT 许可证](LICENSE)发布。`.pi/skills/` 下两个辅助 Skill 来自第三方（同样是 MIT），来源与署名见 [THIRD-PARTY.md](THIRD-PARTY.md)。
