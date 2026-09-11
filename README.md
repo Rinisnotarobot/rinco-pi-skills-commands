@@ -170,7 +170,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 维护仓库
 
-`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 24 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。
+`skills/` 是正式安装来源；`processing/` 是草稿区，不计入 24 个 Skills。`.pi/skills/` 仅用于维护本仓库，不随安装脚本分发。跨 family 的设计哲学、分层与依赖方向见 [DESIGN.md](DESIGN.md)。
 
 <details>
 <summary>仓库结构与新增 Skill 的步骤</summary>
@@ -181,6 +181,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 ├── assets/readme/       # README 头图
 ├── LICENSE              # 本仓库内容的 MIT 许可证
 ├── THIRD-PARTY.md       # .pi/skills/ 两个第三方 Skill 的来源与署名
+├── DESIGN.md            # 跨 family 的设计哲学、分层与依赖方向
 ├── skills/              # 安装脚本从这里复制
 │   ├── workflows/       # 开发步骤与做事方法
 │   ├── patterns/        # 前后端设计与安全检查

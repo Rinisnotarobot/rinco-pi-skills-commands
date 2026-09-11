@@ -2,6 +2,8 @@
 
 `processing/` 是草稿区：还没准备好进入 `skills/<family>/<name>/` 的 Skill 先放这里。这里的内容**不随 `scripts/install.sh` 分发，也不计入根 README 的 Skill 计数**。
 
+分层、依赖方向与设计约束见 [DESIGN.md](../DESIGN.md)。
+
 ## 提升前的自查清单
 
 按顺序检查，任一项不过就不要提升。清单来自 8 份 ECC 时代草稿的实际失败模式。
