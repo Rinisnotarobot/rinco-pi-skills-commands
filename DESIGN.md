@@ -1,8 +1,8 @@
 # 设计说明
 
-这份文件记录**跨 family 的设计决定**：知识分几层、每层归谁、边界怎么裁决、什么能进正式目录。面向维护者和贡献者。
+这份文件记录跨 family 的设计决定：知识分几层、每层归谁、边界怎么裁决、什么能进正式目录。读者是维护者和贡献者。
 
-**权威顺序**（冲突时按此，各写各的那部分，不重复维护）：
+下面这个顺序是权威顺序，冲突时按它取值；各部分各写各的，不重复维护：
 
 1. 各件 `SKILL.md` 是它自己流程的唯一准绳；
 2. [AGENTS.md](AGENTS.md) 是在本仓库改动时的常驻约定、提升步骤与收工门禁（Pi 每次会话自动加载）；
@@ -14,7 +14,7 @@
 
 ## 1. 一句话
 
-这套 Skill 不是知识库，而是**把工程结论变成可检查证据的流程约束**：一件 Skill 只负责一个阶段或领域，各自声明"到哪里为止"，靠 `description` 按需加载，跨 Skill 只做**路由**（转交给 owner），不做覆盖。
+这套 Skill 的目标不是攒知识，而是把工程结论变成可检查的证据：一件 Skill 只管一个阶段或领域，各自声明"到哪里为止"，靠 `description` 按需加载；跨 Skill 只做路由，把结论转交给 owner，不做覆盖。
 
 ## 2. 知识分三层
 
@@ -22,7 +22,7 @@
 |---|---|---|
 | 方法论（与语言无关） | 阶段怎么走、结论怎么下、什么算证据 | `workflows/`、`patterns/` |
 | 技术栈常识 | 这门语言或框架通常怎么做，以及怎么从仓库里读出来 | `stacks/` |
-| 具体 API | 某个版本的确切签名与默认值 | **不写进 Skill**，只留取证纪律 |
+| 具体 API | 某个版本的确切签名与默认值 | 不写进 Skill，只留取证纪律 |
 
 第三层为什么不写：API 手册会随版本过期，而 Skill 没有版本号。`stacks/` 里的做法是"读锁文件拿到固定版本 → 在仓库里找现成调用点照抄 → 找不到就标 unverified 并就地确认"，并留一行可逆占位指向全局 `context7-docs` skill（外部文档查找默认不在范围内）。
 
@@ -37,7 +37,7 @@
 
 `skills/meta/` 在 `scripts/validate.sh` 里是合法 family，目前为空。
 
-`patterns/` 与 `stacks/` 的分工：中立层持有"选哪个方案"的决策，栈层持有"这项目实际怎么写"的惯例。**栈知识不进中立 owner 的 `references/`**——那些文件没有自己的触发描述，内容进去就等于不可达。
+`patterns/` 与 `stacks/` 的分工：中立层持有"选哪个方案"的决策，栈层持有"这项目实际怎么写"的惯例。栈知识不进中立 owner 的 `references/`：那些文件没有自己的触发描述，内容写进去等于不可达。
 
 ## 4. 依赖方向：唯一的硬不变量
 
@@ -52,7 +52,7 @@
 | `stacks` → `stacks` | 2 |
 | **`workflows` → `stacks`** | **0** |
 
-**不变量：`workflows/` 从不引用 `stacks/`。** 阶段方法与技术栈无关，这不是一句声明，而是上表里没有反向边。
+不变量是 `workflows/` 从不引用 `stacks/`。阶段方法本来就与技术栈无关，上表里也查不到反向边，所以这不只是口号。
 
 三条推论：
 
@@ -107,22 +107,22 @@ description             触发句 + 中文触发词
 
 ## 7. 边界与裁决：路由，而不是覆盖
 
-多数 Skill 系统写"能做什么"，这套写**"到哪里为止"**：
+多数 Skill 系统写"能做什么"，这套的重点是"到哪里为止"：
 
-- `resilience` 不下"实现完成"的结论——设计阶段把要证明的失败场景交给 `plan`，评审已有实现时把验证要求交给 `verification`；
+- `resilience` 不下"实现完成"的结论：设计阶段把要证明的失败场景交给 `plan`，评审已有实现时把验证要求交给 `verification`；
 - `python-project` 明说 "does not issue `READY`, `NOT READY`, or `BLOCKED`"；
 - `tdd` 只留行为测试证据，不替验证阶段宣布整体没问题；
 - `verification` 是 `READY` / `NOT READY` / `BLOCKED` 合成规则的唯一来源，`code-review` 遵守同一套；
 - `code-review` 只读、报告落盘、不改被审代码。
 
-冲突怎么裁决：**路由，不是覆盖**。另一种常见做法是用优先级让专用规则盖掉通用规则（"specific overrides general"，像 CSS 权重）；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 “Invoke `resilience`; do not invent failure policy here” 这样的句子。代价是没有自动一致性检查（见第 10 节），收益是不会出现伪装成"通用"的栈知识。
+冲突怎么裁决：路由，不是覆盖。另一种常见做法是用优先级让专用规则盖掉通用规则（"specific overrides general"，像 CSS 权重）；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 "Invoke `resilience`; do not invent failure policy here" 这样的句子。代价是没有自动一致性检查（见第 10 节），收益是不会出现伪装成"通用"的栈知识。
 
 ## 8. 治理
 
-- **结构门禁**：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。其中 frontmatter 这道门调 Pi 自己的加载器（`scripts/validate-skills.mjs`），判定标准是“会话真能加载这份 Skill”，而不是本仓库重写一遍 frontmatter 解析；机器上没有 node 或 Pi 时降级为 WARN 加内建检查。它**只查结构与加载**，不代表 Skill 在实际任务中的效果已经验证。
-- **草稿区**：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
-- **提升成本固定**：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以**按 family 成批提升**，不零敲碎打。
-- **唯一原件**：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来——所以点名安装 `session-handoff` 会自动补装前者。
+- 结构门禁：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。其中 frontmatter 这道门调 Pi 自己的加载器（`scripts/validate-skills.mjs`），判定标准是"会话真能加载这份 Skill"，而不是本仓库重写一遍 frontmatter 解析；机器上没有 node 或 Pi 时降级为 WARN 加内建检查。它只检查结构与加载，不代表 Skill 在实际任务中的效果已经验证。
+- 草稿区：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
+- 提升成本固定：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以按 family 成批提升，不零敲碎打。
+- 唯一原件：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来，所以点名安装 `session-handoff` 会自动补装前者。
 
 ## 9. 几处刻意的取舍
 
@@ -138,15 +138,15 @@ description             触发句 + 中文触发词
 
 ## 10. 已知取舍与未解
 
-1. **L3 不写 API 手册**：换来不过期，代价是每次都要现场取证。
-2. **没有语义一致性工具**：六道门全是结构检查，跨 Skill 的重复与冲突靠人发现。第 4 节那张依赖图目前没有门禁，候选做法是把它做成第 7 道门。
-3. **`skills/meta/` 是合法但空的 family**。
-4. **中文触发词有误触发风险**：`ts-frontend` 在 Vue、Svelte 项目里也可能被触发（已接受）。
-5. **策略阈值一律不由 Skill 规定**：覆盖率、重试上限、超时值交给项目或调用方。
+1. L3 不写 API 手册：换来不过期，代价是每次都要现场取证。
+2. 没有语义一致性工具：六道门全是结构检查，跨 Skill 的重复与冲突靠人发现。第 4 节那张依赖图目前没有门禁，候选做法是把它做成第 7 道门。
+3. `skills/meta/` 是合法但空的 family。
+4. 中文触发词有误触发风险：`ts-frontend` 在 Vue、Svelte 项目里也可能被触发（已接受）。
+5. 策略阈值一律不由 Skill 规定：覆盖率、重试上限、超时值交给项目或调用方。
 
 ## 11. 改动时同步哪几处
 
-- **新增或删除 Skill**：按 [AGENTS.md](AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
-- **改了阶段边界或结论规则**：`skills/workflows/README.md` 与相关 `SKILL.md` 一起改。
-- **改了分层、依赖方向或设计约束**：本文与 [AGENTS.md](AGENTS.md) 一起改。
-- **收工前**：`bash scripts/validate.sh` 全绿。
+- 新增或删除 Skill：按 [AGENTS.md](AGENTS.md) 的第 3 步同步数字与目录表；涉及 workflows 时再同步 `skills/workflows/README.md`。
+- 改了阶段边界或结论规则：`skills/workflows/README.md` 与相关 `SKILL.md` 一起改。
+- 改了分层、依赖方向或设计约束：本文与 [AGENTS.md](AGENTS.md) 一起改。
+- 收工前：`bash scripts/validate.sh` 全绿。

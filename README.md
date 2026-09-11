@@ -4,9 +4,9 @@
   <img src="./assets/readme/hero.svg" width="100%" alt="Rinco Pi Skills：给 Pi 一套写代码的方法。修 Bug 可搭配 systematic-debugging 查原因、tdd 写测试和修复、verification 检查结果。">
 </p>
 
-给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 **24 个工程 Skills**，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
+给 [Pi coding agent](https://github.com/earendil-works/pi) 用的 24 个工程 Skills，把问需求、查 Bug、写测试和检查结果的方法交给 AI。
 
-每个 Skill 都是一份可按需读取的做事说明，**不是新模型，也不是自动跑到底的程序**。你可以直接描述任务，也可以点名指定方法。
+每个 Skill 是一份可按需读取的做事说明：装上去不会换模型，也不会替你自动跑完整个任务。你可以直接描述任务，也可以点名指定方法。
 
 [快速开始](#快速开始) · [选择 Skill](#选择-skill) · [完整目录](#完整目录) · [维护仓库](#维护仓库)
 
@@ -43,18 +43,18 @@ bash scripts/install.sh
 /skill:spec 我要做一个 CSV 批量导入功能，帮我写清楚要做什么、出错时怎么办、怎样算完成。
 ```
 
-**预期结果**：一份需求规格文档，写明需求、边界和验收条件，不直接实现功能。尚未确定的关键决定会先向你确认。
+跑完会得到一份需求规格文档，写明需求、边界和验收条件，不会直接开始实现。尚未确定的关键决定会先向你确认。
 
 <details>
 <summary>只装几个、只给一个项目用，或者更新与卸载</summary>
 
-**只装需要的 Skills**（仍在本仓库目录执行）：
+只装需要的 Skills（仍在本仓库目录执行）：
 
 ```bash
 bash scripts/install.sh spec plan tdd verification
 ```
 
-**只给一个项目用**，把路径换成你的项目路径：
+只给一个项目用，把路径换成你的项目路径：
 
 ```bash
 bash scripts/install.sh --scope /path/to/your-project/.pi/skills spec plan tdd verification
@@ -62,15 +62,15 @@ bash scripts/install.sh --scope /path/to/your-project/.pi/skills spec plan tdd v
 
 `--scope .pi/skills` 指的是终端当前目录下的 `.pi/skills`。如果你还在这个 Skills 仓库里，它就会装到这个仓库，而不是你正在开发的项目。
 
-**确认文件已安装**（以全局安装为例）：
+确认文件已安装（以全局安装为例）：
 
 ```bash
 ls ~/.pi/agent/skills/spec/SKILL.md
 ```
 
-**更新**：拉取本仓库最新代码，再执行安装命令；本仓库不单独维护版本号。
+更新：拉取本仓库最新代码，再执行安装命令；本仓库不单独维护版本号。
 
-**卸载**：删除安装目录里对应的 Skill 文件夹，例如全局安装的 `~/.pi/agent/skills/spec/`。删除前确认其中没有需要保留的自定义内容。
+卸载：删除安装目录里对应的 Skill 文件夹，例如全局安装的 `~/.pi/agent/skills/spec/`。删除前确认其中没有需要保留的自定义内容。
 
 单独安装 `session-handoff` 时，会自动补装 `living-docs-governance`，因为交接文档的格式定义在后者里。`fastapi`、`ts-frontend`、`ts-backend` 同理，会各自补装它上面的决策 Skill（`python-project`、`frontend-patterns`、`backend-patterns`）。其他 Skills 可以独立安装。
 
@@ -78,19 +78,19 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 如何使用
 
-**平时直接说要做什么**，Pi 会按任务选择匹配的 Skill。例如：
+平时直接说你要做什么，Pi 会自己挑匹配的 Skill。例如：
 
 ```text
 这个接口偶尔返回 500。先帮我复现并查清原因，不要猜着改。
 ```
 
-**想指定做法，就点名调用**：
+想指定做法，就用 `/skill:名字` 点名：
 
 ```text
 /skill:systematic-debugging 查一下这个接口为什么偶尔返回 500。
 ```
 
-前者让 Pi 按任务匹配方法，后者由你指定。**安装 Skill 不保证任务成功，完成与否仍以实际检查为准。**
+前者让 Pi 按任务匹配方法，后者由你指定。两种方式都不保证任务成功，完成与否以实际检查为准。
 
 两个入口只接受显式调用：`publish-tickets` 发布已批准的计划工单，`session-handoff` 保存会话交接文档。交接后仍需在新会话中让 Pi 读取文档，它不是自动跨会话记忆。
 
@@ -112,7 +112,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ## 完整目录
 
-正式安装目录分为 **16 个 Workflows + 3 个 Patterns + 4 个 Stacks + 1 个 Tool**。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
+正式安装目录分为 16 个 Workflows、3 个 Patterns、4 个 Stacks 和 1 个 Tool。下列链接进入对应 Skill 目录，完整规则见其中的 `SKILL.md`。
 
 <details>
 <summary>Workflows · 16 个开发方法（展开查看用途与调用方式）</summary>
@@ -157,7 +157,7 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 
 ### Stacks
 
-技术栈常识：先读仓库判断这项目实际怎么做的，再按它的写法干活，不是套模板。
+技术栈常识：先读仓库判断这项目实际怎么做，再照它的写法干活，别套模板。
 
 | Skill | 用途 |
 |---|---|
@@ -178,17 +178,19 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 ```text
 .
 ├── AGENTS.md            # 在本仓库改动时的常驻约定与门禁（Pi 自动加载）
+├── .agents/skills/      # 第三方辅助 Skill 的实体文件（.pi/skills/ 下是软链）
+├── .claude/skills/      # 同一批辅助 Skill 的 Claude Code 软链
 ├── .pi/skills/          # 维护本仓库时使用的辅助 Skills
 ├── assets/readme/       # README 头图
 ├── LICENSE              # 本仓库内容的 MIT 许可证
-├── THIRD-PARTY.md       # .pi/skills/ 两个第三方 Skill 的来源与署名
+├── THIRD-PARTY.md       # .pi/skills/ 三个第三方 Skill 的来源与署名
 ├── DESIGN.md            # 跨 family 的设计哲学、分层与依赖方向
 ├── skills/              # 安装脚本从这里复制
 │   ├── workflows/       # 开发步骤与做事方法
 │   ├── patterns/        # 前后端设计与安全检查
 │   ├── stacks/          # 技术栈常识（Python、FastAPI、React、Node 后端）
 │   └── tools/           # README 工具
-├── skills-lock.json     # .pi/skills/ 两个辅助 Skill 的来源与内容哈希
+├── skills-lock.json     # .pi/skills/ 三个辅助 Skill 的来源与内容哈希
 ├── processing/          # 草稿区（规则见 AGENTS.md）
 └── scripts/
     ├── install.sh           # 安装或更新 Skills
@@ -212,4 +214,4 @@ bash scripts/validate.sh
 
 检查名称与描述、链接、参考文档可达性、README 目录、调用方式和 Git 空白错误，并用 Pi 官方加载器复核 `skills/` 能否被会话加载。这些是结构与加载检查，不代表 Skill 在实际任务中的效果已经通过验证。
 
-本仓库内容以 [MIT 许可证](LICENSE)发布。`.pi/skills/` 下两个辅助 Skill 来自第三方（同样是 MIT），来源与署名见 [THIRD-PARTY.md](THIRD-PARTY.md)。
+本仓库内容以 [MIT 许可证](LICENSE)发布。`.pi/skills/` 下三个辅助 Skill 来自第三方（同样是 MIT），来源与署名见 [THIRD-PARTY.md](THIRD-PARTY.md)。
