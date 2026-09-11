@@ -12,8 +12,8 @@
 #   4. README inventory (runs only when README.md exists): every promoted
 #      skill is linked, every skills/ link target exists
 #   5. invocation contract (runs only when README.md exists): workflows table
-#      matches disable-model-invocation; patterns/tools/meta stay model-invoked
-#      (no README column for them)
+#      matches disable-model-invocation; patterns/tools/meta/stacks stay
+#      model-invoked (no README column for them)
 #   6. git diff --check is clean
 #
 # Usage: scripts/validate.sh   (run from anywhere; exit 0 = all gates green)
@@ -146,7 +146,8 @@ if [[ -f README.md ]]; then
         || { fail "README workflows table: $name is model-invocable but its row lacks 自动 / 显式 (row: ${row:-missing})"; inv_fail=1; }
     fi
   done
-  for sk in skills/patterns/*/SKILL.md skills/tools/*/SKILL.md skills/meta/*/SKILL.md; do
+  for sk in skills/patterns/*/SKILL.md skills/tools/*/SKILL.md \
+            skills/meta/*/SKILL.md skills/stacks/*/SKILL.md; do
     [[ -e "$sk" ]] || continue
     if fm_has "$sk" disable-model-invocation; then
       fail "$sk: explicit-only outside workflows/ has no README invocation column; move it or make it model-invocable"

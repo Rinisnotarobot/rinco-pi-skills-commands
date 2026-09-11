@@ -52,7 +52,7 @@ Read only the references needed for the active branch:
 | Rendering, loading, responsiveness, memory, bundle, or asset performance | [references/performance.md](references/performance.md) |
 | Client trust, sensitive data, third parties, analytics, or diagnostic signals | [references/security-privacy-and-observability.md](references/security-privacy-and-observability.md); invoke `security-review` for a deep review of changed trust boundaries |
 | Remote-dependency or durable-work deadlines, cancellation, retries, overload, unknown mutation outcomes, or partial-failure recovery | Invoke `resilience`; browser-local effect cleanup and stale-result suppression remain in [state-data-and-effects.md](references/state-data-and-effects.md), while this Skill owns user-visible presentation |
-| React-specific hooks, JSX, Suspense, RSC, or framework APIs | Use project conventions and current official documentation. The portfolio's React-specific material remains an unpromoted overlapping draft; reconcile it with selected frontend architecture before promotion |
+| React-specific hooks, JSX, Suspense, RSC, or framework APIs | Invoke `ts-frontend`; it expresses the selected frontend architecture in React and TypeScript forms |
 
 Completion criterion: candidates come from the problem branch rather than from framework habit or a preferred library.
 

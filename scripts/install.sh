@@ -38,7 +38,7 @@ NAMES=("$@")
 # --- inventory ----------------------------------------------------------
 # All promoted skills live as skills/<family>/<name>/SKILL.md; folder basename
 # is the skill name and matches frontmatter. tools/readme is a skills-family
-# folder too, so families = workflows | patterns | tools.
+# folder too, so families = workflows | patterns | tools | stacks.
 mapfile -t AVAILABLE < <(find "$REPO_ROOT/skills" -name SKILL.md -printf '%h\n' \
   | sed "s|$REPO_ROOT/skills/||; s|/| |" | sort)
 
@@ -60,14 +60,24 @@ for want in "${NAMES[@]}"; do
 done
 
 # --- dependencies ---------------------------------------------------------
-# session-handoff is a thin serializer: its handoff format lives only in
-# living-docs-governance (single source of truth). Keep that single source and
-# make single installs work by pulling the format host in with the serializer.
-if [[ " ${NAMES[*]} " == *" session-handoff "* \
-  && " ${NAMES[*]} " != *" living-docs-governance "* ]]; then
-  NAMES+=(living-docs-governance)
-  echo "note: session-handoff reads its handoff format from living-docs-governance; installing the host too"
-fi
+# Some skills route their content to another skill: session-handoff reads its
+# handoff format from living-docs-governance, fastapi routes the Python baseline
+# to python-project, and ts-frontend routes frontend architecture decisions to
+# frontend-patterns. Keep one owner per format and make single installs work by
+# pulling the routed-to skill in alongside the router.
+declare -A ROUTES_TO=(
+  [session-handoff]=living-docs-governance
+  [fastapi]=python-project
+  [ts-frontend]=frontend-patterns
+)
+for router in $(printf '%s\n' "${!ROUTES_TO[@]}" | sort); do
+  host="${ROUTES_TO[$router]}"
+  if [[ " ${NAMES[*]} " == *" $router "* \
+    && " ${NAMES[*]} " != *" $host "* ]]; then
+    NAMES+=("$host")
+    echo "note: $router routes content to $host; installing $host too"
+  fi
+done
 
 # --- install ------------------------------------------------------------
 mkdir -p "$SCOPE"
