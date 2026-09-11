@@ -119,7 +119,7 @@ description             触发句 + 中文触发词
 
 ## 8. 治理
 
-- **结构门禁**：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。它**只查结构**，不代表 Skill 在实际任务中的效果已经验证。
+- **结构门禁**：`bash scripts/validate.sh` 六道门（frontmatter / 本地链接可达 / `references/` 无孤儿 / README 清单与树一致 / 调用契约与 README 匹配 / `git diff --check` 干净）。其中 frontmatter 这道门调 Pi 自己的加载器（`scripts/validate-skills.mjs`），判定标准是“会话真能加载这份 Skill”，而不是本仓库重写一遍 frontmatter 解析；机器上没有 node 或 Pi 时降级为 WARN 加内建检查。它**只查结构与加载**，不代表 Skill 在实际任务中的效果已经验证。
 - **草稿区**：`processing/` 只放还没进正式目录的东西，提升步骤与门禁见 [AGENTS.md](AGENTS.md)。
 - **提升成本固定**：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以**按 family 成批提升**，不零敲碎打。
 - **唯一原件**：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来——所以点名安装 `session-handoff` 会自动补装前者。

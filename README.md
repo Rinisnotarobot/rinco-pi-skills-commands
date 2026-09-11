@@ -191,8 +191,9 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 ├── skills-lock.json     # .pi/skills/ 两个辅助 Skill 的来源与内容哈希
 ├── processing/          # 草稿区（规则见 AGENTS.md）
 └── scripts/
-    ├── install.sh       # 安装或更新 Skills
-    └── validate.sh      # 检查结构、链接和目录
+    ├── install.sh           # 安装或更新 Skills
+    ├── validate.sh          # 检查结构、链接和目录
+    └── validate-skills.mjs  # 用 Pi 官方加载器复核 skills/
 ```
 
 新增或修改 Skill 时：
@@ -209,6 +210,6 @@ ls ~/.pi/agent/skills/spec/SKILL.md
 bash scripts/validate.sh
 ```
 
-检查名称与描述、链接、参考文档可达性、README 目录、调用方式和 Git 空白错误。这些是结构检查，不代表 Skill 在实际任务中的效果已经通过验证。
+检查名称与描述、链接、参考文档可达性、README 目录、调用方式和 Git 空白错误，并用 Pi 官方加载器复核 `skills/` 能否被会话加载。这些是结构与加载检查，不代表 Skill 在实际任务中的效果已经通过验证。
 
 本仓库内容以 [MIT 许可证](LICENSE)发布。`.pi/skills/` 下两个辅助 Skill 来自第三方（同样是 MIT），来源与署名见 [THIRD-PARTY.md](THIRD-PARTY.md)。

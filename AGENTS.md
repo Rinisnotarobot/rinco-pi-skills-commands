@@ -18,7 +18,7 @@ Pi 每次会话自动加载这份文件。这里放每次都要守的约定；�
 
 ## 收工
 
-`bash scripts/validate.sh` 到 0 failure。它查结构，不证明 Skill 在真实任务里的效果。
+`bash scripts/validate.sh` 到 0 failure。它查结构、查 Pi 能否加载，不证明 Skill 在真实任务里的效果。
 
 ## 会话开头
 
