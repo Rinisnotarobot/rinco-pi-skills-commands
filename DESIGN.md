@@ -8,7 +8,7 @@
 2. 根 [README](README.md) 负责安装、清单与调用方式；
 3. [skills/workflows/README.md](skills/workflows/README.md) 负责阶段链与 16 件 Workflows 的简介；
 4. [processing/README.md](processing/README.md) 负责草稿怎么提升；
-5. 本文负责上面都没写的那部分：分层、依赖方向、设计约束、与 ECC 原版的差别。
+5. 本文负责上面都没写的那部分：分层、依赖方向、设计约束，以及几处刻意取舍的原因。
 
 本文档不随 `scripts/install.sh` 分发（它只复制 `skills/<family>/<name>/`）。
 
@@ -115,7 +115,7 @@ description             触发句 + 中文触发词
 - `verification` 是 `READY` / `NOT READY` / `BLOCKED` 合成规则的唯一来源，`code-review` 遵守同一套；
 - `code-review` 只读、报告落盘、不改被审代码。
 
-冲突怎么裁决：**路由，不是覆盖**。ECC 原版用 CSS 式优先级（"language-specific rules take precedence… similar to CSS specificity"）让专用规则盖掉通用规则；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 “Invoke `resilience`; do not invent failure policy here” 这样的句子。代价是没有自动一致性检查（见第 10 节），收益是不会出现伪装成"通用"的栈知识。
+冲突怎么裁决：**路由，不是覆盖**。另一种常见做法是用优先级让专用规则盖掉通用规则（"specific overrides general"，像 CSS 权重）；这里改成"中立层持有决策、栈层只表达惯例、各自声明 owner"，正文里直接写 “Invoke `resilience`; do not invent failure policy here” 这样的句子。代价是没有自动一致性检查（见第 10 节），收益是不会出现伪装成"通用"的栈知识。
 
 ## 8. 治理
 
@@ -124,17 +124,17 @@ description             触发句 + 中文触发词
 - **提升成本固定**：新增一件要同步 7 处硬编码计数（根 README 4 处、`assets/readme/hero.svg` 2 处、`validate.sh` 门 4），所以**按 family 成批提升**，不零敲碎打。
 - **唯一原件**：跨 Skill 共用的格式只保留一份。交接文档的格式由 `living-docs-governance` 持有，`session-handoff` 只负责把它写出来——所以点名安装 `session-handoff` 会自动补装前者。
 
-## 9. 与 ECC 原版的差别
+## 9. 几处刻意的取舍
 
-`processing/` 收过的那批草稿来自 `affaan-m/ECC`（4,993 个文件的体系：常驻 `rules/` + 按需 `skills/` + 多 harness 镜像）。沿用哪些、改掉哪些：
+下面这些做法在别处很常见，这里选了另一条路，理由都是可核对的：
 
-| ECC 的做法 | 这里的做法 | 原因 |
+| 常见做法 | 这里的做法 | 原因 |
 |---|---|---|
-| skill 正文整份进上下文，于是有"Show Don't Tell"与 800 行上限 | Pi 是渐进披露：门面写主干，细节进 `references/` | 长代码示例会挤掉"先探测仓库"的注意力 |
-| 阈值与强制流程写死在 skill 里（"Minimum Test Coverage: 80%"、"MANDATORY RED→GREEN→REFACTOR"） | 阈值交给项目或调用方，Skill 只要求取证 | 那些原本属于 always-on 的 `rules/` 层，ECC 只搬了 skill 层 |
-| 覆盖优先级（CSS specificity 式） | 路由：转交给 owner | 见第 7 节 |
-| 复制即分发（多 harness 镜像 + 14 语言 docs） | 单一来源 + 安装时复制（`scripts/install.sh`） | 复制出来的副本没法维护 |
-| 引用系统内的 agent、命令、persona | 不引用本仓库里不存在的东西 | 单独摘出来就是死链 |
+| 门面写满代码示例，把正文压到很长 | 门面写主干，细节进 `references/`（渐进披露） | 长代码示例会挤掉"先探测仓库"的注意力 |
+| 把阈值与强制流程写进 Skill（覆盖率 80%、必须 RED→GREEN→REFACTOR） | 阈值交给项目或调用方，Skill 只要求取证 | 阈值属于项目策略，写进 Skill 就会与仓库冲突 |
+| 用优先级让专用规则盖掉通用规则 | 路由：转交给 owner | 见第 7 节 |
+| 复制即分发（同一内容镜像到多个框架目录） | 单一来源 + 安装时复制（`scripts/install.sh`） | 复制出来的副本没法维护 |
+| 引用框架自带的 agent、命令、persona | 不引用本仓库里不存在的东西 | 单独摘出来就是死链 |
 
 ## 10. 已知取舍与未解
 
